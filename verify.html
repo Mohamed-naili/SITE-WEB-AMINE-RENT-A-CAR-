@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Vérification de facture | Amine Rent A Car</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<style>
+body{margin:0;background:#F1F2F0;font:16px/1.5 system-ui,'Segoe UI',Arial,sans-serif;color:#202225}
+header{background:#1C1F22;color:#fff;padding:14px 18px;font-weight:800}
+main{max-width:480px;margin:24px auto;padding:0 16px}
+.card{background:#fff;border:1px solid #d9dad6;border-radius:12px;padding:20px}
+.ok{color:#1d7a43;font-size:20px;font-weight:800}.bad{color:#A11F1F;font-size:20px;font-weight:800}
+table{width:100%;border-collapse:collapse;margin-top:12px}td{padding:8px 0;border-bottom:1px solid #eee}td:last-child{text-align:right;font-weight:700}
+.s{color:#63676b;font-size:13px;margin-top:12px}
+</style></head>
+<body><header>AMINE RENT A CAR : vérification</header>
+<main><div class="card" id="r">Vérification…</div></main>
+<script>
+const SB=supabase.createClient("https://tadaqaqvtjcnanspcboj.supabase.co","sb_publishable_fA2Est6rYrP6Sx1xfyhdOA_IA5TQ6MO");
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+(async()=>{
+  const t=new URLSearchParams(location.search).get("t")||"";
+  const {data,error}=await SB.rpc("verify_invoice",{p_token:t});
+  const r=document.getElementById("r");
+  if(error||!data||!data.ok){r.innerHTML='<div class="bad">❌ Document introuvable</div><p class="s">Ce code ne correspond à aucune facture émise par AMINE RENT A CAR.</p>';return}
+  const st=data.status==="credited"?'<div class="bad">⚠️ Document annulé par un avoir</div>':'<div class="ok">✅ Document authentique</div>';
+  r.innerHTML=st+`<table><tr><td>Société</td><td>${esc(data.company)}</td></tr><tr><td>Type</td><td>${data.kind==="credit_note"?"Avoir":"Facture"}</td></tr>
+   <tr><td>Numéro</td><td>${esc(data.number)}</td></tr><tr><td>Date d'émission</td><td>${new Date(data.issued_at).toLocaleDateString("fr-FR",{timeZone:"Africa/Tunis"})}</td></tr>
+   <tr><td>Montant TTC</td><td>${Number(data.total_ttc).toLocaleString("fr-FR",{minimumFractionDigits:3})} TND</td></tr></table>
+   <p class="s">Cette page ne montre aucune donnée personnelle. Elle confirme seulement que le document a été émis par la société.</p>`;
+})();
+</script></body></html>
