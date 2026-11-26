@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Mon compte | Amine Rent A Car</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<style>
+:root{--ink:#1C1F22;--red:#D62828;--green:#2FAE60;--gold:#C9A227;--line:#d9dad6}
+*{box-sizing:border-box}body{margin:0;font:15px/1.5 system-ui,'Segoe UI',Tahoma,sans-serif;background:#F1F2F0;color:#202225}
+header{background:var(--ink);color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+header a{color:#fff;text-decoration:none;font-weight:800}
+main{max-width:640px;margin:0 auto;padding:16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+input{padding:10px;border:1.5px solid var(--line);border-radius:8px;font:inherit;width:100%}
+button,.btn{border:0;border-radius:8px;padding:10px 15px;font:700 14px inherit;color:#fff;background:var(--red);cursor:pointer;display:inline-block;text-decoration:none}
+.dark{background:var(--ink)}.g{background:var(--green)}.sm{padding:6px 12px;font-size:13px}
+.tabs{display:flex;gap:8px;margin-bottom:12px}.tabs button{flex:1;background:#fff;color:var(--ink);border:1px solid var(--line)}.tabs .on{background:var(--ink);color:#fff}
+p.f{margin:10px 0 0}.soft{color:#63676b;font-size:13px}.msg{color:var(--red);font-weight:600;margin-top:10px}.ok{color:#1d7a43;font-weight:700;margin-top:10px}
+.row{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+.st{font-size:12px;font-weight:700;padding:3px 9px;border-radius:20px;color:#fff;background:#888}
+.pending{background:var(--gold);color:#000}.confirmed{background:var(--green)}.cancellation_requested{background:#e67e22}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+a.lk{color:var(--red);font-weight:700}
+[hidden]{display:none!important}
+</style></head>
+<body>
+<header><a href="index.html">AMINE RENT A CAR</a><div><button class="dark sm" id="lb" type="button">العربية</button> <button class="dark sm" id="out" type="button" hidden></button></div></header>
+<main>
+<!-- Connexion / inscription -->
+<div id="auth">
+ <div class="tabs"><button class="on" id="tl" type="button"></button><button id="tr" type="button"></button></div>
+ <div class="card">
+  <p class="f" id="nmw" hidden><input id="nm" autocomplete="name" maxlength="80"></p>
+  <p class="f"><input id="id" autocomplete="username" inputmode="email" dir="ltr"></p>
+  <p class="soft" id="idh"></p>
+  <p class="f"><input id="pw" type="password" autocomplete="current-password"></p>
+  <p class="f"><button id="go" type="button" style="width:100%"></button></p>
+  <p class="f"><a href="#" class="lk" id="fg"></a></p>
+  <div class="msg" id="am"></div><div class="ok" id="ao"></div>
+ </div>
+</div>
+<!-- Nouveau mot de passe (lien reçu par e-mail) -->
+<div id="rec" hidden><div class="card"><h3 id="rt" style="margin-top:0"></h3><p class="f"><input id="np" type="password" autocomplete="new-password"></p><p class="f"><button id="rs" type="button"></button></p><div class="msg" id="rm"></div></div></div>
+<!-- Espace client -->
+<div id="app" hidden>
+ <div class="card"><div class="row"><h3 style="margin:0" id="hello"></h3><a class="btn g sm" href="index.html#flotte" id="newb"></a></div></div>
+ <div id="bks"></div>
+ <details class="card"><summary id="prT" style="cursor:pointer;font-weight:700"></summary>
+  <p class="f"><input id="pn" maxlength="120"></p><p class="f"><input id="pp" maxlength="20" inputmode="tel"></p>
+  <p class="f"><input id="pa" maxlength="200"></p><p class="f"><input id="pt" maxlength="40"></p>
+  <p class="f"><button id="ps" type="button"></button></p><div class="ok" id="po"></div><div class="msg" id="pe"></div></details>
+</div>
+</main>
+<script>
+const SB=supabase.createClient("https://tadaqaqvtjcnanspcboj.supabase.co","sb_publishable_fA2Est6rYrP6Sx1xfyhdOA_IA5TQ6MO");
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const T={fr:{login:"Connexion",reg:"Créer un compte",name:"Nom et prénom",id:"E-mail ou numéro de téléphone",idh:"Exemple : nom@mail.com ou 22123456",pw:"Mot de passe (8 caractères minimum)",go1:"Se connecter",go2:"Créer mon compte",fg:"Mot de passe oublié ?",
+ bad:"Identifiant ou mot de passe incorrect.",badid:"Saisissez un e-mail valide ou un numéro tunisien à 8 chiffres.",short:"Mot de passe : 8 caractères minimum.",needn:"Saisissez votre nom.",
+ created:"Compte créé. Vérifiez votre e-mail pour le confirmer, puis connectez-vous.",fgmail:"E-mail envoyé : ouvrez le lien pour choisir un nouveau mot de passe.",fgphone:"Compte créé avec un numéro : contactez-nous sur WhatsApp pour réinitialiser votre mot de passe.",fgnone:"Saisissez d'abord votre e-mail.",
+ rt:"Nouveau mot de passe",rs:"Enregistrer",rdone:"Mot de passe changé. Vous pouvez continuer.",hello:"Bonjour",newb:"Nouvelle réservation",out:"Déconnexion",
+ none:"Aucune réservation pour le moment.",from:"Du",to:"au",days:"jours",pay:"Acompte / RIB",inv:"Facture",cn:"Avoir",cancel:"Demander l'annulation",why:"Motif de l'annulation (facultatif) :",cdone:"Demande envoyée : l'équipe la traite.",cfail:"Impossible d'envoyer la demande.",
+ prT:"Mes informations",pn:"Nom",pp:"Téléphone",pa:"Adresse de facturation",pt:"Matricule fiscal (entreprises)",ps:"Enregistrer",psaved:"✅ Enregistré",pfail:"Erreur d'enregistrement.",
+ s:{pending:"En attente de confirmation",confirmed:"Confirmée",cancelled:"Annulée",expired:"Expirée",cancellation_requested:"Annulation demandée",blocked:"Indisponible"},
+ paid:"Paiement vérifié",proof:"Preuve reçue, en cours de vérification"},
+ar:{login:"الدخول",reg:"إنشاء حساب",name:"الاسم واللقب",id:"البريد الإلكتروني أو رقم الهاتف",idh:"مثال: nom@mail.com أو 22123456",pw:"كلمة السر (8 أحرف على الأقل)",go1:"دخول",go2:"إنشاء حسابي",fg:"نسيت كلمة السر؟",
+ bad:"المعرّف أو كلمة السر غير صحيحة.",badid:"اكتب بريدا صحيحا أو رقما تونسيا من 8 أرقام.",short:"كلمة السر: 8 أحرف على الأقل.",needn:"اكتب اسمك.",
+ created:"تم إنشاء الحساب. تحقق من بريدك لتأكيده ثم ادخل.",fgmail:"تم إرسال بريد: افتح الرابط لاختيار كلمة سر جديدة.",fgphone:"الحساب مفتوح برقم هاتف: تواصل معنا على واتساب لإعادة تعيين كلمة السر.",fgnone:"اكتب بريدك أولا.",
+ rt:"كلمة سر جديدة",rs:"حفظ",rdone:"تم تغيير كلمة السر. يمكنك المتابعة.",hello:"مرحبا",newb:"حجز جديد",out:"خروج",
+ none:"لا توجد حجوزات حاليا.",from:"من",to:"إلى",days:"أيام",pay:"العربون / RIB",inv:"الفاتورة",cn:"فاتورة إلغاء",cancel:"طلب إلغاء",why:"سبب الإلغاء (اختياري):",cdone:"تم إرسال الطلب: سيعالجه الفريق.",cfail:"تعذّر إرسال الطلب.",
+ prT:"معلوماتي",pn:"الاسم",pp:"الهاتف",pa:"عنوان الفوترة",pt:"المعرّف الجبائي (للشركات)",ps:"حفظ",psaved:"✅ تم الحفظ",pfail:"خطأ في الحفظ.",
+ s:{pending:"في انتظار التأكيد",confirmed:"مؤكَّد",cancelled:"ملغى",expired:"منتهي",cancellation_requested:"طلب إلغاء",blocked:"غير متاح"},
+ paid:"تم التحقق من الدفع",proof:"تم استلام الإثبات، قيد التحقق"}};
+let L="fr",mode="login",PROFILE=null;const t=k=>T[L][k];
+function paint(){
+  document.documentElement.lang=L;document.documentElement.dir=L==="ar"?"rtl":"ltr";$("lb").textContent=L==="ar"?"Français":"العربية";
+  $("tl").textContent=t("login");$("tr").textContent=t("reg");$("nm").placeholder=t("name");$("id").placeholder=t("id");$("idh").textContent=t("idh");$("pw").placeholder=t("pw");
+  $("go").textContent=mode==="login"?t("go1"):t("go2");$("fg").textContent=t("fg");$("fg").hidden=mode!=="login";$("rt").textContent=t("rt");$("np").placeholder=t("pw");$("rs").textContent=t("rs");
+  $("out").textContent=t("out");$("newb").textContent=t("newb");$("prT").textContent=t("prT");$("pn").placeholder=t("pn");$("pp").placeholder=t("pp");$("pa").placeholder=t("pa");$("pt").placeholder=t("pt");$("ps").textContent=t("ps");
+  if(PROFILE)loadApp();
+}
+$("lb").onclick=()=>{L=L==="fr"?"ar":"fr";paint()};
+function setMode(m){mode=m;$("tl").classList.toggle("on",m==="login");$("tr").classList.toggle("on",m==="register");$("nmw").hidden=m!=="register";$("am").textContent=$("ao").textContent="";paint()}
+$("tl").onclick=()=>setMode("login");$("tr").onclick=()=>setMode("register");
+
+// Identifiant : e-mail, ou numéro tunisien (converti en identifiant interne, sans SMS)
+function parseId(v){
+  v=v.trim();
+  if(v.includes("@")){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)?{email:v.toLowerCase(),phone:""}:null}
+  const d=v.replace(/[\s.-]/g,"").replace(/^\+?216/,"");
+  return /^[2459][0-9]{7}$/.test(d)?{email:`${d}@tel.amine-rent-car.tn`,phone:d}:null;
+}
+$("go").onclick=async()=>{
+  $("am").textContent=$("ao").textContent="";
+  const id=parseId($("id").value),pw=$("pw").value;
+  if(!id){$("am").textContent=t("badid");return}
+  if(pw.length<8){$("am").textContent=t("short");return}
+  if(mode==="register"){
+    const nm=$("nm").value.trim();if(nm.length<2){$("am").textContent=t("needn");return}
+    const {data,error}=await SB.auth.signUp({email:id.email,password:pw,options:{data:{full_name:nm,phone:id.phone}}});
+    if(error){$("am").textContent=error.message;return}
+    if(!data.session){$("ao").textContent=t("created");return}
+  }else{
+    const {error}=await SB.auth.signInWithPassword({email:id.email,password:pw});
+    if(error){$("am").textContent=t("bad");return}
+  }
+  $("pw").value="";start();
+};
+$("fg").onclick=async e=>{
+  e.preventDefault();$("am").textContent=$("ao").textContent="";
+  const id=parseId($("id").value);
+  if(!id){$("am").textContent=t("fgnone");return}
+  if(!id.email.includes("@tel.amine-rent-car.tn")){
+    const {error}=await SB.auth.resetPasswordForEmail(id.email,{redirectTo:location.origin+location.pathname});
+    if(error)$("am").textContent=error.message;else $("ao").textContent=t("fgmail");
+  }else $("ao").textContent=t("fgphone");
+};
+SB.auth.onAuthStateChange(ev=>{if(ev==="PASSWORD_RECOVERY"){$("auth").hidden=true;$("app").hidden=true;$("rec").hidden=false}});
+$("rs").onclick=async()=>{
+  $("rm").textContent="";if($("np").value.length<8){$("rm").textContent=t("short");return}
+  const {error}=await SB.auth.updateUser({password:$("np").value});
+  if(error){$("rm").textContent=error.message;return}
+  $("rec").hidden=true;start();
+};
+$("out").onclick=async()=>{await SB.auth.signOut();PROFILE=null;$("app").hidden=true;$("auth").hidden=false;$("out").hidden=true};
+
+async function start(){
+  const {data:{session}}=await SB.auth.getSession();
+  if(!session){$("auth").hidden=false;return}
+  const {data:p}=await SB.from("profiles").select("*").eq("id",session.user.id).maybeSingle();
+  if(p&&["admin","staff"].includes(p.role)){location.href="admin.html";return}
+  PROFILE=p||{id:session.user.id,full_name:""};
+  $("auth").hidden=true;$("rec").hidden=true;$("app").hidden=false;$("out").hidden=false;
+  $("pn").value=PROFILE.full_name||"";$("pp").value=PROFILE.phone||"";$("pa").value=PROFILE.billing_address||"";$("pt").value=PROFILE.tax_id||"";
+  loadApp();
+}
+async function loadApp(){
+  $("hello").textContent=`${t("hello")} ${PROFILE.full_name||""}`;
+  const {data,error}=await SB.from("bookings").select("*,vehicles(name),payments(status,amount),invoices(id,number,kind)").order("created_at",{ascending:false});
+  if(error){$("bks").innerHTML=`<div class="card msg">${esc(error.message)}</div>`;return}
+  const dt=x=>new Date(x).toLocaleDateString(L==="ar"?"ar-TN":"fr-FR",{timeZone:"Africa/Tunis"});
+  $("bks").innerHTML=(data||[]).map(b=>{
+    const ps=b.payments||[],verified=ps.some(p=>p.status==="verified"),proof=ps.some(p=>p.status==="proof_uploaded");
+    return `<div class="card"><div class="row"><b>${esc(b.vehicles?.name)}</b><span class="st ${b.status}">${esc(t("s")[b.status])}</span></div>
+    <div class="soft">${t("from")} ${dt(b.start_at)} ${t("to")} ${dt(b.end_at)} · ${esc(b.quote?.days)} ${t("days")}</div>
+    ${verified?`<div class="ok">${t("paid")}</div>`:proof?`<div class="soft">${t("proof")}</div>`:""}
+    <div class="acts">
+     ${["pending","confirmed"].includes(b.status)?`<a class="btn dark sm" href="pay.html?b=${b.id}">${t("pay")}</a>`:""}
+     ${(b.invoices||[]).map(i=>`<a class="btn g sm" target="_blank" href="invoice.html?id=${i.id}">${i.kind==="credit_note"?t("cn"):t("inv")} ${esc(i.number)}</a>`).join("")}
+     ${["pending","confirmed"].includes(b.status)?`<button class="sm dark" data-c="${b.id}" type="button">${t("cancel")}</button>`:""}
+    </div></div>`}).join("")||`<div class="card soft">${t("none")}</div>`;
+  $("bks").querySelectorAll("[data-c]").forEach(btn=>btn.onclick=async()=>{
+    const why=prompt(t("why"));if(why===null)return;
+    const {data:r,error:e}=await SB.rpc("request_cancellation",{p_booking:btn.dataset.c,p_reason:why});
+    alert(e||!r||!r.ok?t("cfail"):t("cdone"));loadApp();
+  });
+}
+$("ps").onclick=async()=>{
+  $("po").textContent=$("pe").textContent="";
+  const {error}=await SB.from("profiles").update({full_name:$("pn").value.trim(),phone:$("pp").value.trim(),billing_address:$("pa").value.trim(),tax_id:$("pt").value.trim()}).eq("id",PROFILE.id);
+  if(error)$("pe").textContent=t("pfail");else{$("po").textContent=t("psaved");PROFILE.full_name=$("pn").value.trim();$("hello").textContent=`${t("hello")} ${PROFILE.full_name}`}
+};
+paint();start();
+</script>
+</body></html>
