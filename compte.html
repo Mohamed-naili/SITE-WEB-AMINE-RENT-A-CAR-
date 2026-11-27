@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>حسابي | Amine Rent A Car</title>
+<title>حسابي والدفع | Amine Rent A Car</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -21,7 +21,7 @@
   --paper: #EEF0EC;
   --surface: #FFFFFF;
   --surface-2: #F8F9F7;
-  --surface-3: #F2F4F0;
+  --surface-3: #F1F3EE;
 
   --red: #D62828;
   --red-dark: #A61B1B;
@@ -33,7 +33,7 @@
 
   --gold: #C9A227;
   --gold-dark: #9B7A14;
-  --gold-soft: rgba(201, 162, 39, 0.14);
+  --gold-soft: rgba(201, 162, 39, 0.15);
 
   --wa: #128C7E;
   --wa-dark: #0B6B60;
@@ -85,7 +85,6 @@ body {
   position: relative;
 }
 
-/* خلفية حركية ناعمة تعطي عمقاً دون إزعاج */
 body::before {
   content: "";
   position: fixed;
@@ -126,7 +125,7 @@ a {
 }
 
 /* ============================================================================
-   3. TOP NAVIGATION HEADER
+   3. TOP HEADER
    ============================================================================ */
 .site-header {
   position: sticky;
@@ -183,9 +182,9 @@ a {
    4. LAYOUT & CARDS
    ============================================================================ */
 .page-wrap {
-  max-width: 900px;
+  max-width: 940px;
   margin: 0 auto;
-  padding: 22px 16px 88px;
+  padding: 22px 16px 92px;
 }
 
 .card {
@@ -205,14 +204,8 @@ a {
 }
 
 @keyframes cardEnter {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .card-header {
@@ -238,7 +231,7 @@ a {
 }
 
 /* ============================================================================
-   5. FORM CONTROLS, INTERNATIONAL PHONE & FLAGS
+   5. FORM CONTROLS & INTERNATIONAL PHONE
    ============================================================================ */
 .field-group {
   margin-top: 12px;
@@ -263,7 +256,7 @@ textarea {
   font-size: 14.5px;
   color: var(--text);
   background: #FFFFFF;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 input:focus,
@@ -375,7 +368,7 @@ button:disabled {
 
 .auth-tabs {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 8px;
   margin-bottom: 12px;
 }
@@ -384,7 +377,8 @@ button:disabled {
   background: var(--surface);
   color: var(--ink);
   border: 1.5px solid var(--line);
-  padding: 11px 14px;
+  padding: 11px 10px;
+  font-size: 13px;
 }
 
 .auth-tabs button.active {
@@ -414,7 +408,7 @@ button:disabled {
 }
 
 /* ============================================================================
-   7. WELCOME BANNER, AVATAR & TRUST / CONFIDENTIALITY CARD
+   7. WELCOME BANNER, AVATAR & TRUST PANEL
    ============================================================================ */
 .welcome-top {
   display: flex;
@@ -510,13 +504,13 @@ button:disabled {
 }
 
 /* ============================================================================
-   8. BOOKING CARDS, TIMELINE STEPPER, RIB & PROOF UPLOAD
+   8. BOOKING CARDS, FINANCIAL BREAKDOWN TABLE, RIB & PROOF UPLOAD
    ============================================================================ */
 .booking-item {
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
-  padding: 15px;
-  margin-bottom: 12px;
+  padding: 16px;
+  margin-bottom: 14px;
   background: var(--surface-2);
   transition: transform 0.2s var(--ease-out), border-color 0.2s ease, background-color 0.2s ease;
 }
@@ -536,7 +530,7 @@ button:disabled {
 
 .car-name {
   font-family: var(--font-display);
-  font-size: 22px;
+  font-size: 23px;
   font-weight: 800;
   color: var(--ink);
 }
@@ -550,25 +544,11 @@ button:disabled {
   background: #6F767E;
 }
 
-.status-badge.pending {
-  background: var(--gold);
-  color: var(--ink);
-}
+.status-badge.pending { background: var(--gold); color: var(--ink); }
+.status-badge.confirmed { background: var(--green); }
+.status-badge.cancellation_requested { background: #E67E22; }
+.status-badge.cancelled, .status-badge.expired { background: #7C8288; }
 
-.status-badge.confirmed {
-  background: var(--green);
-}
-
-.status-badge.cancellation_requested {
-  background: #E67E22;
-}
-
-.status-badge.cancelled,
-.status-badge.expired {
-  background: #7C8288;
-}
-
-/* مؤشر مراحل الحجز المرئي */
 .flow-steps {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -585,7 +565,6 @@ button:disabled {
   color: var(--muted);
   text-align: center;
   border: 1px solid transparent;
-  transition: all 0.2s ease;
 }
 
 .flow-step.done {
@@ -598,6 +577,60 @@ button:disabled {
   background: var(--gold-soft);
   color: var(--ink);
   border-color: var(--gold);
+}
+
+/* جدول التفصيل المالي المدمج من pay.html */
+.finance-box {
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  margin-top: 10px;
+}
+
+.finance-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+.finance-table td {
+  padding: 6px 0;
+  border-bottom: 1px solid #ECEEE9;
+}
+
+.finance-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.finance-table td:last-child {
+  text-align: end;
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+
+.finance-highlight {
+  background: var(--gold-soft);
+  padding: 8px 10px;
+  border-radius: 8px;
+  margin-top: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.warn-banner {
+  background: #FFF7E0;
+  border-inline-start: 4px solid var(--gold);
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #3D3110;
+  margin: 8px 0;
 }
 
 .rib-panel {
@@ -648,6 +681,21 @@ button:disabled {
   margin-top: 8px;
   flex-wrap: wrap;
   align-items: center;
+}
+
+.billing-inline {
+  margin-top: 10px;
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+}
+
+.billing-inline summary {
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--ink-2);
 }
 
 .action-bar {
@@ -845,6 +893,9 @@ button:disabled {
   .phone-picker {
     grid-template-columns: 48px 146px 1fr;
   }
+  .auth-tabs {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -892,15 +943,17 @@ button:disabled {
 <main class="page-wrap">
 
   <!-- ========================================================================
-       A. AUTHENTICATION CARD (LOGIN / REGISTER)
+       A. AUTHENTICATION & QUICK DEPOSIT GATE (UNIFIED ENTRY)
        ======================================================================== -->
   <section id="authSection">
     <div class="auth-tabs">
       <button type="button" class="active" id="tabLogin"></button>
       <button type="button" id="tabRegister"></button>
+      <button type="button" id="tabQuickPay"></button>
     </div>
 
-    <div class="card">
+    <!-- Login / Register Card -->
+    <div class="card" id="loginRegCard">
       <h2 id="authHeading" style="font-size:28px"></h2>
       <p class="section-sub" id="authSubtext"></p>
 
@@ -943,6 +996,70 @@ button:disabled {
       <div class="msg-err" id="authErr"></div>
       <div class="msg-ok" id="authOk"></div>
     </div>
+
+    <!-- Quick Deposit & Proof Card (Merged from pay.html for direct booking links) -->
+    <div class="card" id="quickPayCard" hidden>
+      <h2 id="qpHeading" style="font-size:28px"></h2>
+      <p class="section-sub" id="qpSubtext"></p>
+
+      <div id="qpGate">
+        <div class="field-group">
+          <label class="field-label" for="qpBookingId" id="lblQpBooking"></label>
+          <input id="qpBookingId" type="text" dir="ltr" placeholder="UUID / Réf">
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="qpPhone" id="lblQpPhone"></label>
+          <input id="qpPhone" type="tel" inputmode="tel" dir="ltr" placeholder="22123456">
+        </div>
+        <div class="field-group">
+          <button type="button" class="btn-green btn-full" id="qpLookupBtn"></button>
+        </div>
+        <div class="msg-err" id="qpErr"></div>
+      </div>
+
+      <div id="qpResult" hidden>
+        <div class="finance-box">
+          <table class="finance-table" id="qpSumTable"></table>
+          <p class="section-sub" id="qpEstNote" style="margin-top:8px"></p>
+        </div>
+
+        <div class="rib-panel">
+          <div style="font-weight:800;font-size:13.5px;margin-bottom:4px" id="qpBankTitle"></div>
+          <div id="qpBanksList"></div>
+        </div>
+
+        <div class="billing-inline">
+          <details>
+            <summary id="qpBillSummary"></summary>
+            <div class="field-group">
+              <input id="qpBillName" maxlength="120">
+            </div>
+            <div class="field-group">
+              <input id="qpBillAddr" maxlength="200">
+            </div>
+            <div class="field-group">
+              <input id="qpBillTax" maxlength="40">
+            </div>
+            <div class="field-group">
+              <button type="button" class="btn-dark btn-sm" id="qpBillSaveBtn"></button>
+            </div>
+            <div class="msg-err" id="qpBillErr"></div>
+            <div class="msg-ok" id="qpBillOk"></div>
+          </details>
+        </div>
+
+        <div class="proof-panel">
+          <div style="font-weight:800;font-size:13.5px" id="qpUpTitle"></div>
+          <div class="warn-banner" id="qpWarnText"></div>
+          <div class="proof-controls">
+            <input id="qpFileInp" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" style="max-width:310px;padding:6px">
+            <button type="button" class="btn-green btn-sm" id="qpSendProofBtn"></button>
+          </div>
+          <div class="msg-err" id="qpUpErr"></div>
+          <div class="msg-ok" id="qpUpOk"></div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- ========================================================================
@@ -962,7 +1079,7 @@ button:disabled {
   </section>
 
   <!-- ========================================================================
-       C. CLIENT DASHBOARD (WELCOME, TRUST, BOOKINGS & DOCUMENTS)
+       C. CLIENT DASHBOARD (WELCOME, TRUST, BOOKINGS + PAY + QR, DOCUMENTS)
        ======================================================================== -->
   <section id="clientApp" hidden>
 
@@ -1001,7 +1118,7 @@ button:disabled {
       </div>
     </div>
 
-    <!-- 2. Bookings & Rental History -->
+    <!-- 2. Bookings, Financial Summary, Deposit/RIB, Proof Upload & Rental History -->
     <div class="card">
       <div class="card-header">
         <div>
@@ -1132,7 +1249,7 @@ const SUPABASE_URL = "https://tadaqaqvtjcnanspcboj.supabase.co";
 const SUPABASE_KEY = "sb_publishable_fA2Est6rYrP6Sx1xfyhdOA_IA5TQ6MO";
 const DOCS_BUCKET = "client-documents";
 const PROOFS_BUCKET = "payment-proofs";
-const WA_NUMBER = "21622192727";
+const URL_BOOKING_ID = new URLSearchParams(location.search).get("b") || "";
 
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const $ = id => document.getElementById(id);
@@ -1169,10 +1286,11 @@ const I18N = {
     langBtn: "Français",
     hdrBadge: "فضاء الحريف",
     tabLogin: "تسجيل الدخول",
-    tabRegister: "إنشاء حساب جديد",
+    tabRegister: "إنشاء حساب",
+    tabQuickPay: "دفع العربون السريع",
     authLoginHeading: "مرحباً بك في فضاء الحريف",
     authRegHeading: "إنشاء حساب حريف جديد",
-    authSubtext: "تابع كراءاتك السابقة والحالية، ارفع وثائقك، واحصل على الـ RIB ووصل الـ QR.",
+    authSubtext: "تابع كراءاتك السابقة والحالية، ادفع العربون، ارفع وثائقك، واحصل على وصل الـ QR.",
     lblFullName: "الاسم واللقب",
     fullNamePh: "مثال: فتحي نايلي",
     lblPhoneField: "رقم الهاتف الدولي (يُحدّد العلم تلقائياً)",
@@ -1195,9 +1313,29 @@ const I18N = {
     errNeedEmailReset: "اكتب بريدك الإلكتروني أولاً لإرسال رابط الاسترجاع.",
     recHeading: "تعيين كلمة سر جديدة",
     recSaveBtn: "حفظ كلمة السر",
+
+    /* Quick Pay */
+    qpHeading: "دفع العربون وإرسال الإثبات (دخول سريع)",
+    qpSubtext: "أدخل مرجع الحجز ورقم الهاتف المستعمل في الطلب لعرض الملخص المالي والـ RIB ورفع الإثبات.",
+    lblQpBooking: "مرجع الحجز (Booking ID)",
+    lblQpPhone: "رقم الهاتف المستعمل في الحجز",
+    qpLookupBtn: "عرض ملخص الحجز والـ RIB",
+    qpBadLookup: "الطلب غير موجود أو رقم الهاتف غير مطابق.",
+    qpEstNote: "المبالغ تقديرية: يؤكد الفريق السعر النهائي أثناء المكالمة. طلبك ليس حجزا مؤكدا قبل التحقق من الدفع.",
+    qpBankTitle: "المعطيات البنكية (RIB) للتحويل",
+    qpBillSummary: "معلومات الفاتورة (اختياري — اسم الشركة / المعرّف الجبائي)",
+    qpBillSaveBtn: "حفظ معلومات الفاتورة",
+    qpBillSaved: "✅ تم حفظ معلومات الفاتورة",
+    qpBillFail: "تعذّر حفظ معلومات الفاتورة (ربما صدرت الفاتورة بالفعل).",
+    qpUpTitle: "إرسال إثبات التحويل البنكي",
+    qpWarnText: "تنبيه مهم: صورة الشاشة وحدها ليست إثبات دفع نهائي — يتحقق الفريق من وصول المبلغ في الحساب البنكي قبل تأكيد الحجز وإصدار وصل الـ QR.",
+    qpSendProofBtn: "إرسال الإثبات الآن",
+    qpSentDone: "✅ تم استلام الإثبات بنجاح. سنتحقق منه ونفعل لك وصل الـ QR.",
+
+    /* Dashboard */
     vipLabel: "حريف معتمد · AMINE RENT A CAR",
     welcomePrefix: "مرحباً بك",
-    welcomeSub: "جميع كراءاتك السابقة والحالية محفوظة هنا، مع وثائقك ووصل الـ QR.",
+    welcomeSub: "جميع كراءاتك السابقة والحالية، التفصيل المالي، وثائقك ووصل الـ QR في مكان واحد.",
     avatarUploadTxt: "تغيير الصورة",
     newBookingBtn: "+ حجز سيارة جديدة",
     trustHeading: "خصوصية وأمان بياناتك ووثائقك في قاعدة البيانات",
@@ -1205,8 +1343,8 @@ const I18N = {
     pillDbSafe: "🔒 محفوظة في قاعدة البيانات",
     pillAgentOnly: "👤 اطلاع العون المكلّف فقط يوم التسليم",
     pillContractReady: "📄 جاهزة لتحرير العقد",
-    bookingsHeading: "الكراءات وسجل العمليات",
-    bookingsSub: "تتبع حالة كل حجز، أرسل إثبات التحويل، واحتفظ بوصل الـ QR حتى موعد التسليم.",
+    bookingsHeading: "الكراءات، الدفع، وسجل العمليات",
+    bookingsSub: "اطلع على الملخص المالي لكل حجز، انسخ الـ RIB، ارفع الإثبات، واحتفظ بوصل الـ QR.",
     fltActive: "الحالية",
     fltHistory: "السابقة / الأرشيف",
     fltAll: "الكل",
@@ -1218,12 +1356,21 @@ const I18N = {
     from: "من",
     to: "إلى",
     days: "أيام",
+    finSummaryTitle: "التفصيل المالي للحجز (TND)",
+    finSub: "المجموع دون أداء (HTVA)",
+    finVat: "الأداء على القيمة المضافة (TVA)",
+    finLevy: "معلوم الكراء",
+    finStamp: "الطابع الجبائي",
+    finTot: "المجموع التقديري مع الأداء (TTC)",
+    finDep: "العربون المطلوب",
+    finRec: "المبلغ المتحقَّق منه",
+    finRem: "المتبقي التقديري",
     ribTitle: "المعطيات البنكية (RIB) للتحويل أو الإيداع",
     ribEmpty: "ستظهر المعطيات البنكية بعد تأكيد الطلب أو عبر الوكالة.",
     copyRib: "نسخ RIB",
     copiedRib: "تم النسخ ✓",
     proofLabel: "رفع إثبات الدفع (JPG, PNG, WebP أو PDF — بحد أقصى 5 م.ب)",
-    proofHint: "المبلغ أو مرجع التحويل (اختياري)",
+    proofHint: "المبلغ المحوّل أو المرجع (اختياري)",
     sendProof: "إرسال الإثبات",
     sendingProof: "جاري الرفع...",
     proofSentOk: "تم إرسال الإثبات بنجاح. يقوم الفريق بالتحقق الآن.",
@@ -1288,9 +1435,10 @@ const I18N = {
     hdrBadge: "ESPACE CLIENT",
     tabLogin: "Connexion",
     tabRegister: "Créer un compte",
+    tabQuickPay: "Payer l'acompte",
     authLoginHeading: "Bienvenue sur votre espace client",
     authRegHeading: "Créer votre compte client",
-    authSubtext: "Suivez vos locations, préparez vos documents, accédez au RIB et à votre Bon QR.",
+    authSubtext: "Suivez vos locations, payez votre acompte, préparez vos documents et votre Bon QR.",
     lblFullName: "Nom et prénom",
     fullNamePh: "Ex : Fathi Naili",
     lblPhoneField: "Numéro de téléphone (drapeau & indicatif auto)",
@@ -1313,9 +1461,29 @@ const I18N = {
     errNeedEmailReset: "Saisissez d'abord votre adresse e-mail.",
     recHeading: "Nouveau mot de passe",
     recSaveBtn: "Enregistrer le mot de passe",
+
+    /* Quick Pay */
+    qpHeading: "Payer l'acompte & envoyer la preuve",
+    qpSubtext: "Saisissez la référence de demande et le numéro de téléphone utilisé pour afficher le détail financier et le RIB.",
+    lblQpBooking: "Référence de la demande (Booking ID)",
+    lblQpPhone: "Téléphone utilisé lors de la demande",
+    qpLookupBtn: "Afficher le récapitulatif & RIB",
+    qpBadLookup: "Demande introuvable ou téléphone incorrect.",
+    qpEstNote: "Montants estimés : l'équipe confirme le prix final lors de l'appel. Votre demande n'est confirmée qu'après vérification du paiement.",
+    qpBankTitle: "Coordonnées bancaires (RIB) pour le virement",
+    qpBillSummary: "Informations pour la facture (facultatif — Société / Matricule fiscal)",
+    qpBillSaveBtn: "Enregistrer la facturation",
+    qpBillSaved: "✅ Informations de facturation enregistrées",
+    qpBillFail: "Impossible d'enregistrer (facture déjà émise ?).",
+    qpUpTitle: "Envoyer la preuve de virement",
+    qpWarnText: "Important : une capture d'écran seule ne suffit pas — l'équipe vérifie la réception du virement sur le compte avant de confirmer et d'activer le Bon QR.",
+    qpSendProofBtn: "Envoyer la preuve",
+    qpSentDone: "✅ Preuve reçue. Nous la vérifions et activons votre Bon QR.",
+
+    /* Dashboard */
     vipLabel: "CLIENT VÉRIFIÉ · AMINE RENT A CAR",
     welcomePrefix: "Bonjour",
-    welcomeSub: "Historique complet de vos locations, documents et Bon de réservation QR.",
+    welcomeSub: "Historique complet de vos locations, détail financier, documents et Bon QR.",
     avatarUploadTxt: "Photo profil",
     newBookingBtn: "+ Nouvelle location",
     trustHeading: "Confidentialité & sécurité de vos données en base",
@@ -1323,8 +1491,8 @@ const I18N = {
     pillDbSafe: "🔒 Stockage sécurisé en base",
     pillAgentOnly: "👤 Agent assigné uniquement au retrait",
     pillContractReady: "📄 Prêt pour le contrat",
-    bookingsHeading: "Locations & historique",
-    bookingsSub: "Suivez l'avancement, envoyez votre preuve de virement et gardez votre Bon QR.",
+    bookingsHeading: "Locations, acompte & historique",
+    bookingsSub: "Consultez le détail financier, copiez le RIB, envoyez votre preuve et gardez votre Bon QR.",
     fltActive: "En cours",
     fltHistory: "Historique / passées",
     fltAll: "Tout",
@@ -1336,6 +1504,15 @@ const I18N = {
     from: "Du",
     to: "au",
     days: "jours",
+    finSummaryTitle: "Récapitulatif financier (TND)",
+    finSub: "Total HTVA",
+    finVat: "TVA",
+    finLevy: "Taxe de location",
+    finStamp: "Timbre fiscal",
+    finTot: "Total estimé TTC",
+    finDep: "Acompte à verser",
+    finRec: "Déjà vérifié",
+    finRem: "Reste estimé",
     ribTitle: "Coordonnées bancaires (RIB) pour versement / virement",
     ribEmpty: "RIB disponible après confirmation ou via l'agence.",
     copyRib: "Copier RIB",
@@ -1407,15 +1584,19 @@ const I18N = {
    4. APPLICATION STATE & HELPERS
    ============================================================================ */
 let LANG = "ar";
-let AUTH_MODE = "login";
+let AUTH_MODE = URL_BOOKING_ID ? "quickpay" : "login";
 let FILTER_MODE = "active";
 let CURRENT_USER = null;
 let PROFILE = null;
 let BANKS = [];
 let BOOKINGS = [];
+let SETTINGS = {};
+let QP_DATA = null;
+let QP_CLEAN_PHONE = "";
 let toastTimer = null;
 
 const t = key => (I18N[LANG] && I18N[LANG][key]) || I18N.fr[key] || key;
+const fmtMoney = n => Number(n ?? 0).toFixed(3).replace(/\.?0+$/, "") + " TND";
 
 function showToast(msg) {
   const box = $("toastBox");
@@ -1428,6 +1609,10 @@ function showToast(msg) {
 
 function cleanPhoneDigits(val) {
   return String(val || "").replace(/[^\d]/g, "").replace(/^0+/, "");
+}
+
+function normalizeTnOrIntlPhone(val) {
+  return String(val || "").replace(/[\s.-]/g, "").replace(/^\+?216/, "").trim();
 }
 
 function getSelectedCountry() {
@@ -1484,6 +1669,7 @@ function applyLanguage() {
 
   $("tabLogin").textContent = t("tabLogin");
   $("tabRegister").textContent = t("tabRegister");
+  $("tabQuickPay").textContent = t("tabQuickPay");
   $("authHeading").textContent = AUTH_MODE === "login" ? t("authLoginHeading") : t("authRegHeading");
   $("authSubtext").textContent = t("authSubtext");
 
@@ -1501,6 +1687,24 @@ function applyLanguage() {
   $("authSubmitBtn").textContent = AUTH_MODE === "login" ? t("btnLogin") : t("btnRegister");
   $("forgotLink").textContent = t("forgotLink");
   $("forgotWrap").hidden = AUTH_MODE !== "login";
+
+  /* Quick Pay labels */
+  $("qpHeading").textContent = t("qpHeading");
+  $("qpSubtext").textContent = t("qpSubtext");
+  $("lblQpBooking").textContent = t("lblQpBooking");
+  $("lblQpPhone").textContent = t("lblQpPhone");
+  $("qpLookupBtn").textContent = t("qpLookupBtn");
+  $("qpEstNote").textContent = t("qpEstNote");
+  $("qpBankTitle").textContent = t("qpBankTitle");
+  $("qpBillSummary").textContent = t("qpBillSummary");
+  $("qpBillName").placeholder = t("lblProfName");
+  $("qpBillAddr").placeholder = t("lblProfAddr");
+  $("qpBillTax").placeholder = t("lblProfTax");
+  $("qpBillSaveBtn").textContent = t("qpBillSaveBtn");
+  $("qpUpTitle").textContent = t("qpUpTitle");
+  $("qpWarnText").textContent = t("qpWarnText");
+  $("qpSendProofBtn").textContent = t("qpSendProofBtn");
+  if (QP_DATA) renderQuickPayResult();
 
   $("recHeading").textContent = t("recHeading");
   $("newPassInp").placeholder = t("passwordPh");
@@ -1567,6 +1771,10 @@ function switchAuthMode(nextMode) {
   AUTH_MODE = nextMode;
   $("tabLogin").classList.toggle("active", nextMode === "login");
   $("tabRegister").classList.toggle("active", nextMode === "register");
+  $("tabQuickPay").classList.toggle("active", nextMode === "quickpay");
+
+  $("loginRegCard").hidden = nextMode === "quickpay";
+  $("quickPayCard").hidden = nextMode !== "quickpay";
   $("nameWrap").hidden = nextMode !== "register";
   $("authErr").textContent = "";
   $("authOk").textContent = "";
@@ -1575,9 +1783,135 @@ function switchAuthMode(nextMode) {
 
 $("tabLogin").onclick = () => switchAuthMode("login");
 $("tabRegister").onclick = () => switchAuthMode("register");
+$("tabQuickPay").onclick = () => switchAuthMode("quickpay");
+
+if (URL_BOOKING_ID) {
+  $("qpBookingId").value = URL_BOOKING_ID;
+}
 
 /* ============================================================================
-   6. AUTHENTICATION & PASSWORD RECOVERY
+   6. QUICK PAY GATE (MERGED FROM pay.html)
+   ============================================================================ */
+$("qpLookupBtn").onclick = async () => {
+  $("qpErr").textContent = "";
+  const bid = $("qpBookingId").value.trim();
+  const ph = normalizeTnOrIntlPhone($("qpPhone").value);
+  if (!bid || !ph) {
+    $("qpErr").textContent = t("qpBadLookup");
+    return;
+  }
+  $("qpLookupBtn").disabled = true;
+  const { data, error } = await sb.rpc("get_payment_info", { p_booking: bid, p_phone: ph });
+  $("qpLookupBtn").disabled = false;
+
+  if (error || !data || !data.ok) {
+    $("qpErr").textContent = t("qpBadLookup");
+    return;
+  }
+  QP_DATA = data;
+  QP_CLEAN_PHONE = ph;
+  $("qpGate").hidden = true;
+  $("qpResult").hidden = false;
+  renderQuickPayResult();
+};
+
+function renderQuickPayResult() {
+  if (!QP_DATA) return;
+  const rows = [
+    [t("days"), QP_DATA.days],
+    [t("finSub"), fmtMoney(QP_DATA.subtotal_htva)],
+    [t("finVat"), (QP_DATA.vat_rate ?? 0) + " %"],
+    [t("finLevy"), fmtMoney(QP_DATA.levy)],
+    [t("finTot"), fmtMoney(QP_DATA.total_estimate)],
+    [t("finDep") + " (" + (QP_DATA.deposit_pct ?? 0) + " %)", fmtMoney(QP_DATA.deposit)],
+    [t("finRec"), fmtMoney(QP_DATA.received)],
+    [t("finRem"), fmtMoney(QP_DATA.remaining)]
+  ];
+  $("qpSumTable").innerHTML = rows.map(r => `<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join("");
+
+  const accs = Array.isArray(QP_DATA.accounts) ? QP_DATA.accounts : [];
+  $("qpBanksList").innerHTML = accs.length
+    ? accs.map((a, idx) => `
+        <div class="rib-row">
+          <div>
+            <b>${esc(a.bank)}</b> · <span class="section-sub">${esc(a.holder)}</span><br>
+            <span class="rib-val">${esc(a.rib)}</span>
+          </div>
+          <button type="button" class="btn-dark btn-sm" data-qp-copy="${idx}">${t("copyRib")}</button>
+        </div>
+      `).join("")
+    : `<p class="section-sub">${t("ribEmpty")}</p>`;
+
+  $("qpBanksList").querySelectorAll("[data-qp-copy]").forEach(btn => {
+    btn.onclick = async () => {
+      try { await navigator.clipboard.writeText(accs[btn.dataset.qpCopy].rib); } catch (_) {}
+      const prev = btn.textContent;
+      btn.textContent = t("copiedRib");
+      showToast(t("toastCopied"));
+      setTimeout(() => { btn.textContent = prev; }, 1400);
+    };
+  });
+}
+
+$("qpBillSaveBtn").onclick = async () => {
+  $("qpBillErr").textContent = "";
+  $("qpBillOk").textContent = "";
+  const bid = $("qpBookingId").value.trim();
+  const { data, error } = await sb.rpc("set_billing", {
+    p_booking: bid,
+    p_phone: QP_CLEAN_PHONE,
+    p_name: $("qpBillName").value.trim(),
+    p_address: $("qpBillAddr").value.trim(),
+    p_tax: $("qpBillTax").value.trim()
+  });
+  if (error || !data || !data.ok) $("qpBillErr").textContent = t("qpBillFail");
+  else {
+    $("qpBillOk").textContent = t("qpBillSaved");
+    showToast(t("toastSaved"));
+  }
+};
+
+$("qpSendProofBtn").onclick = async () => {
+  $("qpUpErr").textContent = "";
+  $("qpUpOk").textContent = "";
+  const file = $("qpFileInp").files[0];
+  const extMap = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp", "application/pdf": "pdf" };
+  const ext = file ? extMap[file.type] : null;
+  if (!file || !ext || file.size > 5 * 1024 * 1024) {
+    $("qpUpErr").textContent = t("errFileType");
+    return;
+  }
+
+  const bid = $("qpBookingId").value.trim();
+  $("qpSendProofBtn").disabled = true;
+  const orig = $("qpSendProofBtn").textContent;
+  $("qpSendProofBtn").textContent = t("sendingProof");
+
+  const path = `${bid}/${Date.now()}.${ext}`;
+  const up = await sb.storage.from(PROOFS_BUCKET).upload(path, file, { contentType: file.type });
+  let ok = false;
+  if (!up.error) {
+    const res = await sb.rpc("submit_proof", {
+      p_booking: bid,
+      p_phone: QP_CLEAN_PHONE,
+      p_path: path
+    });
+    ok = !res.error && res.data && res.data.ok;
+  }
+
+  $("qpSendProofBtn").disabled = false;
+  $("qpSendProofBtn").textContent = orig;
+  if (ok) {
+    $("qpUpOk").textContent = t("qpSentDone");
+    $("qpFileInp").value = "";
+    showToast(t("toastSaved"));
+  } else {
+    $("qpUpErr").textContent = t("proofErrGeneric");
+  }
+};
+
+/* ============================================================================
+   7. AUTHENTICATION & PASSWORD RECOVERY
    ============================================================================ */
 function resolveAuthIdentifier() {
   const emailVal = $("emailInp").value.trim().toLowerCase();
@@ -1624,12 +1958,7 @@ $("authSubmitBtn").onclick = async () => {
       const { data, error } = await sb.auth.signUp({
         email: targetEmail,
         password: pw,
-        options: {
-          data: {
-            full_name: fullName,
-            phone: fullPhone
-          }
-        }
+        options: { data: { full_name: fullName, phone: fullPhone } }
       });
       if (error) {
         $("authErr").textContent = error.message;
@@ -1644,10 +1973,7 @@ $("authSubmitBtn").onclick = async () => {
         $("authErr").textContent = t("errBadPhone");
         return;
       }
-      const { error } = await sb.auth.signInWithPassword({
-        email: ident.email,
-        password: pw
-      });
+      const { error } = await sb.auth.signInWithPassword({ email: ident.email, password: pw });
       if (error) {
         $("authErr").textContent = t("errBadCreds");
         return;
@@ -1669,11 +1995,8 @@ $("forgotLink").onclick = async e => {
   const em = $("emailInp").value.trim().toLowerCase();
   if (!em) {
     const digits = cleanPhoneDigits($("phoneNumInp").value);
-    if (digits.length >= 6) {
-      $("authOk").textContent = t("msgResetPhone");
-    } else {
-      $("authErr").textContent = t("errNeedEmailReset");
-    }
+    if (digits.length >= 6) $("authOk").textContent = t("msgResetPhone");
+    else $("authErr").textContent = t("errNeedEmailReset");
     return;
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) {
@@ -1725,7 +2048,7 @@ $("logoutBtn").onclick = async () => {
 };
 
 /* ============================================================================
-   7. BOOTSTRAP & DATA LOADING
+   8. BOOTSTRAP & DASHBOARD DATA LOADING
    ============================================================================ */
 async function bootstrapClientApp() {
   const { data: { session } } = await sb.auth.getSession();
@@ -1783,13 +2106,12 @@ async function refreshDashboardData() {
   await renderIdentityHeader();
   await renderStoredDocumentLinks();
 
-  const [bkRes, bankRes] = await Promise.all([
+  const [bkRes, bankRes, setRes] = await Promise.all([
     sb.from("bookings")
       .select("*,vehicles(name),payments(id,status,amount,proof_path,created_at),invoices(id,number,kind)")
       .order("created_at", { ascending: false }),
-    sb.from("bank_accounts")
-      .select("*")
-      .order("sort")
+    sb.from("bank_accounts").select("*").order("sort"),
+    sb.from("settings").select("key,value")
   ]);
 
   if (bkRes.error) {
@@ -1797,13 +2119,16 @@ async function refreshDashboardData() {
     return;
   }
 
+  SETTINGS = {};
+  (setRes.data || []).forEach(r => { SETTINGS[r.key] = r.value; });
+
   BOOKINGS = Array.isArray(bkRes.data) ? bkRes.data : [];
   BANKS = Array.isArray(bankRes.data) ? bankRes.data : [];
   renderBookingsList();
 }
 
 /* ============================================================================
-   8. HEADER IDENTITY, AVATAR & DOCUMENT PREVIEWS
+   9. HEADER IDENTITY, AVATAR & DOCUMENT PREVIEWS
    ============================================================================ */
 async function renderIdentityHeader() {
   const displayName = (PROFILE?.full_name || "").trim();
@@ -1855,10 +2180,7 @@ async function renderStoredDocumentLinks() {
   const fillLink = async (path, targetId) => {
     const el = $(targetId);
     if (!el) return;
-    if (!path) {
-      el.innerHTML = "";
-      return;
-    }
+    if (!path) { el.innerHTML = ""; return; }
     const { data } = await sb.storage.from(DOCS_BUCKET).createSignedUrl(path, 300);
     if (data && data.signedUrl) {
       el.innerHTML = `<a class="link-inline" href="${esc(data.signedUrl)}" target="_blank" rel="noopener">📎 ${t("viewDocLink")}</a>`;
@@ -1871,7 +2193,7 @@ async function renderStoredDocumentLinks() {
 }
 
 /* ============================================================================
-   9. BOOKINGS LIST, FLOW STEPS, RIB, PAYMENT PROOF & QR PASS
+   10. BOOKINGS LIST, FINANCIAL CALCULATOR, RIB, BILLING, PROOF & QR PASS
    ============================================================================ */
 document.querySelectorAll("[data-flt]").forEach(btn => {
   btn.onclick = () => {
@@ -1885,6 +2207,25 @@ function isHistoricalBooking(b) {
   if (["completed", "cancelled", "expired"].includes(b.status)) return true;
   const endMs = b.end_at ? new Date(b.end_at).getTime() : 0;
   return endMs > 0 && endMs < Date.now() && b.status !== "pending";
+}
+
+function computeBookingFinancials(b, payments) {
+  const days = Number(b.quote?.days || 1);
+  const subHtva = Number(b.quote?.subtotal_htva || 0);
+  const vatRate = Number(SETTINGS.vat_rate ?? b.quote?.vat_rate ?? 19);
+  const levyPerDay = Number(SETTINGS.levy_per_day ?? b.quote?.levy_per_day ?? 0);
+  const levyTotal = Number(b.quote?.levy_total ?? (levyPerDay * days));
+  const stamp = SETTINGS.fiscal_stamp_enabled === "true" ? Number(SETTINGS.fiscal_stamp_amount ?? 1) : Number(b.quote?.fiscal_stamp ?? 0);
+  const vatAmt = Number(b.quote?.vat_amount ?? ((subHtva * vatRate) / 100));
+  const totalTtc = Number(b.quote?.total_ttc ?? (subHtva + vatAmt + levyTotal + stamp));
+  const depositPct = Number(SETTINGS.deposit_pct ?? b.quote?.deposit_pct ?? 30);
+  const depositDue = Number(b.quote?.deposit ?? ((totalTtc * depositPct) / 100));
+  const received = payments
+    .filter(p => p.status === "verified")
+    .reduce((acc, p) => acc + Number(p.amount || 0), 0);
+  const remaining = Math.max(0, totalTtc - received);
+
+  return { days, subHtva, vatRate, levyTotal, stamp, totalTtc, depositPct, depositDue, received, remaining };
 }
 
 function buildFlowStepsHtml(b, hasProof, isVerified) {
@@ -1944,6 +2285,7 @@ function renderBookingsList() {
     const isVerified = !isCancelledOrExpired && payments.some(p => p.status === "verified");
     const isProofPending = !isCancelledOrExpired && !isVerified && payments.some(p => p.status === "proof_uploaded");
     const historical = isHistoricalBooking(b);
+    const fin = computeBookingFinancials(b, payments);
 
     const statusText = (historical && b.status === "confirmed")
       ? t("statusMap").completed
@@ -1961,7 +2303,7 @@ function renderBookingsList() {
 
         <div class="section-sub" style="margin-top:4px">
           ${t("from")} <b>${fmtDate(b.start_at)}</b> ${t("to")} <b>${fmtDate(b.end_at)}</b>
-          · ${esc(b.quote?.days ?? "")} ${t("days")}
+          · ${esc(fin.days)} ${t("days")}
           ${b.pickup_text ? ` · ${esc(b.pickup_text)}` : ""}
         </div>
 
@@ -1970,11 +2312,50 @@ function renderBookingsList() {
         ${isVerified ? `<div class="msg-ok">✓ ${t("paidBanner")}</div>` : ""}
         ${isProofPending ? `<div class="section-sub" style="font-weight:700;margin-top:6px">⏳ ${t("proofBanner")}</div>` : ""}
 
+        ${fin.subHtva > 0 ? `
+          <div class="finance-box">
+            <div style="font-weight:800;font-size:13.5px;margin-bottom:6px">${t("finSummaryTitle")}</div>
+            <table class="finance-table">
+              <tr><td>${t("finSub")}</td><td>${fmtMoney(fin.subHtva)}</td></tr>
+              <tr><td>${t("finVat")} (${fin.vatRate} %)</td><td>${fmtMoney((fin.subHtva * fin.vatRate) / 100)}</td></tr>
+              ${fin.levyTotal > 0 ? `<tr><td>${t("finLevy")}</td><td>${fmtMoney(fin.levyTotal)}</td></tr>` : ""}
+              ${fin.stamp > 0 ? `<tr><td>${t("finStamp")}</td><td>${fmtMoney(fin.stamp)}</td></tr>` : ""}
+              <tr><td><b>${t("finTot")}</b></td><td><b>${fmtMoney(fin.totalTtc)}</b></td></tr>
+              <tr><td>${t("finRec")}</td><td>${fmtMoney(fin.received)}</td></tr>
+              <tr><td>${t("finRem")}</td><td>${fmtMoney(fin.remaining)}</td></tr>
+            </table>
+            <div class="finance-highlight">
+              <span>${t("finDep")} (${fin.depositPct} %)</span>
+              <span style="font-family:var(--font-mono);color:var(--red-dark)">${fmtMoney(fin.depositDue)}</span>
+            </div>
+          </div>
+        ` : ""}
+
         ${!historical && ["pending", "confirmed"].includes(b.status) ? `
           ${banksBlock}
+
+          <details class="billing-inline" data-bill-box="${esc(b.id)}">
+            <summary>${t("qpBillSummary")}</summary>
+            <div class="field-group">
+              <input class="bi-name" value="${esc(b.billing_name || PROFILE?.full_name || "")}" placeholder="${esc(t("lblProfName"))}">
+            </div>
+            <div class="field-group">
+              <input class="bi-addr" value="${esc(b.billing_address || PROFILE?.billing_address || "")}" placeholder="${esc(t("lblProfAddr"))}">
+            </div>
+            <div class="field-group">
+              <input class="bi-tax" value="${esc(b.billing_tax_id || PROFILE?.tax_id || "")}" placeholder="${esc(t("lblProfTax"))}">
+            </div>
+            <div class="field-group">
+              <button type="button" class="btn-dark btn-sm bi-save">${t("qpBillSaveBtn")}</button>
+            </div>
+            <div class="msg-err bi-err"></div>
+            <div class="msg-ok bi-ok"></div>
+          </details>
+
           ${canUploadProof ? `
             <div class="proof-panel" data-proof-for="${esc(b.id)}">
-              <div style="font-weight:800;font-size:13px">${t("proofLabel")}</div>
+              <div style="font-weight:800;font-size:13.5px">${t("proofLabel")}</div>
+              <div class="warn-banner">${t("qpWarnText")}</div>
               <div class="proof-controls">
                 <input type="file" class="pf-file" accept="image/jpeg,image/png,image/webp,application/pdf" style="max-width:290px;padding:6px">
                 <input type="number" step="0.5" min="0" class="pf-amt" placeholder="${t("proofHint")}" style="max-width:210px">
@@ -2010,6 +2391,32 @@ function renderBookingsList() {
       btn.textContent = t("copiedRib");
       showToast(t("toastCopied"));
       setTimeout(() => { btn.textContent = orig; }, 1400);
+    };
+  });
+
+  // Save per-booking billing info
+  $("bookingsContainer").querySelectorAll("[data-bill-box]").forEach(box => {
+    const bookingId = box.dataset.billBox;
+    const btn = box.querySelector(".bi-save");
+    btn.onclick = async () => {
+      box.querySelector(".bi-err").textContent = "";
+      box.querySelector(".bi-ok").textContent = "";
+      btn.disabled = true;
+      const phoneClean = normalizeTnOrIntlPhone(PROFILE?.phone || "");
+      const { data, error } = await sb.rpc("set_billing", {
+        p_booking: bookingId,
+        p_phone: phoneClean,
+        p_name: box.querySelector(".bi-name").value.trim(),
+        p_address: box.querySelector(".bi-addr").value.trim(),
+        p_tax: box.querySelector(".bi-tax").value.trim()
+      });
+      btn.disabled = false;
+      if (error || !data || !data.ok) {
+        box.querySelector(".bi-err").textContent = t("qpBillFail");
+      } else {
+        box.querySelector(".bi-ok").textContent = t("qpBillSaved");
+        showToast(t("toastSaved"));
+      }
     };
   });
 
@@ -2109,7 +2516,7 @@ function renderBookingsList() {
 }
 
 /* ============================================================================
-   10. BOOKING PASS + QR CODE MODAL
+   11. BOOKING PASS + QR CODE MODAL
    ============================================================================ */
 function openBookingPassModal(bookingId) {
   const bk = BOOKINGS.find(item => String(item.id) === String(bookingId));
@@ -2150,7 +2557,7 @@ $("bonModal").onclick = e => { if (e.target === $("bonModal")) $("bonModal").hid
 $("bonPrintBtn").onclick = () => window.print();
 
 /* ============================================================================
-   11. SAVE PROFILE, ID DOCS (CIN / PASSPORT), LICENSE & FLIGHT TICKET
+   12. SAVE PROFILE, ID DOCS (CIN / PASSPORT), LICENSE & FLIGHT TICKET
    ============================================================================ */
 async function uploadDocumentFile(fileInput, subFolder) {
   const file = fileInput.files[0];
@@ -2214,181 +2621,10 @@ $("saveProfileBtn").onclick = async () => {
 };
 
 /* ============================================================================
-   12. INITIALIZATION
+   13. INITIALIZATION
    ============================================================================ */
-applyLanguage();
+switchAuthMode(AUTH_MODE);
 bootstrapClientApp();
 </script>
 </body>
 </html>
-
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,nofollow">
-<title>حسابي والدفع | Amine Rent A Car</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
-<style>
-/* ============================================================================
-   1. DESIGN TOKENS & THEME VARIABLES
-   ============================================================================ */
-:root {
-  --ink: #12161B;
-  --ink-2: #1E252E;
-  --ink-3: #2C3542;
-  --paper: #EEF0EC;
-  --surface: #FFFFFF;
-  --surface-2: #F8F9F7;
-  --surface-3: #F1F3EE;
-
-  --red: #D62828;
-  --red-dark: #A61B1B;
-  --red-soft: rgba(214, 40, 40, 0.10);
-
-  --green: #1B9952;
-  --green-dark: #13743D;
-  --green-soft: rgba(27, 153, 82, 0.11);
-
-  --gold: #C9A227;
-  --gold-dark: #9B7A14;
-  --gold-soft: rgba(201, 162, 39, 0.15);
-
-  --wa: #128C7E;
-  --wa-dark: #0B6B60;
-
-  --line: #D7D9D3;
-  --line-strong: #BFC4BA;
-  --text: #1B1F24;
-  --muted: #5A6068;
-
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 22px;
-
-  --shadow-sm: 0 4px 14px rgba(18, 22, 27, 0.05);
-  --shadow-md: 0 10px 28px rgba(18, 22, 27, 0.08);
-  --shadow-lg: 0 22px 54px rgba(18, 22, 27, 0.18);
-
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
-  --font-display: "Barlow Condensed", "Cairo", sans-serif;
-  --font-body: "Cairo", "Work Sans", system-ui, -apple-system, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
-}
-
-/* ============================================================================
-   2. RESET & BASE STYLES
-   ============================================================================ */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  font-family: var(--font-body);
-  font-size: 15px;
-  line-height: 1.58;
-  background: var(--paper);
-  color: var(--text);
-  min-height: 100vh;
-  overflow-x: hidden;
-  position: relative;
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: -20%;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 12% 14%, rgba(214, 40, 40, 0.06), transparent 42%),
-    radial-gradient(circle at 88% 18%, rgba(201, 162, 39, 0.08), transparent 45%),
-    radial-gradient(circle at 50% 92%, rgba(27, 153, 82, 0.06), transparent 48%);
-  animation: ambientDrift 18s ease-in-out infinite alternate;
-}
-
-@keyframes ambientDrift {
-  0% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(-1.5%, 1.2%, 0) scale(1.02); }
-  100% { transform: translate3d(1.5%, -1%, 0) scale(1.01); }
-}
-
-[hidden] {
-  display: none !important;
-}
-
-:focus-visible {
-  outline: 3px solid var(--gold);
-  outline-offset: 2px;
-}
-
-h1, h2, h3, h4 {
-  font-family: var(--font-display);
-  font-weight: 800;
-  line-height: 1.15;
-  color: var(--ink);
-}
-
-a {
-  color: inherit;
-}
-
-/* ============================================================================
-   3. TOP HEADER
-   ============================================================================ */
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 40;
-  background: linear-gradient(95deg, var(--ink) 0%, var(--ink-2) 65%, #27191C 100%);
-  color: #FFFFFF;
-  padding: 12px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  border-bottom: 3px solid var(--red);
-  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.16);
-}
-
-.brand-wrap {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.brand-link {
-  text-decoration: none;
-  color: #FFFFFF;
-  font-family: var(--font-display);
-  font-size: 23px;
-  font-weight: 800;
-  letter-spacing: 0.03em;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.brand-badge {
-  font-family: var(--font-body);
-  font-size: 11px;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: rgba(201, 162, 39, 0.18);
-  color: #F6DC7E
