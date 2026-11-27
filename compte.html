@@ -48,7 +48,7 @@ main{max-width:920px;margin:0 auto;padding:22px 16px 96px}
 .row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 .sub{color:var(--muted);font-size:13.5px}
 
-/* Visual Guide Strip with Inline SVG Illustrations */
+/* Visual Guide Strip */
 .visual-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
 .v-tile{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-md);padding:12px;display:flex;align-items:center;gap:10px}
 .v-icon{width:42px;height:42px;border-radius:10px;background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -356,10 +356,8 @@ table{width:100%;border-collapse:collapse;font-size:13.5px}td{padding:6px 0;bord
 
 <script>
 "use strict";
-const sb = supabase.createClient("https://tadaqaqvtjcnanspcboj.supabase.co","sb_publishable_fA2Est6rYrP6Sx1xfyhdOA_IA5TQ6MO",{
-  auth:{persistSession:true,autoRefreshToken:true}
-});
-const DOCS="client-documents", PROOFS="payment-proofs", ADMIN_WA="21622192727";
+const sb = supabase.createClient("https://tadaqaqvtjcnanspcboj.supabase.co","sb_publishable_fA2Est6rYrP6Sx1xfyhdOA_IA5TQ6MO");
+const DOCS="client-documents", PROOFS="payment-proofs", ADMIN_WA="21622192727", SESSION_KEY="amine_sql_session_token";
 const RAW_REF = new URLSearchParams(location.search).get("b") || "";
 const $ = id => document.getElementById(id);
 const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -375,7 +373,7 @@ const PREFIXES = [
 
 const T={
   ar:{
-    out:"خروج",secBadge:"دخول باسم المستخدم أو الهاتف",
+    out:"خروج",secBadge:"حسابات SQL مباشرة (Username / الهاتف)",
     tLogin:"دخول",tReg:"إنشاء حساب",tPay:"وصل الحجز والعربون",
     loginH:"فضاء الحريف",regH:"إنشاء حساب جديد",
     authSub:"أدخل اسم المستخدم أو رقم هاتفك — بلا إيميل. استلم وصل الحجز (Bon) وتوجّه لأقرب وكالة في تونس.",
@@ -437,7 +435,7 @@ const T={
     waMsg:u=>`سلام، نسيت كلمة السر متاع حسابي${u?` (${u})`:""}.`
   },
   fr:{
-    out:"Déconnexion",secBadge:"Connexion username ou téléphone",
+    out:"Déconnexion",secBadge:"Comptes SQL directs (Username / Tél)",
     tLogin:"Connexion",tReg:"Créer un compte",tPay:"Bon & Acompte",
     loginH:"Espace client",regH:"Créer un compte",
     authSub:"Username ou téléphone uniquement — sans e-mail. Obtenez votre Bon de réservation et retirez votre voiture en agence en Tunisie.",
@@ -498,7 +496,7 @@ const T={
     waTxt:"WhatsApp : 22192727",waMsg:u=>`Bonjour, mot de passe oublié${u?` (${u})`:""}.`
   },
   en:{
-    out:"Log out",secBadge:"Username or phone login",
+    out:"Log out",secBadge:"Direct SQL accounts (Username / Phone)",
     tLogin:"Log in",tReg:"Create account",tPay:"Voucher & Deposit",
     loginH:"Client Portal",regH:"Create account",
     authSub:"Username or phone only — no email required. Get your Booking Voucher (QR) and pick up at the nearest agency in Tunisia.",
@@ -559,7 +557,7 @@ const T={
     waTxt:"WhatsApp help: 22192727",waMsg:u=>`Hi, I forgot my password${u?` (${u})`:""}.`
   },
   it:{
-    out:"Esci",secBadge:"Accesso con username o telefono",
+    out:"Esci",secBadge:"Account SQL diretti (Username / Telefono)",
     tLogin:"Accedi",tReg:"Crea account",tPay:"Voucher e Acconto",
     loginH:"Area Cliente",regH:"Crea un account",
     authSub:"Solo username o telefono — nessuna email. Ricevi il Voucher (QR) e ritira l'auto nell'agenzia più vicina in Tunisia.",
@@ -622,15 +620,21 @@ const T={
 };
 
 let LANG="ar";try{LANG=localStorage.getItem("lang")||"ar"}catch(_){}
-let MODE=RAW_REF?"pay":"login",FILTER="active",PROFILE=null,BOOKINGS=[],BANKS=[],SET={},QP=null,QPPH="",QP_ID="",toastT;
+let MODE=RAW_REF?"pay":"login",FILTER="active",TOKEN="",PROFILE=null,BOOKINGS=[],BANKS=[],SET={},QP=null,QPPH="",QP_ID="",toastT;
 
 /* ---------- Sécurité : Rate Limit, Auto-Lock & Magic Bytes ---------- */
 let failCount=0,lockUntil=0,idleTimer=null;
 const checkLock=()=>Math.max(0,Math.ceil((lockUntil-Date.now())/1000));
 const recordFail=()=>{failCount++;if(failCount>=5)lockUntil=Date.now()+Math.min(120,failCount*10)*1000};
+function clearToken(){
+  TOKEN="";try{sessionStorage.removeItem(SESSION_KEY)}catch(_){}
+}
+function setToken(tok){
+  TOKEN=tok||"";try{if(TOKEN)sessionStorage.setItem(SESSION_KEY,TOKEN);else sessionStorage.removeItem(SESSION_KEY)}catch(_){}
+}
 function resetIdle(){
   clearTimeout(idleTimer);if(!PROFILE)return;
-  idleTimer=setTimeout(async()=>{await sb.auth.signOut();PROFILE=null;BOOKINGS=[];$("app").hidden=true;$("outBtn").hidden=true;$("authSec").hidden=false;toast(t("idleOut"))},20*60*1000);
+  idleTimer=setTimeout(()=>{clearToken();PROFILE=null;BOOKINGS=[];$("app").hidden=true;$("outBtn").hidden=true;$("authSec").hidden=false;toast(t("idleOut"))},20*60*1000);
 }
 ["click","keydown","touchstart"].forEach(ev=>document.addEventListener(ev,resetIdle,{passive:true}));
 
@@ -716,10 +720,8 @@ function setMode(m){
 $("tLogin").onclick=()=>setMode("login");$("tReg").onclick=()=>setMode("register");$("tPay").onclick=()=>setMode("pay");
 if(RAW_REF)$("qpId").value=shortRef(RAW_REF);
 
-/* ---------- Authentification : Username ou Téléphone (Sans Email) ---------- */
+/* ---------- Authentification SQL Directe (register_client / login_client) ---------- */
 const slug=v=>String(v||"").trim().toLowerCase();
-const userAuthEmail=u=>`${u}@user.amine-rent-car.tn`;
-const phoneAuthEmail=(codeNum,d)=>`u_${codeNum}${d}@tel.amine-rent-car.tn`;
 
 $("authBtn").onclick=async()=>{
   $("authErr").textContent=$("authOk").textContent="";
@@ -735,29 +737,30 @@ $("authBtn").onclick=async()=>{
       if(!/^[a-z0-9_]{3,40}$/.test(id)){$("authErr").textContent=t("eUser");return}
       if(d.length<6){$("authErr").textContent=t("ePhone");return}
       const det=detectCountryFromPhone($("fPhone").value);
-      const {data,error}=await sb.auth.signUp({
-        email:userAuthEmail(id),
-        password:pw,
-        options:{data:{full_name:name,phone:det.code+d,username:id}}
+      const {data,error}=await sb.rpc("register_client",{
+        p_full_name:name,
+        p_username:id,
+        p_phone:det.code+d,
+        p_password:pw
       });
-      if(error){$("authErr").textContent=/registered|exists/i.test(error.message)?t("eTaken"):t("eGeneric");return}
-      if(!data.session){$("authOk").textContent=t("saved");return}
+      if(error||!data?.ok){
+        const code=data?.error||"";
+        $("authErr").textContent=code==="username_taken"?t("eTaken"):code==="invalid_username"?t("eUser"):code==="invalid_phone"?t("ePhone"):t("eGeneric");
+        return;
+      }
+      setToken(data.token);
     }else{
-      const d=digits(id),det=detectCountryFromPhone(id);
-      let email;
-      if(/^\+?[\d\s.-]{6,}$/.test(id)){email=phoneAuthEmail(det.code.replace(/\D/g,""),d)}
-      else if(/^[a-z0-9_]{3,40}$/.test(id)){email=userAuthEmail(id)}
-      else{recordFail();$("authErr").textContent=t("eCreds");return}
-
-      const {error}=await sb.auth.signInWithPassword({email,password:pw});
-      if(error){recordFail();$("authErr").textContent=t("eCreds");return}
+      if(!id){recordFail();$("authErr").textContent=t("eCreds");return}
+      const {data,error}=await sb.rpc("login_client",{p_identifier:id,p_password:pw});
+      if(error||!data?.ok){recordFail();$("authErr").textContent=t("eCreds");return}
+      setToken(data.token);
     }
-    failCount=0;lockUntil=0;$("fPass").value="";await boot();
+    failCount=0;lockUntil=0;$("fPass").value="";await loadPortal();
   }catch(_){$("authErr").textContent=t("eGeneric")}finally{$("authBtn").disabled=false}
 };
 
-$("outBtn").onclick=async()=>{
-  clearTimeout(idleTimer);await sb.auth.signOut();PROFILE=null;BOOKINGS=[];
+$("outBtn").onclick=()=>{
+  clearInterval(idleTimer);clearToken();PROFILE=null;BOOKINGS=[];
   $("app").hidden=true;$("outBtn").hidden=true;$("authSec").hidden=false;
 };
 
@@ -807,29 +810,21 @@ $("qpSend").onclick=async()=>{
   if(ok){$("qpUpOk").textContent=t("sentOk");$("qpFile").value="";toast(t("saved"))}else $("qpUpErr").textContent=t("proofErr");
 };
 
-/* ---------- Démarrage Espace Client ---------- */
-async function boot(){
-  const {data:{session}}=await sb.auth.getSession();
-  if(!session?.user){$("authSec").hidden=false;$("app").hidden=true;return}
-  const u=session.user;
-  const {data:row}=await sb.from("profiles").select("*").eq("id",u.id).maybeSingle();
-  if(row&&["admin","staff"].includes(row.role)){location.href="admin.html";return}
-  PROFILE=row||{id:u.id,full_name:u.user_metadata?.full_name||"",phone:u.user_metadata?.phone||""};
+/* ---------- تحميل لوحة الحريف عبر get_client_portal ---------- */
+async function loadPortal(){
+  if(!TOKEN){try{TOKEN=sessionStorage.getItem(SESSION_KEY)||""}catch(_){}}
+  if(!TOKEN){$("authSec").hidden=false;$("app").hidden=true;return}
+  const {data,error}=await sb.rpc("get_client_portal",{p_token:TOKEN});
+  if(error||!data?.ok){clearToken();$("authSec").hidden=false;$("app").hidden=true;return}
+  PROFILE=data.profile||{};
+  BOOKINGS=Array.isArray(data.bookings)?data.bookings:[];
+  BANKS=Array.isArray(data.banks)?data.banks:[];
+  SET=data.settings||{};
   $("authSec").hidden=true;$("app").hidden=false;$("outBtn").hidden=false;
-  resetIdle();renderHero();renderSteps();await loadData();
-}
-async function loadData(){
-  const [b,k,s]=await Promise.all([
-    sb.from("bookings").select("*,vehicles(name),payments(id,status,amount,proof_path,created_at),invoices(id,number,kind)").order("created_at",{ascending:false}),
-    sb.from("bank_accounts").select("*").order("sort"),
-    sb.from("settings").select("key,value")
-  ]);
-  if(b.error){$("bkList").innerHTML=`<div class="err">${esc(t("eGeneric"))}</div>`;return}
-  SET={};(s.data||[]).forEach(r=>SET[r.key]=r.value);
-  BOOKINGS=b.data||[];BANKS=k.data||[];renderBookings();
+  resetIdle();renderHero();renderSteps();renderBookings();
 }
 
-/* ---------- Identité & Étapes ---------- */
+/* ---------- Identité & Étapes (save_client_profile) ---------- */
 const STEPS=[
   {k:"s1",req:true,done:p=>!!(p.full_name&&p.phone)},
   {k:"s2",req:true,done:p=>!!(p.id_doc_number&&p.id_doc_path)},
@@ -838,19 +833,23 @@ const STEPS=[
 ];
 async function signed(path,secs=300){if(!path)return null;const {data}=await sb.storage.from(DOCS).createSignedUrl(path,secs);return data?.signedUrl||null}
 async function renderHero(){
-  const n=(PROFILE.full_name||"").trim();
+  const n=(PROFILE.full_name||PROFILE.username||"").trim();
   $("hello").textContent=`${t("hello")}${n?" "+n:""}`;
   const av=$("avatar");av.textContent=(n||"C").split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join("").toUpperCase()||"C";
   const u=await signed(PROFILE.avatar_path,3600);if(u)av.innerHTML=`<img src="${esc(u)}" alt="">`;
+}
+async function patchProfile(patch){
+  const {data,error}=await sb.rpc("save_client_profile",{p_token:TOKEN,p_patch:patch});
+  if(error||!data?.ok)throw new Error(t("eGeneric"));
+  Object.assign(PROFILE,patch);
 }
 $("avatarFile").onchange=async()=>{
   const f=$("avatarFile").files[0];
   if(!(await validateFileSecure(f,3,false))){toast(t("badFile"));return}
   const path=`avatars/${PROFILE.id}_${Date.now()}.${EXT[f.type]}`;
   const up=await sb.storage.from(DOCS).upload(path,f,{contentType:f.type});
-  if(up.error){toast(t("saveErr"));return}
-  const {error}=await sb.from("profiles").update({avatar_path:path}).eq("id",PROFILE.id);
-  if(!error){PROFILE.avatar_path=path;renderHero();toast(t("saved"))}
+  if(up.error){toast(t("eGeneric"));return}
+  try{await patchProfile({avatar_path:path});renderHero();toast(t("saved"))}catch(_){toast(t("eGeneric"))}
 };
 function progress(){
   const req=STEPS.filter(s=>s.req),done=req.filter(s=>s.done(PROFILE)).length,pct=Math.round(done/req.length*100);
@@ -889,16 +888,15 @@ async function saveStep(btn){
       if(!(await validateFileSecure(f,5,true)))throw new Error(t("badFile"));
       const path=`${fi.dataset.dir}/${PROFILE.id}_${Date.now()}.${EXT[f.type]}`;
       const up=await sb.storage.from(DOCS).upload(path,f,{contentType:f.type});
-      if(up.error)throw new Error(t("saveErr"));
+      if(up.error)throw new Error(t("eGeneric"));
       payload[fi.dataset.file]=path;
     }
     const m={...PROFILE,...payload};
     if(k==="s1"&&!(m.full_name&&m.phone))throw new Error(t("needS1"));
     if(k==="s2"&&!(m.id_doc_number&&m.id_doc_path))throw new Error(t("needS2"));
     if(k==="s3"&&!(m.license_number&&m.license_date&&m.birth_date&&m.license_path))throw new Error(t("needS3"));
-    const {error}=await sb.from("profiles").update(payload).eq("id",PROFILE.id);
-    if(error)throw new Error(t("saveErr"));
-    Object.assign(PROFILE,payload);toast(t("saved"));await renderSteps();renderHero();
+    await patchProfile(payload);
+    toast(t("saved"));await renderSteps();renderHero();
   }catch(e){er.textContent=e.message;btn.disabled=false;btn.textContent=old}
 }
 
@@ -907,94 +905,4 @@ document.querySelectorAll(".pills [data-f]").forEach(b=>b.onclick=()=>{FILTER=b.
 const isHist=b=>["completed","cancelled","expired"].includes(b.status)||(b.end_at&&new Date(b.end_at)<Date.now()&&b.status!=="pending");
 function fin(b,pays){
   const q=b.quote||{},days=+q.days||1,sub=+q.subtotal_htva||0,vr=+(SET.vat_rate??q.vat_rate??19);
-  const levy=+(q.levy_total??((+(SET.levy_per_day??q.levy_per_day??0))*days));
-  const stamp=SET.fiscal_stamp_enabled==="true"?+(SET.fiscal_stamp_amount??1):+(q.fiscal_stamp??0);
-  const vat=+(q.vat_amount??sub*vr/100),ttc=+(q.total_ttc??sub+vat+levy+stamp);
-  const dp=+(SET.deposit_pct??q.deposit_pct??30),dep=+(q.deposit??ttc*dp/100);
-  const rec=pays.filter(p=>p.status==="verified").reduce((a,p)=>a+(+p.amount||0),0);
-  return{days,sub,vr,vat,levy,stamp,ttc,dp,dep,rec,rem:Math.max(0,ttc-rec)};
-}
-function renderBookings(){
-  const list=BOOKINGS.filter(b=>FILTER==="all"||(FILTER==="history")===isHist(b));
-  if(!list.length){$("bkList").innerHTML=`<p class="sub" style="padding:10px 0">${t("empty")}</p>`;return}
-  $("bkList").innerHTML=list.map(b=>{
-    const ref=shortRef(b.id);
-    const pays=[...(b.payments||[])].sort((a,z)=>new Date(z.created_at)-new Date(a.created_at));
-    const proof=pays.find(p=>p.proof_path),dead=["cancelled","expired"].includes(b.status);
-    const verified=!dead&&pays.some(p=>p.status==="verified"),pend=!dead&&!verified&&pays.some(p=>p.status==="proof_uploaded");
-    const hist=isHist(b),f=fin(b,pays),live=!hist&&["pending","confirmed"].includes(b.status);
-    const conf=b.status==="confirmed"||verified;
-    const c=["d",conf||proof?"d":b.status==="pending"?"c":"d",verified?"d":proof?"c":"",conf?"d":""];
-    const st=(hist&&b.status==="confirmed")?t("status").completed:(t("status")[b.status]||b.status);
-    return `<article class="bk">
-      <div class="row">
-        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><div class="car">${esc(b.vehicles?.name||"")}</div><span class="ref-tag">#${esc(ref)}</span></div>
-        <span class="badge ${esc(b.status)}">${esc(st)}</span>
-      </div>
-      <div class="sub" style="margin-top:4px">${t("from")} <b>${fmtD(b.start_at)}</b> ${t("to")} <b>${fmtD(b.end_at)}</b> · ${f.days} ${t("days")}${b.pickup_text?" · "+esc(b.pickup_text):""}</div>
-      <div class="flow">${["st1","st2","st3","st4"].map((k,i)=>`<span class="${c[i]}">${t(k)}</span>`).join("")}</div>
-      ${verified?`<div class="ok">✓ ${t("paid")}</div>`:""}
-      ${pend?`<div class="warn" style="margin:6px 0">⏳ ${t("wait")}</div>`:""}
-      ${f.sub>0?`<div class="box"><b>${t("finT")}</b><table><tr><td>${t("htva")}</td><td>${money(f.sub)}</td></tr><tr><td>${t("vat")} (${f.vr} %)</td><td>${money(f.vat)}</td></tr>${f.levy>0?`<tr><td>${t("levy")}</td><td>${money(f.levy)}</td></tr>`:""}${f.stamp>0?`<tr><td>${t("stamp")}</td><td>${money(f.stamp)}</td></tr>`:""}<tr><td><b>${t("ttc")}</b></td><td><b>${money(f.ttc)}</b></td></tr><tr><td>${t("rec")}</td><td>${money(f.rec)}</td></tr><tr><td>${t("rem")}</td><td>${money(f.rem)}</td></tr></table><div class="dep"><span>${t("dep")} (${f.dp} %)</span><span style="font-family:var(--font-mono);color:var(--red-dark)">${money(f.dep)}</span></div></div>`:""}
-      ${live?`<div class="rib-panel"><b>${t("ribT")}</b>${ribRows(BANKS,"bc")}</div>
-      <details class="box" data-bill="${esc(b.id)}"><summary style="cursor:pointer;font-weight:700;font-size:13.5px">${t("billOptS")}</summary>
-        <input class="bn" maxlength="120" placeholder="${esc(t("lName"))}" value="${esc(b.billing_name||PROFILE.full_name||"")}" style="margin-top:8px">
-        <input class="ba" maxlength="200" placeholder="${esc(t("lAddr"))}" value="${esc(b.billing_address||PROFILE.billing_address||"")}" style="margin-top:8px">
-        <input class="bt" maxlength="50" placeholder="${esc(t("lTax"))}" value="${esc(b.billing_tax_id||PROFILE.tax_id||"")}" style="margin-top:8px">
-        <div class="acts"><button type="button" class="dark sm bs">${t("billSave")}</button></div><div class="err be"></div><div class="ok bo"></div>
-      </details>
-      ${!verified?`<div class="box" data-proof="${esc(b.id)}"><b>${t("proofL")}</b><div class="warn">${t("warn")}</div><div class="acts" style="margin-top:4px"><input type="file" class="pf" accept="image/jpeg,image/png,image/webp,application/pdf" style="max-width:270px"><input type="number" class="pa" min="0" max="99999" step="0.5" placeholder="${esc(t("amtPh"))}" style="max-width:200px"><button type="button" class="green sm ps">${t("send")}</button></div><div class="err pe"></div><div class="ok po"></div></div>`:""}`:""}
-      <div class="acts">
-        ${conf?`<button type="button" class="green sm" data-bon="${esc(b.id)}">${t("bonBtn")}</button>`:""}
-        ${proof?`<button type="button" class="dark sm" data-vp="${esc(proof.proof_path)}">${t("viewProof")}</button>`:""}
-        ${(b.invoices||[]).map(i=>`<a class="btn dark sm" target="_blank" rel="noopener noreferrer" href="invoice.html?id=${esc(i.id)}">${i.kind==="credit_note"?t("cn"):t("inv")} ${esc(i.number)}</a>`).join("")}
-        ${live?`<button type="button" class="ghost sm" data-cx="${esc(b.id)}">${t("cancel")}</button>`:""}
-      </div>
-    </article>`;
-  }).join("");
-
-  const R=$("bkList");bindCopy(R,"bc");
-  R.querySelectorAll("[data-bill]").forEach(bx=>bx.querySelector(".bs").onclick=async()=>{
-    bx.querySelector(".be").textContent=bx.querySelector(".bo").textContent="";
-    const {data,error}=await sb.rpc("set_billing",{p_booking:bx.dataset.bill,p_phone:cleanPh(PROFILE.phone),p_name:bx.querySelector(".bn").value.trim(),p_address:bx.querySelector(".ba").value.trim(),p_tax:bx.querySelector(".bt").value.trim()});
-    if(error||!data||!data.ok)bx.querySelector(".be").textContent=t("billErr");else{bx.querySelector(".bo").textContent=t("billOk");toast(t("saved"))}
-  });
-  R.querySelectorAll("[data-proof]").forEach(bx=>bx.querySelector(".ps").onclick=async()=>{
-    const er=bx.querySelector(".pe"),ok=bx.querySelector(".po"),btn=bx.querySelector(".ps"),f=bx.querySelector(".pf").files[0];
-    er.textContent=ok.textContent="";
-    if(!(await validateFileSecure(f,5,true))){er.textContent=t("badFile");return}
-    btn.disabled=true;const old=btn.textContent;btn.textContent=t("sending");
-    const path=`${PROFILE.id}/${bx.dataset.proof}_${Date.now()}.${EXT[f.type]}`;
-    const up=await sb.storage.from(PROOFS).upload(path,f,{contentType:f.type,upsert:false});
-    let e2=up.error;
-    if(!e2){const r=await sb.from("payments").insert({booking_id:bx.dataset.proof,user_id:PROFILE.id,amount:Math.max(0,+bx.querySelector(".pa").value||0),proof_path:path,status:"proof_uploaded"});e2=r.error}
-    btn.disabled=false;btn.textContent=old;
-    if(e2){er.textContent=t("proofErr");return}
-    toast(t("sentOk"));await loadData();
-  });
-  R.querySelectorAll("[data-vp]").forEach(b=>b.onclick=async()=>{const {data,error}=await sb.storage.from(PROOFS).createSignedUrl(b.dataset.vp,300);if(error||!data?.signedUrl)return toast(t("proofErr"));window.open(data.signedUrl,"_blank","noopener,noreferrer")});
-  R.querySelectorAll("[data-bon]").forEach(b=>b.onclick=()=>openBon(b.dataset.bon));
-  R.querySelectorAll("[data-cx]").forEach(b=>b.onclick=async()=>{
-    const reason=prompt(t("cancelQ"));if(reason===null)return;
-    const {data,error}=await sb.rpc("request_cancellation",{p_booking:b.dataset.cx,p_reason:reason.slice(0,300)});
-    if(error||!data||!data.ok)toast(t("cancelErr"));else{toast(t("cancelOk"));await loadData()}
-  });
-}
-
-/* ---------- Bon de Réservation + QR ---------- */
-function openBon(id){
-  const b=BOOKINGS.find(x=>String(x.id)===String(id));if(!b)return;
-  const ref=shortRef(b.id);
-  $("bonRef").textContent=`${t("ref")}: #${ref}`;
-  $("bonRows").innerHTML=`<div><b>${t("cl")}:</b> ${esc(b.guest_name||PROFILE.full_name||"")}</div><div><b>${t("ph")}:</b> <span dir="ltr">${esc(b.guest_phone||PROFILE.phone||"")}</span></div><div><b>${t("car")}:</b> ${esc(b.vehicles?.name||"")}</div><div><b>${t("per")}:</b> ${t("from")} ${fmtD(b.start_at)} ${t("to")} ${fmtD(b.end_at)} (${esc(b.quote?.days??"")} ${t("days")})</div>${b.pickup_text?`<div><b>${t("pick")}:</b> ${esc(b.pickup_text)}</div>`:""}`;
-  if(window.QRCode)QRCode.toCanvas($("qr"),JSON.stringify({brand:"AMINE_RENT_A_CAR",ref,status:b.status}),{width:152,margin:1},()=>{});
-  $("bon").hidden=false;
-}
-$("bonX").onclick=()=>$("bon").hidden=true;
-$("bon").onclick=e=>{if(e.target===$("bon"))$("bon").hidden=true};
-$("bonPrint").onclick=()=>window.print();
-
-setMode(MODE);boot();
-</script>
-</body>
-</html>
+  const levy=+(q.levy_total??((+(SET.levy_per_day??q.levy_per_day??0))*
