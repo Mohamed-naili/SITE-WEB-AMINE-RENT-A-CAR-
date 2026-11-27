@@ -2952,3 +2952,339 @@
   </script>
 </body>
 </html>
+
+<script>
+  /* =========================================================================
+     TUNISIAN SCHOOL BREAKS & OFFICIAL HOLIDAYS (2026-2027) — STANDALONE MODULE
+     ========================================================================= */
+  (function () {
+    const TN_VACANCES_2026_2027 = [
+      {
+        start: "2026-12-14",
+        end: "2026-12-27",
+        fr: "Vacances d'hiver",
+        ar: "عطلة الشتاء",
+        it: "Vacanze d'inverno",
+        en: "Winter break"
+      },
+      {
+        start: "2026-12-17",
+        end: "2026-12-17",
+        fr: "Fête de la Révolution",
+        ar: "عيد الثورة",
+        it: "Festa della Rivoluzione",
+        en: "Revolution Day"
+      },
+      {
+        start: "2027-01-01",
+        end: "2027-01-01",
+        fr: "Jour de l'An",
+        ar: "رأس السنة الميلادية",
+        it: "Capodanno",
+        en: "New Year's Day"
+      },
+      {
+        start: "2027-02-01",
+        end: "2027-02-07",
+        fr: "Vacances mi-2e trimestre",
+        ar: "عطلة وسط الثلاثي الثاني",
+        it: "Vacanze 2° trimestre",
+        en: "Mid-term break"
+      },
+      {
+        start: "2027-03-15",
+        end: "2027-03-28",
+        fr: "Vacances de printemps",
+        ar: "عطلة الربيع",
+        it: "Vacanze di primavera",
+        en: "Spring break"
+      },
+      {
+        start: "2027-03-20",
+        end: "2027-03-20",
+        fr: "Fête de l'Indépendance",
+        ar: "عيد الاستقلال",
+        it: "Festa dell'Indipendenza",
+        en: "Independence Day"
+      },
+      {
+        start: "2027-04-09",
+        end: "2027-04-09",
+        fr: "Fête des Martyrs",
+        ar: "عيد الشهداء",
+        it: "Festa dei Martiri",
+        en: "Martyrs' Day"
+      },
+      {
+        start: "2027-05-01",
+        end: "2027-05-01",
+        fr: "Fête du Travail",
+        ar: "عيد الشغل",
+        it: "Festa del Lavoro",
+        en: "Labor Day"
+      }
+    ];
+
+    function getVacanceLabel(isoDate) {
+      const currentLang = typeof lang === "string" ? lang : "fr";
+      for (const item of TN_VACANCES_2026_2027) {
+        if (isoDate >= item.start && isoDate <= item.end) {
+          return item[currentLang] || item.fr;
+        }
+      }
+      return "";
+    }
+
+    // إتاحة الدالة لبقية السكريبتات عند الحاجة
+    window.getTnVacanceLabel = getVacanceLabel;
+
+    // دمج العطل مع state.events إذا كانت موجودة
+    if (typeof state === "object" && state && state.events && typeof state.events === "object") {
+      const startDate = new Date(Date.UTC(2026, 11, 1));
+      const endDate = new Date(Date.UTC(2027, 4, 31));
+      for (let dt = new Date(startDate); dt <= endDate; dt.setUTCDate(dt.getUTCDate() + 1)) {
+        const iso = dt.toISOString().slice(0, 10);
+        const matches = TN_VACANCES_2026_2027.filter((v) => iso >= v.start && iso <= v.end);
+        if (matches.length && !state.events[iso]) {
+          state.events[iso] = {
+            label_fr: matches.map((m) => m.fr).join(" · "),
+            label_ar: matches.map((m) => m.ar).join(" · "),
+            label_it: matches.map((m) => m.it).join(" · "),
+            label_en: matches.map((m) => m.en).join(" · ")
+          };
+        }
+      }
+    }
+
+    // تمييز أيام العطل والأعياد في التقويم السفلي (#calGrid)
+    function markLowerCalendarVacances() {
+      const calGrid = document.getElementById("calGrid");
+      const monthTitleEl = document.getElementById("calMonthTitle");
+      if (!calGrid || !monthTitleEl) return;
+
+      const offset = typeof state === "object" && state ? state.calMonthOffset || 0 : 0;
+      
+<script>
+  /* =========================================================================
+     PATCH 3: REMOVE LOWER AVAILABILITY CALENDAR (#dispo) & ADD AGENCIES / SIÈGE MAP
+     ========================================================================= */
+  (function () {
+    // 1. إزالة التقويم السفلي (#dispo) ورابطه من القائمة العلوية
+    const lowerCalSection = document.getElementById("dispo");
+    if (lowerCalSection) {
+      lowerCalSection.remove();
+    }
+    document.querySelectorAll('a[href="#dispo"]').forEach((link) => link.remove());
+
+    // 2. إضافة مفاتيح الترجمة لقسم المواقع والـ Siège
+    if (typeof T === "object" && T) {
+      T.nLoc = ["Agences", "الوكالات", "Sedi", "Locations"];
+      T.locTitle = [
+        "Nos agences & Siège social",
+        "وكالاتنا والمقر الاجتماعي (Siège)",
+        "Le nostre sedi e Sede centrale",
+        "Our branches & Head Office"
+      ];
+      T.locDesc = [
+        "Retrouvez notre siège social et nos points de remise en Tunisie avec accès direct sur Google Maps.",
+        "اعثر على مقرنا الاجتماعي ونقاط التسليم في تونس مع رابط مباشر على خرائط غوغل.",
+        "Trova la nostra sede centrale e i punti di consegna in Tunisia su Google Maps.",
+        "Find our head office and pickup points in Tunisia directly on Google Maps."
+      ];
+      T.siegeBadge = ["Siège Social", "المقر الاجتماعي", "Sede Centrale", "Head Office"];
+      T.siegeTitle = [
+        "Siège — Amine Rent A Car",
+        "المقر الرئيسي — Amine Rent A Car",
+        "Sede — Amine Rent A Car",
+        "Head Office — Amine Rent A Car"
+      ];
+      T.siegeAddr = [
+        "Tunis · Réception, administration et remise de véhicules",
+        "تونس · الإدارة، الاستقبال وتسليم السيارات",
+        "Tunisi · Amministrazione e consegna veicoli",
+        "Tunis · Administration, reception & vehicle handover"
+      ];
+      T.openMapBtn = [
+        "Ouvrir sur Google Maps",
+        "فتح الموقع على خرائط غوغل",
+        "Apri su Google Maps",
+        "Open in Google Maps"
+      ];
+    }
+
+    // 3. إضافة رابط "Agences / الوكالات" في القائمة العلوية
+    const navLinks = document.querySelector(".nav-links");
+    if (navLinks && !navLinks.querySelector('a[href="#localisation"]')) {
+      const a = document.createElement("a");
+      a.href = "#localisation";
+      a.setAttribute("data-i", "nLoc");
+      const policyLink = navLinks.querySelector('a[href="#politique"]');
+      if (policyLink) {
+        navLinks.insertBefore(a, policyLink);
+      } else {
+        navLinks.appendChild(a);
+      }
+    }
+
+    // 4. إنشاء قسم Localisation (Siège + وكالات) قبل قسم الدفع أو الفوتر
+    const mainEl = document.querySelector("main");
+    const paySection = document.getElementById("paiement");
+    if (mainEl && !document.getElementById("localisation")) {
+      const sec = document.createElement("section");
+      sec.id = "localisation";
+      sec.className = "section section-alt reveal is-visible";
+      sec.innerHTML = `
+        <div class="wrap">
+          <div class="sec-head">
+            <h2 data-i="locTitle"></h2>
+            <p data-i="locDesc"></p>
+          </div>
+          <div class="policy-grid" id="agenciesCardsGrid">
+            <article class="policy-card" style="border-inline-start: 4px solid var(--red);">
+              <span class="avail-pill" style="display:inline-block;margin-bottom:8px;" data-i="siegeBadge"></span>
+              <h3 data-i="siegeTitle"></h3>
+              <p data-i="siegeAddr" style="margin:8px 0 14px;"></p>
+              <a
+                class="btn btn-red"
+                href="https://maps.app.goo.gl/pwhUuGSvdzpbf6JY7?g_st=ac"
+                target="_blank"
+                rel="noopener"
+                data-i="openMapBtn"
+              ></a>
+            </article>
+          </div>
+        </div>
+      `;
+
+      if (paySection) {
+        mainEl.insertBefore(sec, paySection);
+      } else {
+        mainEl.appendChild(sec);
+      }
+    }
+
+    // 5. إعادة تطبيق الترجمة
+    if (typeof applyLanguage === "function") {
+      applyLanguage();
+    }
+  })();
+</script>
+
+
+<script>
+  /* =========================================================================
+     PATCH 5: RENTAL RULES, 2026 FINANCE / TAX NOTES, INSURANCE & BRAND EQUIVALENCE
+     (AMINE RENT A CAR = CARGO RENT A CAR = GENIAL RENT A CAR)
+     ========================================================================= */
+  (function () {
+    if (typeof T === "object" && T) {
+      T.rulesSectionTitle = [
+        "Conditions de location, fiscalité, assurance & entités",
+        "شروط الكراء، الجباية، التأمين وهوية الشركات",
+        "Condizioni di noleggio, fiscalità, assicurazione e società",
+        "Rental terms, tax notes, insurance & entity identity"
+      ];
+      T.rulesSectionDesc = [
+        "Règles claires avant toute réservation afin d'éviter tout malentendu lors de la prise en charge ou de la restitution.",
+        "قواعد واضحة قبل أي حجز لتفادي أي سوء فهم وقت استلام الكرهبة أو ترجيعها.",
+        "Regole chiare prima della prenotazione per evitare malintesi al ritiro o alla riconsegna.",
+        "Clear terms before booking to avoid any confusion at pickup or return."
+      ];
+
+      // 1. الجباية، 2 د.ت/يوم، 19% TVA، 1 د.ت طابع، وتسجيل العقد
+      T.ruleTaxTitle = [
+        "Fiscalité (2 TND/j, TVA 19 %, timbre 1 TND) & contrat",
+        "الجباية (2 د.ت/يوم، TVA 19%، طابع 1 د.ت) وتسجيل العقد",
+        "Fiscalità (2 TND/g, IVA 19%, bollo 1 TND) e contratto",
+        "Taxation (2 TND/d, 19% VAT, 1 TND stamp) & contract"
+      ];
+      T.ruleTaxBody = [
+        "Selon les paramètres indiqués : 2 TND par jour, TVA de 19 %, timbre fiscal de 1 TND par facture/contrat, et enregistrement du contrat à la recette selon les règles applicables.",
+        "حسب المعطيات المحددة: 2 د.ت لكل يوم، أداء على القيمة المضافة TVA بنسبة 19%، طابع جبائي 1 د.ت لكل فاتورة، وتسجيل العقد في القباضة حسب الإجراءات المعتمدة.",
+        "Secondo i parametri indicati: 2 TND al giorno, IVA 19%, marca da bollo 1 TND per fattura e registrazione del contratto.",
+        "Per stated rules: 2 TND per day, 19% VAT, 1 TND fiscal stamp per invoice, and contract registration."
+      ];
+
+      // 2. شروط السن والرخصة والترجيع في نفس التوقيت + فيديو VD
+      T.ruleCondTitle = [
+        "Âge, permis, heure de retour & vidéo (VD) sur WhatsApp",
+        "السن، رخصة السياقة، نفس توقيت الترجيع وفيديو (VD) على واتساب",
+        "Età, patente, stesso orario di rientro e video (VD) su WhatsApp",
+        "Age, driver's license, same return time & video (VD) on WhatsApp"
+      ];
+      T.ruleCondBody = [
+        "Tunisiens : permis de plus de 2 ans et âge supérieur à 23 ans. Non-Tunisiens : âge de 18 ans et plus. La voiture doit être rendue à la même heure que la prise en charge, avec réalisation d'une vidéo (VD) envoyée sur WhatsApp pour protéger les deux parties.",
+        "للتونسي: رخصة سياقة أكثر من سنتين والعمر أكثر من 23 سنة. لغير التونسي: العمر 18 سنة فما فوق. يلزم ترجيع الكرهبة في نفس الوقت اللي تهزّت فيه مع عمل فيديو (VD) وإرسالو على واتساب لضمان حقوق الطرفين.",
+        "Tunisini: patente da più di 2 anni ed età oltre 23 anni. Non tunisini: dai 18 anni in su. Restituzione alla stessa ora del ritiro con video (VD) inviato su WhatsApp.",
+        "Tunisians: license over 2 years and age over 23. Non-Tunisians: age 18+. Return at the exact same pickup time, with a video (VD) sent via WhatsApp."
+      ];
+
+      // 3. التأمين وهوية الشركات الثلاث
+      T.ruleInsBrandTitle = [
+        "Assurance & identité commune (Amine / Cargo / Genial)",
+        "التأمين وهوية الشركات (Amine / Cargo / Genial)",
+        "Assicurazione e identità comune (Amine / Cargo / Genial)",
+        "Insurance & unified identity (Amine / Cargo / Genial)"
+      ];
+      T.ruleInsBrandBody = [
+        "Selon les règles d'assurance indiquées pour le cadre tunisien : pas d'assurance tous risques et pas d'assurance vol ni bris de glace. Par ailleurs, Amine Rent A Car est la même société que Cargo Rent A Car et Genial Rent A Car.",
+        "حسب قواعد التأمين المذكورة للإطار التونسي: لا يوجد تأمين كل الأخطار ولا يوجد تأمين ضد السرقة وكسر البلور. كما أن شركة Amine Rent A Car هي نفسها Cargo Rent A Car وهي نفسها Genial Rent A Car.",
+        "Secondo le regole assicurative indicate: nessuna copertura tutti rischi né furto e cristalli. Amine Rent A Car coincide con Cargo Rent A Car e Genial Rent A Car.",
+        "Per stated rules: no all-risks insurance and no theft or glass breakage coverage. Amine Rent A Car is the same company as Cargo Rent A Car and Genial Rent A Car."
+      ];
+
+      T.brandEquivBanner = [
+        "Identité officielle unifiée : Amine Rent A Car = Cargo Rent A Car = Genial Rent A Car",
+        "هوية موحّدة: Amine Rent A Car هي نفسها Cargo Rent A Car وهي نفسها Genial Rent A Car",
+        "Identità unificata: Amine Rent A Car = Cargo Rent A Car = Genial Rent A Car",
+        "Unified identity: Amine Rent A Car = Cargo Rent A Car = Genial Rent A Car"
+      ];
+    }
+
+    // إدراج بطاقات الشروط الثلاث في قسم السياسة (#politique)
+    const policySection = document.getElementById("politique");
+    if (policySection && !document.getElementById("legalRulesGrid")) {
+      const wrap = policySection.querySelector(".wrap");
+      if (wrap) {
+        const grid = document.createElement("div");
+        grid.id = "legalRulesGrid";
+        grid.className = "policy-grid reveal is-visible";
+        grid.style.marginTop = "16px";
+        grid.innerHTML = `
+          <article class="policy-card">
+            <h3 data-i="ruleTaxTitle"></h3>
+            <p data-i="ruleTaxBody"></p>
+          </article>
+          <article class="policy-card">
+            <h3 data-i="ruleCondTitle"></h3>
+            <p data-i="ruleCondBody"></p>
+          </article>
+          <article class="policy-card">
+            <h3 data-i="ruleInsBrandTitle"></h3>
+            <p data-i="ruleInsBrandBody"></p>
+          </article>
+        `;
+        wrap.appendChild(grid);
+      }
+    }
+
+    // إضافة سطر توضيح تطابق الأسماء الثلاثة في الفوتر (#contact)
+    const footerGrid = document.querySelector("footer .footer-grid");
+    if (footerGrid && !document.getElementById("brandEquivFooterNote")) {
+      const note = document.createElement("p");
+      note.id = "brandEquivFooterNote";
+      note.setAttribute("data-i", "brandEquivBanner");
+      note.style.width = "100%";
+      note.style.fontSize = "12.5px";
+      note.style.color = "#f4d36b";
+      note.style.fontWeight = "600";
+      note.style.marginTop = "4px";
+      footerGrid.appendChild(note);
+    }
+
+    if (typeof applyLanguage === "function") {
+      applyLanguage();
+    }
+  })();
+</script>
+
