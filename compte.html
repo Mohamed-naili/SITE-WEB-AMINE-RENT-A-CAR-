@@ -4,2627 +4,997 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>حسابي والدفع | Amine Rent A Car</title>
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://*.supabase.co; connect-src 'self' https://*.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self';">
+<title>Amine Rent A Car | Espace Client</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js" crossorigin="anonymous"></script>
 <style>
-/* ============================================================================
-   1. DESIGN TOKENS & THEME VARIABLES
-   ============================================================================ */
-:root {
-  --ink: #12161B;
-  --ink-2: #1E252E;
-  --ink-3: #2C3542;
-  --paper: #EEF0EC;
-  --surface: #FFFFFF;
-  --surface-2: #F8F9F7;
-  --surface-3: #F1F3EE;
-
-  --red: #D62828;
-  --red-dark: #A61B1B;
-  --red-soft: rgba(214, 40, 40, 0.10);
-
-  --green: #1B9952;
-  --green-dark: #13743D;
-  --green-soft: rgba(27, 153, 82, 0.11);
-
-  --gold: #C9A227;
-  --gold-dark: #9B7A14;
-  --gold-soft: rgba(201, 162, 39, 0.15);
-
-  --wa: #128C7E;
-  --wa-dark: #0B6B60;
-
-  --line: #D7D9D3;
-  --line-strong: #BFC4BA;
-  --text: #1B1F24;
-  --muted: #5A6068;
-
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 22px;
-
-  --shadow-sm: 0 4px 14px rgba(18, 22, 27, 0.05);
-  --shadow-md: 0 10px 28px rgba(18, 22, 27, 0.08);
-  --shadow-lg: 0 22px 54px rgba(18, 22, 27, 0.18);
-
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
-  --font-display: "Barlow Condensed", "Cairo", sans-serif;
-  --font-body: "Cairo", "Work Sans", system-ui, -apple-system, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
-}
-
-/* ============================================================================
-   2. RESET & BASE STYLES
-   ============================================================================ */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  font-family: var(--font-body);
-  font-size: 15px;
-  line-height: 1.58;
-  background: var(--paper);
-  color: var(--text);
-  min-height: 100vh;
-  overflow-x: hidden;
-  position: relative;
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: -20%;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 12% 14%, rgba(214, 40, 40, 0.06), transparent 42%),
-    radial-gradient(circle at 88% 18%, rgba(201, 162, 39, 0.08), transparent 45%),
-    radial-gradient(circle at 50% 92%, rgba(27, 153, 82, 0.06), transparent 48%);
-  animation: ambientDrift 18s ease-in-out infinite alternate;
-}
-
-@keyframes ambientDrift {
-  0% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(-1.5%, 1.2%, 0) scale(1.02); }
-  100% { transform: translate3d(1.5%, -1%, 0) scale(1.01); }
-}
-
-[hidden] {
-  display: none !important;
-}
-
-:focus-visible {
-  outline: 3px solid var(--gold);
-  outline-offset: 2px;
-}
-
-h1, h2, h3, h4 {
-  font-family: var(--font-display);
-  font-weight: 800;
-  line-height: 1.15;
-  color: var(--ink);
-}
-
-a {
-  color: inherit;
-}
-
-/* ============================================================================
-   3. TOP HEADER
-   ============================================================================ */
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 40;
-  background: linear-gradient(95deg, var(--ink) 0%, var(--ink-2) 65%, #27191C 100%);
-  color: #FFFFFF;
-  padding: 12px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  border-bottom: 3px solid var(--red);
-  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.16);
-}
-
-.brand-wrap {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.brand-link {
-  text-decoration: none;
-  color: #FFFFFF;
-  font-family: var(--font-display);
-  font-size: 23px;
-  font-weight: 800;
-  letter-spacing: 0.03em;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.brand-badge {
-  font-family: var(--font-body);
-  font-size: 11px;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: rgba(201, 162, 39, 0.18);
-  color: #F6DC7E;
-  border: 1px solid rgba(201, 162, 39, 0.35);
-}
-
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-/* ============================================================================
-   4. LAYOUT & CARDS
-   ============================================================================ */
-.page-wrap {
-  max-width: 940px;
-  margin: 0 auto;
-  padding: 22px 16px 92px;
-}
-
-.card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  padding: 20px;
-  margin-bottom: 16px;
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out), border-color 0.25s ease;
-  animation: cardEnter 0.42s var(--ease-out) both;
-}
-
-.card:hover {
-  border-color: var(--line-strong);
-  box-shadow: var(--shadow-md);
-}
-
-@keyframes cardEnter {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 14px;
-}
-
-.section-title {
-  font-size: 25px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.section-sub {
-  color: var(--muted);
-  font-size: 13.5px;
-  margin-top: 2px;
-}
-
-/* ============================================================================
-   5. FORM CONTROLS & INTERNATIONAL PHONE
-   ============================================================================ */
-.field-group {
-  margin-top: 12px;
-}
-
-.field-label {
-  display: block;
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--ink-2);
-  margin-bottom: 5px;
-}
-
-input,
-select,
-textarea {
-  width: 100%;
-  padding: 10px 13px;
-  border: 1.5px solid var(--line);
-  border-radius: var(--radius-sm);
-  font-family: var(--font-body);
-  font-size: 14.5px;
-  color: var(--text);
-  background: #FFFFFF;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-  border-color: var(--ink);
-  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.22);
-}
-
-.phone-picker {
-  display: grid;
-  grid-template-columns: 54px 176px 1fr;
-  gap: 8px;
-  align-items: center;
-}
-
-.flag-box {
-  height: 44px;
-  border-radius: var(--radius-sm);
-  border: 1.5px solid var(--line);
-  background: var(--surface-2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  user-select: none;
-  transition: transform 0.28s var(--ease-spring), border-color 0.2s ease;
-}
-
-.flag-box.pop {
-  transform: scale(1.14) rotate(-3deg);
-  border-color: var(--gold);
-}
-
-.phone-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 5px;
-  font-size: 12.5px;
-  color: var(--muted);
-}
-
-.mono-chip {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  background: var(--surface-3);
-  border: 1px solid var(--line);
-  padding: 2px 8px;
-  border-radius: 6px;
-  color: var(--ink-2);
-}
-
-/* ============================================================================
-   6. BUTTONS & TABS
-   ============================================================================ */
-button,
-.btn {
-  border: 0;
-  border-radius: var(--radius-sm);
-  padding: 10px 16px;
-  font-family: var(--font-body);
-  font-size: 13.5px;
-  font-weight: 700;
-  color: #FFFFFF;
-  background: var(--red);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  text-decoration: none;
-  transition: transform 0.18s var(--ease-spring), background-color 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
-}
-
-button:hover:not(:disabled),
-.btn:hover {
-  transform: translateY(-1.5px);
-  box-shadow: 0 6px 16px rgba(18, 22, 27, 0.14);
-}
-
-button:active:not(:disabled),
-.btn:active {
-  transform: translateY(0) scale(0.98);
-}
-
-button:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-
-.btn-dark { background: var(--ink); }
-.btn-dark:hover:not(:disabled) { background: var(--ink-2); }
-
-.btn-green { background: var(--green); }
-.btn-green:hover:not(:disabled) { background: var(--green-dark); }
-
-.btn-gold { background: var(--gold); color: var(--ink); }
-.btn-red { background: var(--red); }
-.btn-red:hover:not(:disabled) { background: var(--red-dark); }
-
-.btn-wa { background: var(--wa); }
-.btn-wa:hover:not(:disabled) { background: var(--wa-dark); }
-
-.btn-sm { padding: 6px 12px; font-size: 12.5px; border-radius: 7px; }
-.btn-full { width: 100%; padding: 11px 16px; font-size: 14.5px; }
-
-.auth-tabs {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.auth-tabs button {
-  background: var(--surface);
-  color: var(--ink);
-  border: 1.5px solid var(--line);
-  padding: 11px 10px;
-  font-size: 13px;
-}
-
-.auth-tabs button.active {
-  background: var(--ink);
-  color: #FFFFFF;
-  border-color: var(--ink);
-}
-
-.filter-pills {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.filter-pills button {
-  background: var(--surface-2);
-  color: var(--ink-2);
-  border: 1px solid var(--line);
-  padding: 6px 12px;
-  font-size: 12.5px;
-}
-
-.filter-pills button.active {
-  background: var(--ink);
-  color: #FFFFFF;
-  border-color: var(--ink);
-}
-
-/* ============================================================================
-   7. WELCOME BANNER, AVATAR & TRUST PANEL
-   ============================================================================ */
-.welcome-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.user-identity {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.avatar-frame {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  border: 2.5px solid var(--gold);
-  background: linear-gradient(135deg, var(--ink), var(--ink-3));
-  color: #FFFFFF;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-display);
-  font-size: 28px;
-  font-weight: 800;
-  overflow: hidden;
-  flex-shrink: 0;
-  box-shadow: 0 6px 18px rgba(18, 22, 27, 0.16);
-}
-
-.avatar-frame img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.vip-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 11.5px;
-  font-weight: 800;
-  color: var(--green-dark);
-  background: var(--green-soft);
-  padding: 2px 10px;
-  border-radius: 999px;
-}
-
-.trust-panel {
-  margin-top: 14px;
-  background: linear-gradient(135deg, #F3F8F5 0%, #FBF9F0 100%);
-  border: 1px solid #C7DFD0;
-  border-inline-start: 4px solid var(--green);
-  border-radius: var(--radius-md);
-  padding: 13px 15px;
-}
-
-.trust-title {
-  font-weight: 800;
-  font-size: 14px;
-  color: var(--green-dark);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 4px;
-}
-
-.trust-copy {
-  font-size: 13px;
-  color: #25332B;
-  line-height: 1.55;
-}
-
-.trust-meta-row {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 8px;
-}
-
-.trust-pill {
-  font-size: 11.5px;
-  font-weight: 700;
-  background: #FFFFFF;
-  border: 1px solid #D2E4D9;
-  color: var(--ink-2);
-  padding: 3px 9px;
-  border-radius: 999px;
-}
-
-/* ============================================================================
-   8. BOOKING CARDS, FINANCIAL BREAKDOWN TABLE, RIB & PROOF UPLOAD
-   ============================================================================ */
-.booking-item {
-  border: 1px solid var(--line);
-  border-radius: var(--radius-md);
-  padding: 16px;
-  margin-bottom: 14px;
-  background: var(--surface-2);
-  transition: transform 0.2s var(--ease-out), border-color 0.2s ease, background-color 0.2s ease;
-}
-
-.booking-item:hover {
-  border-color: var(--line-strong);
-  background: #FFFFFF;
-}
-
-.booking-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.car-name {
-  font-family: var(--font-display);
-  font-size: 23px;
-  font-weight: 800;
-  color: var(--ink);
-}
-
-.status-badge {
-  font-size: 12px;
-  font-weight: 800;
-  padding: 4px 11px;
-  border-radius: 999px;
-  color: #FFFFFF;
-  background: #6F767E;
-}
-
-.status-badge.pending { background: var(--gold); color: var(--ink); }
-.status-badge.confirmed { background: var(--green); }
-.status-badge.cancellation_requested { background: #E67E22; }
-.status-badge.cancelled, .status-badge.expired { background: #7C8288; }
-
-.flow-steps {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
-  margin: 12px 0;
-}
-
-.flow-step {
-  background: #ECEEE9;
-  border-radius: 8px;
-  padding: 6px 8px;
-  font-size: 11.5px;
-  font-weight: 700;
-  color: var(--muted);
-  text-align: center;
-  border: 1px solid transparent;
-}
-
-.flow-step.done {
-  background: var(--green-soft);
-  color: var(--green-dark);
-  border-color: rgba(27, 153, 82, 0.28);
-}
-
-.flow-step.current {
-  background: var(--gold-soft);
-  color: var(--ink);
-  border-color: var(--gold);
-}
-
-/* جدول التفصيل المالي المدمج من pay.html */
-.finance-box {
-  background: #FFFFFF;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-md);
-  padding: 12px 14px;
-  margin-top: 10px;
-}
-
-.finance-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13.5px;
-}
-
-.finance-table td {
-  padding: 6px 0;
-  border-bottom: 1px solid #ECEEE9;
-}
-
-.finance-table tr:last-child td {
-  border-bottom: 0;
-}
-
-.finance-table td:last-child {
-  text-align: end;
-  font-weight: 700;
-  font-family: var(--font-mono);
-}
-
-.finance-highlight {
-  background: var(--gold-soft);
-  padding: 8px 10px;
-  border-radius: 8px;
-  margin-top: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
-  font-weight: 800;
-  font-size: 14px;
-}
-
-.warn-banner {
-  background: #FFF7E0;
-  border-inline-start: 4px solid var(--gold);
-  padding: 10px 12px;
-  border-radius: 8px;
-  font-size: 13px;
-  color: #3D3110;
-  margin: 8px 0;
-}
-
-.rib-panel {
-  background: #FFFFFF;
-  border: 1.5px dashed #BFC4BA;
-  border-radius: var(--radius-md);
-  padding: 12px 14px;
-  margin-top: 10px;
-}
-
-.rib-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 0;
-  border-top: 1px solid #ECEEE9;
-  flex-wrap: wrap;
-}
-
-.rib-row:first-of-type {
-  border-top: 0;
-}
-
-.rib-val {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--red-dark);
-  background: var(--surface-3);
-  padding: 4px 9px;
-  border-radius: 6px;
-  border: 1px solid var(--line);
-  margin-top: 4px;
-  display: inline-block;
-  direction: ltr;
-}
-
-.proof-panel {
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid var(--line);
-}
-
-.proof-controls {
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.billing-inline {
-  margin-top: 10px;
-  background: #FFFFFF;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-md);
-  padding: 10px 12px;
-}
-
-.billing-inline summary {
-  cursor: pointer;
-  font-weight: 700;
-  font-size: 13.5px;
-  color: var(--ink-2);
-}
-
-.action-bar {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 13px;
-}
-
-/* ============================================================================
-   9. DOCUMENTS GRID & FEEDBACK MESSAGES
-   ============================================================================ */
-.form-grid-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.doc-box {
-  background: var(--surface-2);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-md);
-  padding: 13px;
-}
-
-.doc-box-title {
-  font-weight: 800;
-  font-size: 13.5px;
-  color: var(--ink);
-  margin-bottom: 8px;
-}
-
-.msg-err {
-  color: var(--red);
-  font-weight: 700;
-  font-size: 13px;
-  margin-top: 8px;
-}
-
-.msg-ok {
-  color: var(--green-dark);
-  font-weight: 700;
-  font-size: 13px;
-  margin-top: 8px;
-}
-
-.link-inline {
-  color: var(--red);
-  font-weight: 700;
-  text-decoration: none;
-  font-size: 13px;
-}
-
-.link-inline:hover {
-  text-decoration: underline;
-}
-
-/* ============================================================================
-   10. FLOATING WHATSAPP HELP BUTTON & TOAST
-   ============================================================================ */
-.wa-fab {
-  position: fixed;
-  bottom: 18px;
-  inset-inline-start: 18px;
-  z-index: 45;
-  background: var(--wa);
-  color: #FFFFFF;
-  border-radius: 999px;
-  padding: 10px 16px;
-  font-weight: 700;
-  font-size: 13px;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 12px 26px rgba(18, 140, 126, 0.34);
-  transition: transform 0.22s var(--ease-spring), background-color 0.2s ease;
-}
-
-.wa-fab:hover {
-  transform: translateY(-2px) scale(1.02);
-  background: var(--wa-dark);
-}
-
-.toast-box {
-  position: fixed;
-  bottom: 18px;
-  inset-inline-end: 18px;
-  z-index: 80;
-  background: var(--ink);
-  color: #FFFFFF;
-  border-inline-start: 4px solid var(--green);
-  border-radius: var(--radius-md);
-  padding: 11px 16px;
-  font-size: 13.5px;
-  font-weight: 700;
-  box-shadow: var(--shadow-lg);
-  animation: toastIn 0.28s var(--ease-out);
-}
-
-@keyframes toastIn {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ============================================================================
-   11. MODAL (BON DE RÉSERVATION + QR CODE)
-   ============================================================================ */
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(12, 15, 19, 0.68);
-  backdrop-filter: blur(3px);
-  z-index: 70;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-}
-
-.modal-sheet {
-  background: #FFFFFF;
-  border-radius: var(--radius-xl);
-  max-width: 580px;
-  width: 100%;
-  max-height: 90vh;
-  overflow: auto;
-  padding: 22px;
-  box-shadow: var(--shadow-lg);
-  animation: modalPop 0.26s var(--ease-spring);
-}
-
-@keyframes modalPop {
-  from { opacity: 0; transform: scale(0.95) translateY(8px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
-}
-
-.bon-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 12px;
-  border-bottom: 2px solid var(--ink);
-  padding-bottom: 12px;
-  margin-bottom: 16px;
-}
-
-.bon-body {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 16px;
-  align-items: center;
-}
-
-.bon-rows {
-  display: grid;
-  gap: 7px;
-  font-size: 14px;
-}
-
-.qr-card {
-  text-align: center;
-  border: 1.5px solid var(--line);
-  border-radius: var(--radius-md);
-  padding: 12px;
-  background: var(--surface-2);
-}
-
-.qr-card canvas {
-  display: block;
-  margin: 0 auto;
-}
-
-.bon-footer-note {
-  margin-top: 14px;
-  background: #F3F8F5;
-  border-inline-start: 4px solid var(--green);
-  padding: 10px 12px;
-  border-radius: 8px;
-  font-size: 13px;
-  color: #1D3427;
-}
-
-/* ============================================================================
-   12. RESPONSIVE & PRINT STYLES
-   ============================================================================ */
-@media (max-width: 680px) {
-  .form-grid-2,
-  .bon-body {
-    grid-template-columns: 1fr;
-  }
-  .flow-steps {
-    grid-template-columns: 1fr 1fr;
-  }
-  .phone-picker {
-    grid-template-columns: 48px 146px 1fr;
-  }
-  .auth-tabs {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-@media print {
-  .site-header,
-  .wa-fab,
-  .toast-box,
-  .no-print {
-    display: none !important;
-  }
-  .modal-backdrop {
-    position: static;
-    background: none;
-    backdrop-filter: none;
-    padding: 0;
-  }
-  .modal-sheet {
-    box-shadow: none;
-    max-width: 100%;
-    padding: 0;
-  }
-}
+:root{
+  --ink:#12161B;--ink-2:#1E252E;--paper:#EEF0EC;--surface:#FFFFFF;--surface-2:#F8F9F7;--surface-3:#F1F3EE;
+  --red:#D62828;--red-dark:#A61B1B;--red-soft:rgba(214,40,40,.09);
+  --green:#1B9952;--green-dark:#13743D;--green-soft:rgba(27,153,82,.11);
+  --gold:#C9A227;--gold-soft:rgba(201,162,39,.16);
+  --wa:#128C7E;--wa-dark:#0B6B60;
+  --line:#D7D9D3;--line-strong:#BFC4BA;--text:#1B1F24;--muted:#5A6068;
+  --r-sm:8px;--r-md:12px;--r-lg:16px;--r-xl:22px;
+  --shadow-sm:0 4px 14px rgba(18,22,27,.05);--shadow-md:0 10px 28px rgba(18,22,27,.08);--shadow-lg:0 22px 54px rgba(18,22,27,.18);
+  --ease-out:cubic-bezier(.22,1,.36,1);--ease-spring:cubic-bezier(.34,1.4,.64,1);
+  --font-display:"Barlow Condensed","Cairo",sans-serif;--font-body:"Cairo",system-ui,-apple-system,sans-serif;--font-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-body);font-size:15px;line-height:1.58;background:var(--paper);color:var(--text);min-height:100vh;overflow-x:hidden;position:relative;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:-20%;z-index:-1;pointer-events:none;background:radial-gradient(circle at 12% 14%,rgba(214,40,40,.06),transparent 42%),radial-gradient(circle at 88% 18%,rgba(201,162,39,.08),transparent 45%),radial-gradient(circle at 50% 92%,rgba(27,153,82,.06),transparent 48%)}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+h1,h2,h3{font-family:var(--font-display);font-weight:800;line-height:1.15;color:var(--ink)}
+
+/* Header & 4-Lang Switcher */
+header{position:sticky;top:0;z-index:40;background:linear-gradient(95deg,var(--ink) 0%,var(--ink-2) 65%,#27191C 100%);color:#fff;padding:12px 18px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;border-bottom:3px solid var(--red);box-shadow:0 6px 22px rgba(0,0,0,.16)}
+.brand-link{text-decoration:none;color:#fff;font-family:var(--font-display);font-size:23px;font-weight:800;letter-spacing:.03em}
+.hx{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.lang-bar{display:inline-flex;background:rgba(255,255,255,.08);padding:3px;border-radius:9px;gap:2px}
+.lang-bar button{background:transparent;color:#d8dde3;padding:4px 9px;font-size:12px;border-radius:7px;box-shadow:none!important}
+.lang-bar button.on{background:var(--gold);color:var(--ink);font-weight:800}
+
+/* Layout & Cards */
+main{max-width:920px;margin:0 auto;padding:22px 16px 96px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px;margin-bottom:18px;box-shadow:var(--shadow-sm);animation:cardEnter .38s var(--ease-out) both}
+.card:hover{border-color:var(--line-strong);box-shadow:var(--shadow-md)}
+@keyframes cardEnter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.sub{color:var(--muted);font-size:13.5px}
+
+/* Visual Guide Strip with Inline SVG Illustrations */
+.visual-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.v-tile{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-md);padding:12px;display:flex;align-items:center;gap:10px}
+.v-icon{width:42px;height:42px;border-radius:10px;background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.v-tile b{display:block;font-size:13px;color:var(--ink)}
+.v-tile span{display:block;font-size:11.5px;color:var(--muted);line-height:1.35}
+
+/* Inputs & Auto-Flag Phone Input */
+label{display:block;font-size:13px;font-weight:700;color:var(--ink-2);margin:12px 0 5px}
+input,select{width:100%;padding:10px 13px;border:1.5px solid var(--line);border-radius:var(--r-sm);font-family:var(--font-body);font-size:14.5px;color:var(--text);background:#fff;transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus{border-color:var(--ink);box-shadow:0 0 0 3px rgba(201,162,39,.22);outline:none}
+input[type=file]{padding:7px 10px;background:var(--surface-2);cursor:pointer}
+
+.phone-auto{position:relative;display:flex;align-items:center}
+.phone-auto input{padding-inline-end:86px;font-family:var(--font-mono);font-size:15px}
+.auto-badge{position:absolute;inset-inline-end:8px;background:var(--surface-3);border:1px solid var(--line);border-radius:8px;padding:4px 9px;display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:800;color:var(--ink-2);pointer-events:none;transition:transform .25s var(--ease-spring)}
+.auto-badge.pop{transform:scale(1.1);border-color:var(--gold)}
+
+.pw-wrap{position:relative}
+.pw-eye{position:absolute;top:50%;inset-inline-end:8px;transform:translateY(-50%);background:transparent;color:var(--muted);padding:4px 8px;font-size:14px;box-shadow:none!important}
+.pw-meter{height:5px;border-radius:99px;background:#e2e5df;margin-top:6px;overflow:hidden}
+.pw-meter i{display:block;height:100%;width:0;transition:width .3s,background .3s}
+
+/* Buttons & Tabs */
+button,.btn{border:0;border-radius:var(--r-sm);padding:10px 16px;font-family:var(--font-body);font-size:13.5px;font-weight:700;color:#fff;background:var(--red);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:7px;text-decoration:none;transition:transform .18s var(--ease-spring),background-color .2s,box-shadow .2s}
+button:hover:not(:disabled),.btn:hover{transform:translateY(-1.5px);box-shadow:0 6px 16px rgba(18,22,27,.14)}
+button:active:not(:disabled),.btn:active{transform:scale(.98)}
+button:disabled{opacity:.55;cursor:not-allowed}
+.dark{background:var(--ink)}.green{background:var(--green)}.ghost{background:var(--surface-2);color:var(--ink);border:1.5px solid var(--line)}
+.sm{padding:6px 12px;font-size:12.5px;border-radius:7px}.full{width:100%;margin-top:16px;padding:12px;font-size:14.5px}
+
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.tabs button{background:var(--surface);color:var(--ink);border:1.5px solid var(--line);padding:11px 10px}
+.tabs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+.pills{display:flex;gap:6px;flex-wrap:wrap}
+.pills button{background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line);padding:6px 12px;font-size:12.5px}
+.pills button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* Alerts & Trust Box */
+.err{color:var(--red);font-weight:700;font-size:13px;margin-top:10px;background:var(--red-soft);padding:8px 12px;border-radius:8px;border-inline-start:3px solid var(--red)}
+.ok{color:var(--green-dark);font-weight:700;font-size:13px;margin-top:10px;background:var(--green-soft);padding:8px 12px;border-radius:8px;border-inline-start:3px solid var(--green)}
+.err:empty,.ok:empty{display:none}
+.warn{background:#FFF7E0;border-inline-start:4px solid var(--gold);padding:10px 12px;border-radius:8px;font-size:13px;color:#3D3110;margin:8px 0}
+.trust-panel{margin-top:14px;background:linear-gradient(135deg,#F3F8F5 0%,#FBF9F0 100%);border:1px solid #C7DFD0;border-inline-start:4px solid var(--green);border-radius:var(--r-md);padding:13px 15px}
+.trust-title{font-weight:800;font-size:14px;color:var(--green-dark);display:flex;align-items:center;gap:6px;margin-bottom:3px}
+.trust-copy{font-size:13px;color:#25332B}
+
+/* Hero & Progress */
+.avatar{width:68px;height:68px;border-radius:50%;border:2.5px solid var(--gold);background:linear-gradient(135deg,var(--ink),var(--ink-2));color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:28px;font-weight:800;overflow:hidden;flex-shrink:0}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.vip-tag{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:800;color:var(--green-dark);background:var(--green-soft);padding:2px 10px;border-radius:999px}
+.prog{margin-top:16px;padding:14px 16px;border-radius:var(--r-md);background:var(--surface-2);border:1px solid var(--line)}
+.bar{height:9px;border-radius:99px;background:#DFE3DC;margin-top:8px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),#25B865);border-radius:99px;transition:width .5s var(--ease-out)}
+.dots{display:flex;gap:6px;margin-top:9px}
+.dots b{flex:1;height:5px;border-radius:99px;background:#DFE3DC}.dots b.d{background:var(--green)}.dots b.c{background:var(--gold)}
+
+/* Steps & Bookings */
+.step{border:1.5px solid var(--line);border-radius:var(--r-md);margin-top:11px;background:#fff}
+.step[open]{border-color:var(--ink)}
+.step summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:13px 15px;user-select:none}
+.step summary::-webkit-details-marker{display:none}
+.num{width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font:800 17px var(--font-display);flex-shrink:0}
+.step.done .num{background:var(--green)}
+.stt{flex:1;font-weight:800}.stt small{display:block;font-weight:500;color:var(--muted);font-size:12.5px}
+.chip{font-size:11.5px;font-weight:800;padding:3px 10px;border-radius:999px;background:var(--gold-soft);color:#785B0A}
+.step.done .chip{background:var(--green-soft);color:var(--green-dark)}.chip.opt{background:var(--surface-3);color:var(--muted)}
+.sbody{padding:2px 15px 16px;border-top:1px solid var(--line)}.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+.bk{border:1px solid var(--line);border-radius:var(--r-md);padding:16px;margin-top:14px;background:var(--surface-2)}
+.bk:hover{border-color:var(--line-strong);background:#fff}
+.car{font-family:var(--font-display);font-size:23px;font-weight:800;color:var(--ink)}
+.ref-tag{font-family:var(--font-mono);font-size:12.5px;font-weight:700;background:#fff;border:1px solid var(--line);padding:3px 9px;border-radius:6px;color:var(--ink-2);direction:ltr;display:inline-block}
+.badge{font-size:12px;font-weight:800;padding:4px 11px;border-radius:999px;color:#fff;background:#6F767E}
+.badge.pending{background:var(--gold);color:var(--ink)}.badge.confirmed{background:var(--green)}.badge.cancellation_requested{background:#E67E22}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:12px 0}
+.flow span{background:#ECEEE9;border-radius:8px;padding:6px;font-size:11.5px;font-weight:700;color:var(--muted);text-align:center;border:1px solid transparent}
+.flow .d{background:var(--green-soft);color:var(--green-dark);border-color:rgba(27,153,82,.28)}.flow .c{background:var(--gold-soft);color:var(--ink);border-color:var(--gold)}
+.box{background:#fff;border:1px solid var(--line);border-radius:var(--r-md);padding:12px 14px;margin-top:10px}
+.rib-panel{background:#fff;border:1.5px dashed var(--line-strong);border-radius:var(--r-md);padding:12px 14px;margin-top:10px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}td{padding:6px 0;border-bottom:1px solid #ECEEE9}td:last-child{text-align:end;font-weight:700;font-family:var(--font-mono)}tr:last-child td{border-bottom:0}
+.dep{background:var(--gold-soft);padding:8px 10px;border-radius:8px;margin-top:8px;display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:14px}
+.rib{font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--red-dark);background:var(--surface-3);padding:4px 9px;border-radius:6px;border:1px solid var(--line);margin-top:4px;display:inline-block;direction:ltr}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
+
+/* Floating WA, Toast & Modal */
+.wa{position:fixed;bottom:18px;inset-inline-start:18px;z-index:45;background:var(--wa);color:#fff;border-radius:999px;padding:10px 16px;font-weight:700;font-size:13px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;box-shadow:0 12px 26px rgba(18,140,126,.34)}
+.toast{position:fixed;bottom:18px;inset-inline-end:18px;z-index:80;background:var(--ink);color:#fff;border-inline-start:4px solid var(--green);border-radius:var(--r-md);padding:11px 16px;font-size:13.5px;font-weight:700;box-shadow:var(--shadow-lg)}
+.modal{position:fixed;inset:0;background:rgba(12,15,19,.68);backdrop-filter:blur(3px);z-index:70;display:flex;align-items:center;justify-content:center;padding:16px}
+.sheet{background:#fff;border-radius:var(--r-xl);max-width:580px;width:100%;max-height:90vh;overflow:auto;padding:22px;box-shadow:var(--shadow-lg)}
+.bonb{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;margin-top:16px;font-size:14px}.bonb>div:first-child{display:grid;gap:7px}
+.qr-card{text-align:center;border:1.5px solid var(--line);border-radius:var(--r-md);padding:12px;background:var(--surface-2)}
+
+@media(max-width:680px){.visual-strip,.g2,.bonb{grid-template-columns:1fr}.flow{grid-template-columns:1fr 1fr}.tabs{grid-template-columns:1fr}}
+@media print{header,.wa,.toast,.np{display:none!important}.modal{position:static;background:none;backdrop-filter:none}.sheet{box-shadow:none;padding:0}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
 
-<header class="site-header">
-  <div class="brand-wrap">
-    <a class="brand-link" href="index.html">AMINE RENT A CAR</a>
-    <span class="brand-badge" id="hdrBadge">CLIENT</span>
-  </div>
-  <div class="header-actions">
-    <button type="button" class="btn-dark btn-sm" id="langBtn">Français</button>
-    <button type="button" class="btn-dark btn-sm" id="logoutBtn" hidden></button>
+<header>
+  <a class="brand-link" href="index.html">AMINE RENT A CAR</a>
+  <div class="hx">
+    <div class="lang-bar" role="group" aria-label="Language">
+      <button type="button" data-lang="ar">AR</button>
+      <button type="button" data-lang="fr">FR</button>
+      <button type="button" data-lang="en">EN</button>
+      <button type="button" data-lang="it">IT</button>
+    </div>
+    <button type="button" class="dark sm" id="outBtn" hidden></button>
   </div>
 </header>
 
-<main class="page-wrap">
-
-  <!-- ========================================================================
-       A. AUTHENTICATION & QUICK DEPOSIT GATE (UNIFIED ENTRY)
-       ======================================================================== -->
-  <section id="authSection">
-    <div class="auth-tabs">
-      <button type="button" class="active" id="tabLogin"></button>
-      <button type="button" id="tabRegister"></button>
-      <button type="button" id="tabQuickPay"></button>
+<main>
+  <!-- A. AUTH & QUICK VOUCHER / DEPOSIT -->
+  <section id="authSec">
+    <div class="tabs">
+      <button type="button" class="on" id="tLogin" data-i="tLogin"></button>
+      <button type="button" id="tReg" data-i="tReg"></button>
+      <button type="button" id="tPay" data-i="tPay"></button>
     </div>
 
-    <!-- Login / Register Card -->
-    <div class="card" id="loginRegCard">
-      <h2 id="authHeading" style="font-size:28px"></h2>
-      <p class="section-sub" id="authSubtext"></p>
-
-      <div class="field-group" id="nameWrap" hidden>
-        <label class="field-label" for="fullNameInp" id="lblFullName"></label>
-        <input id="fullNameInp" type="text" maxlength="90" autocomplete="name">
+    <div class="card" id="authCard">
+      <div class="row">
+        <h2 id="authH" style="font-size:28px"></h2>
+        <span class="vip-tag">🛡️ <span data-i="secBadge"></span></span>
       </div>
+      <p class="sub" data-i="authSub"></p>
 
-      <div class="field-group">
-        <label class="field-label" for="phoneNumInp" id="lblPhoneField"></label>
-        <div class="phone-picker">
-          <div class="flag-box" id="countryFlag" aria-hidden="true">🇹🇳</div>
-          <select id="countryCodeSel" aria-label="Country code"></select>
-          <input id="phoneNumInp" type="tel" inputmode="tel" autocomplete="tel-national" dir="ltr">
+      <!-- Visual 3-Step Guide -->
+      <div class="visual-strip">
+        <div class="v-tile">
+          <div class="v-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#12161B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 15h6"/></svg>
+          </div>
+          <div><b data-i="vg1t"></b><span data-i="vg1d"></span></div>
         </div>
-        <div class="phone-meta">
-          <span id="phoneHintTxt"></span>
-          <span class="mono-chip" id="phoneE164Preview" dir="ltr">+216</span>
+        <div class="v-tile">
+          <div class="v-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1B9952" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3"/><path d="M21 14v7h-7"/></svg>
+          </div>
+          <div><b data-i="vg2t"></b><span data-i="vg2d"></span></div>
+        </div>
+        <div class="v-tile">
+          <div class="v-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D62828" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+          </div>
+          <div><b data-i="vg3t"></b><span data-i="vg3d"></span></div>
         </div>
       </div>
 
-      <div class="field-group">
-        <label class="field-label" for="emailInp" id="lblEmailField"></label>
-        <input id="emailInp" type="email" autocomplete="email" dir="ltr">
+      <div id="regOnly" hidden>
+        <label for="fName" data-i="lName"></label>
+        <input id="fName" maxlength="90" autocomplete="name">
       </div>
 
-      <div class="field-group">
-        <label class="field-label" for="passwordInp" id="lblPasswordField"></label>
-        <input id="passwordInp" type="password" autocomplete="current-password">
+      <label for="fUser" id="lUser"></label>
+      <input id="fUser" maxlength="40" dir="ltr" autocomplete="username" autocapitalize="none" spellcheck="false">
+      <div class="sub" id="userHint"></div>
+
+      <div id="phoneBox">
+        <label for="fPhone" data-i="lPhone"></label>
+        <div class="phone-auto">
+          <input id="fPhone" type="tel" inputmode="tel" dir="ltr" autocomplete="tel">
+          <span class="auto-badge" id="autoFlag"><span id="flagIcon">🇹🇳</span><span id="ccLabel">+216</span></span>
+        </div>
+        <div class="sub" data-i="phoneAutoHint" style="margin-top:4px"></div>
       </div>
 
-      <div class="field-group">
-        <button type="button" class="btn-red btn-full" id="authSubmitBtn"></button>
+      <label for="fPass" data-i="lPass"></label>
+      <div class="pw-wrap">
+        <input id="fPass" type="password" maxlength="128" autocomplete="current-password">
+        <button type="button" class="pw-eye" id="togglePw" aria-label="Password">👁️</button>
+      </div>
+      <div class="pw-meter" id="pwMeter" hidden><i id="pwBar"></i></div>
+
+      <button type="button" class="full" id="authBtn"></button>
+
+      <div id="forgotBox" style="margin-top:12px;font-size:13px">
+        <span data-i="forgotTxt"></span>
+        <a href="#" id="forgotLink" target="_blank" rel="noopener noreferrer" style="color:var(--wa);font-weight:800">22192727</a>
       </div>
 
-      <div class="field-group" id="forgotWrap">
-        <a href="#" class="link-inline" id="forgotLink"></a>
-      </div>
-
-      <div class="msg-err" id="authErr"></div>
-      <div class="msg-ok" id="authOk"></div>
+      <div class="err" id="authErr" role="alert"></div>
+      <div class="ok" id="authOk" role="status"></div>
     </div>
 
-    <!-- Quick Deposit & Proof Card (Merged from pay.html for direct booking links) -->
-    <div class="card" id="quickPayCard" hidden>
-      <h2 id="qpHeading" style="font-size:28px"></h2>
-      <p class="section-sub" id="qpSubtext"></p>
+    <!-- Quick Voucher & Deposit Card -->
+    <div class="card" id="payCard" hidden>
+      <h2 style="font-size:28px" data-i="payH"></h2>
+      <p class="sub" data-i="paySub"></p>
 
       <div id="qpGate">
-        <div class="field-group">
-          <label class="field-label" for="qpBookingId" id="lblQpBooking"></label>
-          <input id="qpBookingId" type="text" dir="ltr" placeholder="UUID / Réf">
-        </div>
-        <div class="field-group">
-          <label class="field-label" for="qpPhone" id="lblQpPhone"></label>
-          <input id="qpPhone" type="tel" inputmode="tel" dir="ltr" placeholder="22123456">
-        </div>
-        <div class="field-group">
-          <button type="button" class="btn-green btn-full" id="qpLookupBtn"></button>
-        </div>
-        <div class="msg-err" id="qpErr"></div>
+        <label for="qpId" data-i="lQpId"></label>
+        <input id="qpId" dir="ltr" maxlength="40" placeholder="Ex: A8F92C1B" style="text-transform:uppercase">
+        <label for="qpPh" data-i="lQpPh"></label>
+        <input id="qpPh" type="tel" inputmode="tel" dir="ltr" maxlength="25">
+        <button type="button" class="green full" id="qpBtn" data-i="qpBtn"></button>
+        <div class="err" id="qpErr" role="alert"></div>
       </div>
 
-      <div id="qpResult" hidden>
-        <div class="finance-box">
-          <table class="finance-table" id="qpSumTable"></table>
-          <p class="section-sub" id="qpEstNote" style="margin-top:8px"></p>
-        </div>
+      <div id="qpRes" hidden>
+        <div class="box"><table id="qpTable"></table><p class="sub" data-i="estNote" style="margin-top:8px"></p></div>
+        <div class="rib-panel"><b data-i="ribT"></b><div id="qpBanks"></div></div>
 
-        <div class="rib-panel">
-          <div style="font-weight:800;font-size:13.5px;margin-bottom:4px" id="qpBankTitle"></div>
-          <div id="qpBanksList"></div>
-        </div>
+        <details class="box">
+          <summary style="cursor:pointer;font-weight:700;font-size:13.5px" data-i="billOptS"></summary>
+          <input id="qpBName" maxlength="120" style="margin-top:8px">
+          <input id="qpBAddr" maxlength="200" style="margin-top:8px">
+          <input id="qpBTax" maxlength="40" style="margin-top:8px">
+          <div class="acts"><button type="button" class="dark sm" id="qpBSave" data-i="billSave"></button></div>
+          <div class="err" id="qpBErr"></div><div class="ok" id="qpBOk"></div>
+        </details>
 
-        <div class="billing-inline">
-          <details>
-            <summary id="qpBillSummary"></summary>
-            <div class="field-group">
-              <input id="qpBillName" maxlength="120">
-            </div>
-            <div class="field-group">
-              <input id="qpBillAddr" maxlength="200">
-            </div>
-            <div class="field-group">
-              <input id="qpBillTax" maxlength="40">
-            </div>
-            <div class="field-group">
-              <button type="button" class="btn-dark btn-sm" id="qpBillSaveBtn"></button>
-            </div>
-            <div class="msg-err" id="qpBillErr"></div>
-            <div class="msg-ok" id="qpBillOk"></div>
-          </details>
-        </div>
-
-        <div class="proof-panel">
-          <div style="font-weight:800;font-size:13.5px" id="qpUpTitle"></div>
-          <div class="warn-banner" id="qpWarnText"></div>
-          <div class="proof-controls">
-            <input id="qpFileInp" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" style="max-width:310px;padding:6px">
-            <button type="button" class="btn-green btn-sm" id="qpSendProofBtn"></button>
+        <div class="box">
+          <b data-i="proofT"></b>
+          <div class="warn" data-i="warn"></div>
+          <div class="acts" style="margin-top:4px">
+            <input id="qpFile" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" style="max-width:300px">
+            <button type="button" class="green sm" id="qpSend" data-i="send"></button>
           </div>
-          <div class="msg-err" id="qpUpErr"></div>
-          <div class="msg-ok" id="qpUpOk"></div>
+          <div class="err" id="qpUpErr" role="alert"></div>
+          <div class="ok" id="qpUpOk" role="status"></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ========================================================================
-       B. PASSWORD RECOVERY SECTION
-       ======================================================================== -->
-  <section id="recoverySection" hidden>
+  <!-- B. CLIENT DASHBOARD -->
+  <section id="app" hidden>
     <div class="card">
-      <h2 id="recHeading" style="font-size:26px"></h2>
-      <div class="field-group">
-        <input id="newPassInp" type="password" autocomplete="new-password">
-      </div>
-      <div class="field-group">
-        <button type="button" class="btn-green" id="recSaveBtn"></button>
-      </div>
-      <div class="msg-err" id="recErr"></div>
-    </div>
-  </section>
-
-  <!-- ========================================================================
-       C. CLIENT DASHBOARD (WELCOME, TRUST, BOOKINGS + PAY + QR, DOCUMENTS)
-       ======================================================================== -->
-  <section id="clientApp" hidden>
-
-    <!-- 1. Welcome + Avatar + Privacy & Agent Trust Banner -->
-    <div class="card">
-      <div class="welcome-top">
-        <div class="user-identity">
-          <div class="avatar-frame" id="avatarCircle">A</div>
+      <div class="row">
+        <div style="display:flex;align-items:center;gap:14px">
+          <div class="avatar" id="avatar">A</div>
           <div>
-            <span class="vip-tag" id="vipLabel"></span>
-            <h1 id="welcomeTitle" style="font-size:28px;margin-top:4px"></h1>
-            <p class="section-sub" id="welcomeSub"></p>
+            <span class="vip-tag" data-i="vipTag"></span>
+            <h1 id="hello" style="font-size:28px;margin-top:4px"></h1>
+            <p class="sub" data-i="helloSub"></p>
           </div>
         </div>
-
-        <div class="action-bar" style="margin-top:0">
-          <label class="btn btn-dark btn-sm" style="margin:0">
-            <span id="avatarUploadTxt"></span>
-            <input type="file" id="avatarFileInp" accept="image/jpeg,image/png,image/webp" hidden>
-          </label>
-          <a class="btn btn-green btn-sm" href="index.html#flotte" id="newBookingBtn"></a>
+        <div class="acts" style="margin-top:0">
+          <label class="btn dark sm" style="margin:0"><span data-i="photo"></span><input type="file" id="avatarFile" accept="image/jpeg,image/png,image/webp" hidden></label>
+          <a class="btn green sm" href="index.html#flotte" data-i="newBk"></a>
         </div>
       </div>
 
+      <!-- Tunisia Local Pickup & Voucher Notice -->
       <div class="trust-panel">
-        <div class="trust-title">
-          <span>🛡️</span>
-          <span id="trustHeading"></span>
-        </div>
-        <p class="trust-copy" id="trustBody"></p>
-        <div class="trust-meta-row">
-          <span class="trust-pill" id="pillDbSafe"></span>
-          <span class="trust-pill" id="pillAgentOnly"></span>
-          <span class="trust-pill" id="pillContractReady"></span>
-        </div>
+        <div class="trust-title"><span>📍</span><span data-i="tunisH"></span></div>
+        <p class="trust-copy" data-i="tunisBody"></p>
       </div>
+
+      <!-- Progress & Steps -->
+      <div class="prog">
+        <div class="row" style="font-weight:800"><span id="progTitle"></span><span id="progPct" style="color:var(--green-dark)"></span></div>
+        <div class="bar"><i id="progBar"></i></div>
+        <div class="dots" id="dots"></div>
+        <p class="sub" id="progNext" style="margin-top:8px"></p>
+      </div>
+      <div id="steps"></div>
     </div>
 
-    <!-- 2. Bookings, Financial Summary, Deposit/RIB, Proof Upload & Rental History -->
+    <!-- Bookings & Voucher -->
     <div class="card">
-      <div class="card-header">
+      <div class="row">
         <div>
-          <h2 class="section-title" id="bookingsHeading"></h2>
-          <p class="section-sub" id="bookingsSub"></p>
+          <h2 style="font-size:25px" data-i="bkH"></h2>
+          <p class="sub" data-i="bkSub"></p>
         </div>
-        <div class="filter-pills">
-          <button type="button" class="active" data-flt="active" id="fltActiveBtn"></button>
-          <button type="button" data-flt="history" id="fltHistoryBtn"></button>
-          <button type="button" data-flt="all" id="fltAllBtn"></button>
+        <div class="pills">
+          <button type="button" class="on" data-f="active" data-i="fAct"></button>
+          <button type="button" data-f="history" data-i="fHist"></button>
+          <button type="button" data-f="all" data-i="fAll"></button>
         </div>
       </div>
-      <div id="bookingsContainer"></div>
+      <div id="bkList"></div>
     </div>
-
-    <!-- 3. Personal Profile, Identity (CIN / Passport), Driving License & Flight Ticket -->
-    <div class="card" id="profileDocsCard">
-      <div class="card-header">
-        <div>
-          <h2 class="section-title" id="profileHeading"></h2>
-          <p class="section-sub" id="profileSub"></p>
-        </div>
-      </div>
-
-      <div class="form-grid-2">
-        <div>
-          <label class="field-label" for="profName" id="lblProfName"></label>
-          <input id="profName" type="text" maxlength="120">
-        </div>
-        <div>
-          <label class="field-label" for="profPhone" id="lblProfPhone"></label>
-          <input id="profPhone" type="tel" maxlength="32" dir="ltr">
-        </div>
-        <div>
-          <label class="field-label" for="profAddr" id="lblProfAddr"></label>
-          <input id="profAddr" type="text" maxlength="200">
-        </div>
-        <div>
-          <label class="field-label" for="profTax" id="lblProfTax"></label>
-          <input id="profTax" type="text" maxlength="50">
-        </div>
-      </div>
-
-      <div class="form-grid-2" style="margin-top:14px">
-        <div class="doc-box">
-          <div class="doc-box-title" id="idBoxTitle"></div>
-          <div class="field-group" style="margin-top:6px">
-            <label class="field-label" for="idDocTypeSel" id="lblIdDocType"></label>
-            <select id="idDocTypeSel">
-              <option value="cin">CIN — بطاقة التعريف الوطنية</option>
-              <option value="passport">Passeport — جواز سفر</option>
-            </select>
-          </div>
-          <div class="field-group" style="margin-top:8px">
-            <label class="field-label" for="idDocNumInp" id="lblIdDocNum"></label>
-            <input id="idDocNumInp" type="text" maxlength="45" dir="ltr">
-          </div>
-          <div class="field-group" style="margin-top:8px">
-            <label class="field-label" for="idDocFileInp" id="lblIdDocFile"></label>
-            <input id="idDocFileInp" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" style="padding:6px">
-          </div>
-          <div id="idDocPreview" style="margin-top:8px"></div>
-        </div>
-
-        <div class="doc-box">
-          <div class="doc-box-title" id="licBoxTitle"></div>
-          <div class="field-group" style="margin-top:6px">
-            <label class="field-label" for="licFileInp" id="lblLicFile"></label>
-            <input id="licFileInp" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" style="padding:6px">
-          </div>
-          <div id="licPreview" style="margin-top:8px"></div>
-
-          <div class="field-group" style="margin-top:12px">
-            <label class="field-label" for="flightInp" id="lblFlight"></label>
-            <input id="flightInp" type="text" maxlength="70" dir="ltr">
-          </div>
-        </div>
-      </div>
-
-      <div class="action-bar" style="margin-top:16px">
-        <button type="button" class="btn-green" id="saveProfileBtn"></button>
-      </div>
-      <div class="msg-ok" id="profOk"></div>
-      <div class="msg-err" id="profErr"></div>
-    </div>
-
   </section>
 </main>
 
-<!-- Floating WhatsApp Assistance (22192727) -->
-<a class="wa-fab" href="https://wa.me/21622192727" target="_blank" rel="noopener" id="waBtn">
-  <span aria-hidden="true">💬</span>
-  <span id="waText"></span>
-</a>
+<a class="wa" href="https://wa.me/21622192727" target="_blank" rel="noopener noreferrer">💬 <span data-i="waTxt"></span></a>
+<div class="toast" id="toast" role="status" hidden></div>
 
-<!-- Toast Feedback -->
-<div class="toast-box" id="toastBox" hidden></div>
-
-<!-- Booking Pass + QR Modal -->
-<div class="modal-backdrop" id="bonModal" hidden>
-  <div class="modal-sheet" role="dialog" aria-modal="true" aria-labelledby="bonHeading">
-    <div class="bon-top">
+<!-- Booking Voucher + QR Modal -->
+<div class="modal" id="bon" hidden>
+  <div class="sheet" role="dialog" aria-modal="true">
+    <div class="row" style="border-bottom:2px solid var(--ink);padding-bottom:12px">
       <div>
-        <h2 id="bonHeading" style="font-size:27px"></h2>
-        <div class="section-sub" id="bonRefLine"></div>
+        <h2 style="font-size:27px" data-i="bonH"></h2>
+        <div class="ref-tag" id="bonRef" style="margin-top:4px"></div>
       </div>
-      <button type="button" class="btn-dark btn-sm no-print" id="bonCloseBtn">✕</button>
+      <button type="button" class="dark sm np" id="bonX">✕</button>
     </div>
-    <div class="bon-body">
-      <div class="bon-rows" id="bonRows"></div>
+    <div class="bonb">
+      <div id="bonRows"></div>
       <div class="qr-card">
-        <canvas id="bonQrCanvas" width="152" height="152"></canvas>
-        <div class="section-sub" id="bonQrNote" style="margin-top:6px;font-size:11.5px"></div>
+        <canvas id="qr" width="152" height="152"></canvas>
+        <div class="sub" data-i="bonQr" style="margin-top:6px;font-size:11.5px"></div>
       </div>
     </div>
-    <div class="bon-footer-note" id="bonKeepText"></div>
-    <div class="action-bar no-print" style="margin-top:16px;justify-content:flex-end">
-      <button type="button" class="btn-green" id="bonPrintBtn"></button>
-    </div>
+    <div class="trust-panel" style="margin-top:14px" data-i="bonKeep"></div>
+    <div class="acts np" style="justify-content:flex-end"><button type="button" class="green" id="bonPrint" data-i="print"></button></div>
   </div>
 </div>
 
 <script>
-/* ============================================================================
-   1. CONFIGURATION & SUPABASE CLIENT
-   ============================================================================ */
-const SUPABASE_URL = "https://tadaqaqvtjcnanspcboj.supabase.co";
-const SUPABASE_KEY = "sb_publishable_fA2Est6rYrP6Sx1xfyhdOA_IA5TQ6MO";
-const DOCS_BUCKET = "client-documents";
-const PROOFS_BUCKET = "payment-proofs";
-const URL_BOOKING_ID = new URLSearchParams(location.search).get("b") || "";
-
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+"use strict";
+const sb = supabase.createClient("https://tadaqaqvtjcnanspcboj.supabase.co","sb_publishable_fA2Est6rYrP6Sx1xfyhdOA_IA5TQ6MO",{
+  auth:{persistSession:true,autoRefreshToken:true}
+});
+const DOCS="client-documents", PROOFS="payment-proofs", ADMIN_WA="21622192727";
+const RAW_REF = new URLSearchParams(location.search).get("b") || "";
 const $ = id => document.getElementById(id);
-const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({
-  "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-}[c]));
+const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const money = n => Number(n??0).toFixed(3).replace(/\.?0+$/,"") + " TND";
+const shortRef = id => String(id||"").replace(/[^a-zA-Z0-9]/g,"").slice(0,8).toUpperCase();
+const EXT = {"image/jpeg":"jpg","image/png":"png","image/webp":"webp","application/pdf":"pdf"};
 
-/* ============================================================================
-   2. INTERNATIONAL COUNTRIES & FLAGS
-   ============================================================================ */
-const COUNTRIES = [
-  { code: "+216", flag: "🇹🇳", ar: "تونس (+216)", fr: "Tunisie (+216)" },
-  { code: "+33",  flag: "🇫🇷", ar: "فرنسا (+33)", fr: "France (+33)" },
-  { code: "+39",  flag: "🇮🇹", ar: "إيطاليا (+39)", fr: "Italie (+39)" },
-  { code: "+49",  flag: "🇩🇪", ar: "ألمانيا (+49)", fr: "Allemagne (+49)" },
-  { code: "+44",  flag: "🇬🇧", ar: "بريطانيا (+44)", fr: "Royaume-Uni (+44)" },
-  { code: "+34",  flag: "🇪🇸", ar: "إسبانيا (+34)", fr: "Espagne (+34)" },
-  { code: "+32",  flag: "🇧🇪", ar: "بلجيكا (+32)", fr: "Belgique (+32)" },
-  { code: "+41",  flag: "🇨🇭", ar: "سويسرا (+41)", fr: "Suisse (+41)" },
-  { code: "+1",   flag: "🇺🇸", ar: "أمريكا / كندا (+1)", fr: "USA / Canada (+1)" },
-  { code: "+971", flag: "🇦🇪", ar: "الإمارات (+971)", fr: "Émirats (+971)" },
-  { code: "+966", flag: "🇸🇦", ar: "السعودية (+966)", fr: "Arabie saoudite (+966)" },
-  { code: "+974", flag: "🇶🇦", ar: "قطر (+974)", fr: "Qatar (+974)" },
-  { code: "+213", flag: "🇩🇿", ar: "الجزائر (+213)", fr: "Algérie (+213)" },
-  { code: "+212", flag: "🇲🇦", ar: "المغرب (+212)", fr: "Maroc (+212)" },
-  { code: "+218", flag: "🇱🇾", ar: "ليبيا (+218)", fr: "Libye (+218)" }
+const PREFIXES = [
+  ["216","🇹🇳"],["33","🇫🇷"],["39","🇮🇹"],["49","🇩🇪"],["44","🇬🇧"],["34","🇪🇸"],
+  ["32","🇧🇪"],["41","🇨🇭"],["1","🇺🇸"],["971","🇦🇪"],["966","🇸🇦"],["974","🇶🇦"],
+  ["213","🇩🇿"],["212","🇲🇦"],["218","🇱🇾"]
 ];
 
-/* ============================================================================
-   3. BILINGUAL DICTIONARY (AR / FR)
-   ============================================================================ */
-const I18N = {
-  ar: {
-    langBtn: "Français",
-    hdrBadge: "فضاء الحريف",
-    tabLogin: "تسجيل الدخول",
-    tabRegister: "إنشاء حساب",
-    tabQuickPay: "دفع العربون السريع",
-    authLoginHeading: "مرحباً بك في فضاء الحريف",
-    authRegHeading: "إنشاء حساب حريف جديد",
-    authSubtext: "تابع كراءاتك السابقة والحالية، ادفع العربون، ارفع وثائقك، واحصل على وصل الـ QR.",
-    lblFullName: "الاسم واللقب",
-    fullNamePh: "مثال: فتحي نايلي",
-    lblPhoneField: "رقم الهاتف الدولي (يُحدّد العلم تلقائياً)",
-    phonePh: "مثال: 22123456 أو 39 ثم الرقم",
-    phoneHintTxt: "اكتب نداء الدولة مثل 39 أو 33 أو 216 أو اختره من القائمة.",
-    lblEmailField: "البريد الإلكتروني (اختياري — يُستعمل لاسترجاع كلمة السر)",
-    emailPh: "name@example.com",
-    lblPasswordField: "كلمة السر (8 أحرف على الأقل)",
-    passwordPh: "••••••••",
-    btnLogin: "دخول إلى حسابي",
-    btnRegister: "إنشاء الحساب الآن",
-    forgotLink: "نسيت كلمة السر؟",
-    errBadCreds: "تعذّر الدخول: تأكد من المعرّف أو كلمة السر.",
-    errBadPhone: "يرجى إدخال رقم هاتف صحيح أو بريد إلكتروني صالح.",
-    errShortPass: "كلمة السر يجب أن تتكون من 8 أحرف على الأقل.",
-    errNeedName: "يرجى إدخال الاسم واللقب.",
-    okCreated: "تم إنشاء الحساب بنجاح. تحقق من بريدك إذا طُلب التفعيل ثم سجل الدخول.",
-    okResetMail: "تم إرسال رابط استرجاع كلمة السر إلى بريدك الإلكتروني.",
-    msgResetPhone: "لإعادة تعيين كلمة سر حساب مرتبط برقم هاتف، تواصل مع المساعدة على واتساب 22192727.",
-    errNeedEmailReset: "اكتب بريدك الإلكتروني أولاً لإرسال رابط الاسترجاع.",
-    recHeading: "تعيين كلمة سر جديدة",
-    recSaveBtn: "حفظ كلمة السر",
-
-    /* Quick Pay */
-    qpHeading: "دفع العربون وإرسال الإثبات (دخول سريع)",
-    qpSubtext: "أدخل مرجع الحجز ورقم الهاتف المستعمل في الطلب لعرض الملخص المالي والـ RIB ورفع الإثبات.",
-    lblQpBooking: "مرجع الحجز (Booking ID)",
-    lblQpPhone: "رقم الهاتف المستعمل في الحجز",
-    qpLookupBtn: "عرض ملخص الحجز والـ RIB",
-    qpBadLookup: "الطلب غير موجود أو رقم الهاتف غير مطابق.",
-    qpEstNote: "المبالغ تقديرية: يؤكد الفريق السعر النهائي أثناء المكالمة. طلبك ليس حجزا مؤكدا قبل التحقق من الدفع.",
-    qpBankTitle: "المعطيات البنكية (RIB) للتحويل",
-    qpBillSummary: "معلومات الفاتورة (اختياري — اسم الشركة / المعرّف الجبائي)",
-    qpBillSaveBtn: "حفظ معلومات الفاتورة",
-    qpBillSaved: "✅ تم حفظ معلومات الفاتورة",
-    qpBillFail: "تعذّر حفظ معلومات الفاتورة (ربما صدرت الفاتورة بالفعل).",
-    qpUpTitle: "إرسال إثبات التحويل البنكي",
-    qpWarnText: "تنبيه مهم: صورة الشاشة وحدها ليست إثبات دفع نهائي — يتحقق الفريق من وصول المبلغ في الحساب البنكي قبل تأكيد الحجز وإصدار وصل الـ QR.",
-    qpSendProofBtn: "إرسال الإثبات الآن",
-    qpSentDone: "✅ تم استلام الإثبات بنجاح. سنتحقق منه ونفعل لك وصل الـ QR.",
-
-    /* Dashboard */
-    vipLabel: "حريف معتمد · AMINE RENT A CAR",
-    welcomePrefix: "مرحباً بك",
-    welcomeSub: "جميع كراءاتك السابقة والحالية، التفصيل المالي، وثائقك ووصل الـ QR في مكان واحد.",
-    avatarUploadTxt: "تغيير الصورة",
-    newBookingBtn: "+ حجز سيارة جديدة",
-    trustHeading: "خصوصية وأمان بياناتك ووثائقك في قاعدة البيانات",
-    trustBody: "جميع بياناتك ووثائقك (بطاقة التعريف / الجواز، رخصة السياقة، ورقم التذكرة) محفوظة بأمان في قاعدة البيانات، ولا يطلع عليها إلا العون المكلّف بملفك يوم التسليم لتحرير عقد الكراء مع توضيح اسم العون ورقمه عند المعاينة.",
-    pillDbSafe: "🔒 محفوظة في قاعدة البيانات",
-    pillAgentOnly: "👤 اطلاع العون المكلّف فقط يوم التسليم",
-    pillContractReady: "📄 جاهزة لتحرير العقد",
-    bookingsHeading: "الكراءات، الدفع، وسجل العمليات",
-    bookingsSub: "اطلع على الملخص المالي لكل حجز، انسخ الـ RIB، ارفع الإثبات، واحتفظ بوصل الـ QR.",
-    fltActive: "الحالية",
-    fltHistory: "السابقة / الأرشيف",
-    fltAll: "الكل",
-    emptyBookings: "لا توجد عمليات كراء في هذا التصنيف حالياً.",
-    step1: "1. طلب الحجز",
-    step2: "2. الاتصال و RIB",
-    step3: "3. إثبات الدفع",
-    step4: "4. مؤكد + QR",
-    from: "من",
-    to: "إلى",
-    days: "أيام",
-    finSummaryTitle: "التفصيل المالي للحجز (TND)",
-    finSub: "المجموع دون أداء (HTVA)",
-    finVat: "الأداء على القيمة المضافة (TVA)",
-    finLevy: "معلوم الكراء",
-    finStamp: "الطابع الجبائي",
-    finTot: "المجموع التقديري مع الأداء (TTC)",
-    finDep: "العربون المطلوب",
-    finRec: "المبلغ المتحقَّق منه",
-    finRem: "المتبقي التقديري",
-    ribTitle: "المعطيات البنكية (RIB) للتحويل أو الإيداع",
-    ribEmpty: "ستظهر المعطيات البنكية بعد تأكيد الطلب أو عبر الوكالة.",
-    copyRib: "نسخ RIB",
-    copiedRib: "تم النسخ ✓",
-    proofLabel: "رفع إثبات الدفع (JPG, PNG, WebP أو PDF — بحد أقصى 5 م.ب)",
-    proofHint: "المبلغ المحوّل أو المرجع (اختياري)",
-    sendProof: "إرسال الإثبات",
-    sendingProof: "جاري الرفع...",
-    proofSentOk: "تم إرسال الإثبات بنجاح. يقوم الفريق بالتحقق الآن.",
-    proofErrGeneric: "تعذّر إرسال الإثبات.",
-    errFileType: "يرجى اختيار ملف صالح (JPG, PNG, WebP أو PDF) بحجم أقصى 5 م.ب.",
-    errAvatarType: "يرجى اختيار صورة (JPG, PNG أو WebP) بحجم أقصى 3 م.ب.",
-    viewProof: "معاينة الإثبات",
-    bonBtn: "وصل الحجز + QR",
-    bonHeading: "وصل تأكيد الحجز",
-    bonQrNote: "يُمسح عند استلام السيارة",
-    bonKeepText: "احتفظ بهذا الوصل وبإثبات الدفع حتى تسليم السيارة والعقد مع العون المكلّف.",
-    bonPrintBtn: "طباعة / حفظ PDF",
-    invPrefix: "فاتورة",
-    cnPrefix: "إشعار دائن",
-    cancelBtn: "طلب إلغاء",
-    cancelPrompt: "سبب الإلغاء (اختياري):",
-    cancelOk: "تم إرسال طلب الإلغاء وسيعالجه الفريق.",
-    cancelFail: "تعذّر إرسال طلب الإلغاء.",
-    profileHeading: "الملف الشخصي، وثائق الهوية والسياقة، ورقم التذكرة",
-    profileSub: "أكمل وثائقك مسبقاً لتسهيل تسليم العقد والسيارة بسرعة وأمان.",
-    lblProfName: "الاسم واللقب",
-    lblProfPhone: "رقم الهاتف الدولي",
-    lblProfAddr: "عنوان الفوترة / الإقامة",
-    lblProfTax: "المعرّف الجبائي (للشركات إن وُجد)",
-    idBoxTitle: "بطاقة التعريف (CIN) أو جواز السفر (Passeport)",
-    lblIdDocType: "نوع الوثيقة",
-    lblIdDocNum: "رقم البطاقة أو الجواز",
-    lblIdDocFile: "صورة / ملف الهوية",
-    licBoxTitle: "رخصة السياقة (Permis) وتذكرة القدوم",
-    lblLicFile: "صورة / ملف رخصة السياقة",
-    lblFlight: "رقم تذكرة السفر / الرحلة (للقادمين من الخارج)",
-    flightPh: "مثال: TU721 أو رقم التذكرة",
-    viewDocLink: "معاينة الملف المحفوظ",
-    saveProfileBtn: "حفظ الملف والوثائق",
-    savingProfile: "جاري الحفظ...",
-    profileSavedOk: "تم حفظ بياناتك ووثائقك بنجاح.",
-    profileSaveErr: "تعذّر حفظ البيانات.",
-    waText: "مساعدة فورية واتساب: 22192727",
-    toastCopied: "تم نسخ الـ RIB ✓",
-    toastSaved: "تم الحفظ بنجاح ✓",
-    statusMap: {
-      pending: "في انتظار التأكيد",
-      confirmed: "مؤكَّد — الوصل و QR جاهز",
-      completed: "مكتمل / سابق",
-      cancelled: "ملغى",
-      expired: "منتهي",
-      cancellation_requested: "طلب إلغاء",
-      blocked: "غير متاح"
-    },
-    paidBanner: "تم التحقق من الدفع — وصل الحجز مع QR جاهز للاستلام",
-    proofBanner: "تم استلام إثبات الدفع — قيد التحقق من طرف الإدارة",
-    bonRef: "مرجع الحجز",
-    bonClient: "الحريف",
-    bonPhone: "الهاتف",
-    bonCar: "السيارة",
-    bonPeriod: "الفترة",
-    bonPickup: "نقطة الاستلام",
-    logoutBtn: "خروج"
+const T={
+  ar:{
+    out:"خروج",secBadge:"دخول باسم المستخدم أو الهاتف",
+    tLogin:"دخول",tReg:"إنشاء حساب",tPay:"وصل الحجز والعربون",
+    loginH:"فضاء الحريف",regH:"إنشاء حساب جديد",
+    authSub:"أدخل اسم المستخدم أو رقم هاتفك — بلا إيميل. استلم وصل الحجز (Bon) وتوجّه لأقرب وكالة في تونس.",
+    vg1t:"1. كمّل ملفك",vg1d:"البطاقة أو الجواز والرخصة",vg2t:"2. وصل الحجز + QR",vg2d:"تأكيد رسمي لحجزك",vg3t:"3. استلم سيارتك",vg3d:"من أقرب وكالة في تونس",
+    lName:"الاسم واللقب",lUserLogin:"اسم المستخدم أو رقم الهاتف",lUserReg:"اسم المستخدم",
+    hintReg:"حروف لاتينية وأرقام و _ فقط (3 أحرف على الأقل).",hintLogin:"اكتب اسم المستخدم أو رقم الهاتف مباشرة.",
+    lPhone:"رقم الهاتف (مع نداء الدولة إن وُجد)",
+    phoneAutoHint:"يتبدّل العلم والنداء تلقائياً بمجرّد كتابة الرقم (مثال: 21622192727 أو 393401234567 أو 22192727).",
+    lPass:"كلمة السر (8 أحرف على الأقل)",btnLogin:"دخول",btnReg:"إنشاء الحساب",
+    forgotTxt:"نسيت كلمة السر؟ تواصل مع الإدارة على واتساب:",
+    eCreds:"اسم المستخدم أو كلمة السر غالطين.",eUser:"اسم المستخدم: 3 أحرف على الأقل (لاتيني، أرقام، _).",
+    ePhone:"أدخل رقم هاتف صحيح.",ePass:"كلمة السر لازم 8 أحرف على الأقل.",eName:"أدخل الاسم واللقب.",
+    eTaken:"اسم المستخدم هذا مستعمل، اختار غيره.",eGeneric:"صارت مشكلة، عاود المحاولة.",
+    eLock:s=>`محاولات كثيرة. انتظر ${s} ثانية.`,idleOut:"تم تسجيل الخروج تلقائياً لحماية حسابك.",
+    payH:"وصل الحجز ودفع العربون",paySub:"أدخل رقم الحجز ورقم الهاتف المستعمل في الطلب.",
+    lQpId:"رقم الحجز",lQpPh:"رقم الهاتف المستعمل في الحجز",qpBtn:"عرض التفاصيل و RIB",
+    qpBad:"رقم الحجز غير موجود أو الهاتف غير مطابق.",
+    estNote:"المبالغ تقديرية. وصل الحجز (Bon) هو الأساسي لاستلام السيارة في الوكالة.",
+    ribT:"المعطيات البنكية (RIB)",warn:"صورة الشاشة وحدها لا تكفي قبل التحقق من التحويل.",
+    billOptS:"معلومات الفاتورة (اختيارية — ليست ضرورية لاستلام السيارة)",billSave:"حفظ الفاتورة",
+    billOk:"✅ تم حفظ معلومات الفاتورة",billErr:"تعذّر الحفظ.",
+    proofT:"إرسال إثبات التحويل (JPG, PNG, WebP أو PDF — 5 م.ب)",send:"إرسال الإثبات",sending:"جاري الرفع...",
+    sentOk:"✅ تم استلام الإثبات. نتحقق منه ونفعّل وصل الـ QR.",proofErr:"تعذّر إرسال الإثبات.",
+    badFile:"ملف غير صالح (JPG, PNG, WebP أو PDF، 5 م.ب كحد أقصى).",
+    vipTag:"حريف · AMINE RENT A CAR",hello:"مرحباً",
+    helloSub:"حجوزاتك، وثائقك ووصل الحجز (Bon + QR) في مكان واحد.",
+    photo:"تغيير الصورة",newBk:"+ حجز جديد",
+    tunisH:"استلام السيارة في تونس مع وصل الحجز (Bon de Réservation)",
+    tunisBody:"سواء كان عندك حساب أو لا، إذا كنت مقيماً في تونس يمكنك إتمام خطواتك واصطحاب وصل الحجز (Bon + QR) إلى أقرب وكالة لتسلّم سيارتك بوضوح وثقة. الفاتورة اختيارية لمن يطلبها.",
+    progT:"ملفك",stepsOf:(d,n)=>`${d} من ${n} مراحل مكتملة`,
+    left:r=>r?`باقي ${r} ${r==1?"مرحلة":"مراحل"} ليكون ملفك جاهزاً لتسليم السيارة.`:"ملفك جاهز لاستلام السيارة في الوكالة.",
+    s1:"المعلومات الشخصية",s1d:"الاسم، الهاتف والعنوان",
+    s2:"بطاقة التعريف أو الجواز",s2d:"النوع، الرقم وصورة الوثيقة",
+    s3:"رخصة السياقة",s3d:"الرقم، التواريخ وصورة الرخصة",
+    s4:"تذكرة السفر",s4d:"للقادمين من الخارج فقط",
+    done:"مكتملة",todo:"مطلوبة",opt:"اختيارية",
+    lAddr:"العنوان في تونس / الإقامة",lTax:"المعرّف الجبائي (اختياري)",
+    lIdType:"نوع الوثيقة",lIdNum:"رقم البطاقة أو الجواز",lIdFile:"صورة / ملف الهوية",
+    lLicNum:"رقم رخصة السياقة",lLicDate:"تاريخ الحصول على الرخصة",lBirth:"تاريخ الميلاد",lLicFile:"صورة / ملف رخصة السياقة",
+    lFlight:"رقم التذكرة أو الرحلة",view:"📎 عرض الملف المحفوظ",
+    saveStep:"حفظ المرحلة",saving:"جاري الحفظ...",saved:"تم الحفظ ✓",
+    needS1:"الاسم والهاتف مطلوبين.",needS2:"أدخل رقم الوثيقة وارفع صورتها.",needS3:"أدخل رقم الرخصة وتواريخها وارفع صورتها.",
+    bkH:"حجوزاتي ووصل الحجز",bkSub:"رقم الحجز، التفاصيل المالية، ووصل الـ QR للاستلام.",
+    fAct:"الحالية",fHist:"السابقة",fAll:"الكل",empty:"لا توجد حجوزات هنا.",
+    st1:"1. الطلب",st2:"2. التنسيق و RIB",st3:"3. الإثبات",st4:"4. مؤكد + QR",
+    from:"من",to:"إلى",days:"أيام",
+    finT:"التفصيل المالي (TND)",htva:"المجموع دون أداء",vat:"الأداء على القيمة المضافة",
+    levy:"معلوم الكراء",stamp:"الطابع الجبائي",ttc:"المجموع التقديري",dep:"العربون",rec:"المتحقَّق منه",rem:"المتبقي",
+    ribE:"المعطيات البنكية تظهر بعد تأكيد الطلب.",copy:"نسخ RIB",copied:"تم النسخ ✓",
+    proofL:"رفع إثبات الدفع",amtPh:"المبلغ المحوّل (اختياري)",
+    viewProof:"📎 الإثبات",bonBtn:"🎫 وصل الحجز + QR",inv:"فاتورة",cn:"إشعار دائن",
+    cancel:"طلب إلغاء",cancelQ:"سبب الإلغاء (اختياري):",cancelOk:"تم إرسال طلب الإلغاء.",cancelErr:"تعذّر إرسال الطلب.",
+    paid:"تم التأكيد — وصل الحجز (Bon + QR) جاهز للاستلام في الوكالة",wait:"وصل الإثبات، قيد التحقق.",
+    status:{pending:"في انتظار التأكيد",confirmed:"مؤكَّد — Bon + QR جاهز",completed:"مكتمل",cancelled:"ملغى",expired:"منتهي",cancellation_requested:"طلب إلغاء"},
+    bonH:"وصل الحجز (BON DE RÉSERVATION)",bonQr:"يُمسح في الوكالة عند الاستلام",
+    bonKeep:"احتفظ بهذا الوصل (Bon + QR) وتوجّه به إلى أقرب وكالة في تونس لاستلام السيارة.",
+    print:"طباعة / PDF",ref:"رقم الحجز",cl:"الحريف",ph:"الهاتف",car:"السيارة",per:"الفترة",pick:"الوكالة / الاستلام",
+    waTxt:"مساعدة واتساب: 22192727",
+    waMsg:u=>`سلام، نسيت كلمة السر متاع حسابي${u?` (${u})`:""}.`
   },
-  fr: {
-    langBtn: "العربية",
-    hdrBadge: "ESPACE CLIENT",
-    tabLogin: "Connexion",
-    tabRegister: "Créer un compte",
-    tabQuickPay: "Payer l'acompte",
-    authLoginHeading: "Bienvenue sur votre espace client",
-    authRegHeading: "Créer votre compte client",
-    authSubtext: "Suivez vos locations, payez votre acompte, préparez vos documents et votre Bon QR.",
-    lblFullName: "Nom et prénom",
-    fullNamePh: "Ex : Fathi Naili",
-    lblPhoneField: "Numéro de téléphone (drapeau & indicatif auto)",
-    phonePh: "Ex : 22123456 ou 39 puis le numéro",
-    phoneHintTxt: "Saisissez l'indicatif (ex. 39, 33, 216) ou choisissez le pays.",
-    lblEmailField: "E-mail (optionnel — réinitialisation & reçus)",
-    emailPh: "nom@exemple.com",
-    lblPasswordField: "Mot de passe (8 caractères minimum)",
-    passwordPh: "••••••••",
-    btnLogin: "Se connecter",
-    btnRegister: "Créer mon compte",
-    forgotLink: "Mot de passe oublié ?",
-    errBadCreds: "Connexion refusée : vérifiez vos identifiants.",
-    errBadPhone: "Saisissez un numéro de téléphone ou un e-mail valide.",
-    errShortPass: "Le mot de passe doit contenir au moins 8 caractères.",
-    errNeedName: "Veuillez saisir votre nom complet.",
-    okCreated: "Compte créé. Vérifiez votre e-mail si nécessaire puis connectez-vous.",
-    okResetMail: "E-mail de réinitialisation envoyé.",
-    msgResetPhone: "Pour un compte lié au téléphone, contactez l'assistance WhatsApp 22192727.",
-    errNeedEmailReset: "Saisissez d'abord votre adresse e-mail.",
-    recHeading: "Nouveau mot de passe",
-    recSaveBtn: "Enregistrer le mot de passe",
-
-    /* Quick Pay */
-    qpHeading: "Payer l'acompte & envoyer la preuve",
-    qpSubtext: "Saisissez la référence de demande et le numéro de téléphone utilisé pour afficher le détail financier et le RIB.",
-    lblQpBooking: "Référence de la demande (Booking ID)",
-    lblQpPhone: "Téléphone utilisé lors de la demande",
-    qpLookupBtn: "Afficher le récapitulatif & RIB",
-    qpBadLookup: "Demande introuvable ou téléphone incorrect.",
-    qpEstNote: "Montants estimés : l'équipe confirme le prix final lors de l'appel. Votre demande n'est confirmée qu'après vérification du paiement.",
-    qpBankTitle: "Coordonnées bancaires (RIB) pour le virement",
-    qpBillSummary: "Informations pour la facture (facultatif — Société / Matricule fiscal)",
-    qpBillSaveBtn: "Enregistrer la facturation",
-    qpBillSaved: "✅ Informations de facturation enregistrées",
-    qpBillFail: "Impossible d'enregistrer (facture déjà émise ?).",
-    qpUpTitle: "Envoyer la preuve de virement",
-    qpWarnText: "Important : une capture d'écran seule ne suffit pas — l'équipe vérifie la réception du virement sur le compte avant de confirmer et d'activer le Bon QR.",
-    qpSendProofBtn: "Envoyer la preuve",
-    qpSentDone: "✅ Preuve reçue. Nous la vérifions et activons votre Bon QR.",
-
-    /* Dashboard */
-    vipLabel: "CLIENT VÉRIFIÉ · AMINE RENT A CAR",
-    welcomePrefix: "Bonjour",
-    welcomeSub: "Historique complet de vos locations, détail financier, documents et Bon QR.",
-    avatarUploadTxt: "Photo profil",
-    newBookingBtn: "+ Nouvelle location",
-    trustHeading: "Confidentialité & sécurité de vos données en base",
-    trustBody: "Vos informations et documents (CIN / Passeport, Permis de conduire, N° de billet) sont stockés en sécurité dans notre base de données et consultés uniquement par l'agent assigné à votre dossier le jour de la remise du contrat (avec son nom et son numéro d'agent).",
-    pillDbSafe: "🔒 Stockage sécurisé en base",
-    pillAgentOnly: "👤 Agent assigné uniquement au retrait",
-    pillContractReady: "📄 Prêt pour le contrat",
-    bookingsHeading: "Locations, acompte & historique",
-    bookingsSub: "Consultez le détail financier, copiez le RIB, envoyez votre preuve et gardez votre Bon QR.",
-    fltActive: "En cours",
-    fltHistory: "Historique / passées",
-    fltAll: "Tout",
-    emptyBookings: "Aucune location dans cette catégorie.",
-    step1: "1. Demande",
-    step2: "2. Appel & RIB",
-    step3: "3. Preuve",
-    step4: "4. Confirmé + QR",
-    from: "Du",
-    to: "au",
-    days: "jours",
-    finSummaryTitle: "Récapitulatif financier (TND)",
-    finSub: "Total HTVA",
-    finVat: "TVA",
-    finLevy: "Taxe de location",
-    finStamp: "Timbre fiscal",
-    finTot: "Total estimé TTC",
-    finDep: "Acompte à verser",
-    finRec: "Déjà vérifié",
-    finRem: "Reste estimé",
-    ribTitle: "Coordonnées bancaires (RIB) pour versement / virement",
-    ribEmpty: "RIB disponible après confirmation ou via l'agence.",
-    copyRib: "Copier RIB",
-    copiedRib: "Copié ✓",
-    proofLabel: "Envoyer la preuve de paiement (JPG, PNG, WebP ou PDF — 5 Mo max)",
-    proofHint: "Montant ou référence (facultatif)",
-    sendProof: "Envoyer la preuve",
-    sendingProof: "Envoi...",
-    proofSentOk: "Preuve envoyée. L'équipe vérifie votre paiement.",
-    proofErrGeneric: "Échec de l'envoi de la preuve.",
-    errFileType: "Fichier invalide (JPG, PNG, WebP ou PDF, 5 Mo max).",
-    errAvatarType: "Image invalide (JPG, PNG ou WebP, 3 Mo max).",
-    viewProof: "Voir la preuve",
-    bonBtn: "Bon de réservation + QR",
-    bonHeading: "BON DE RÉSERVATION",
-    bonQrNote: "À scanner au retrait du véhicule",
-    bonKeepText: "Conservez ce Bon et votre preuve de paiement jusqu'à la remise du contrat et du véhicule.",
-    bonPrintBtn: "Imprimer / PDF",
-    invPrefix: "Facture",
-    cnPrefix: "Avoir",
-    cancelBtn: "Demander l'annulation",
-    cancelPrompt: "Motif de l'annulation (facultatif) :",
-    cancelOk: "Demande d'annulation envoyée.",
-    cancelFail: "Impossible d'envoyer la demande.",
-    profileHeading: "Profil, pièces d'identité (CIN / Passeport), permis & billet",
-    profileSub: "Préparez vos documents à l'avance pour accélérer la remise du contrat.",
-    lblProfName: "Nom et prénom",
-    lblProfPhone: "Téléphone international",
-    lblProfAddr: "Adresse de facturation",
-    lblProfTax: "Matricule fiscal (entreprise)",
-    idBoxTitle: "CIN ou Passeport",
-    lblIdDocType: "Type de document",
-    lblIdDocNum: "Numéro CIN ou Passeport",
-    lblIdDocFile: "Photo / scan CIN ou Passeport",
-    licBoxTitle: "Permis de conduire & billet / vol",
-    lblLicFile: "Photo / scan Permis de conduire",
-    lblFlight: "N° billet / vol (si voyageur de l'étranger)",
-    flightPh: "Ex : TU721 ou n° de billet",
-    viewDocLink: "Voir le document enregistré",
-    saveProfileBtn: "Enregistrer profil & documents",
-    savingProfile: "Enregistrement...",
-    profileSavedOk: "Profil et documents enregistrés avec succès.",
-    profileSaveErr: "Erreur lors de l'enregistrement.",
-    waText: "Assistance WhatsApp : 22192727",
-    toastCopied: "RIB copié ✓",
-    toastSaved: "Enregistré ✓",
-    statusMap: {
-      pending: "En attente de confirmation",
-      confirmed: "Confirmée — Bon & QR prêts",
-      completed: "Terminée / Historique",
-      cancelled: "Annulée",
-      expired: "Expirée",
-      cancellation_requested: "Annulation demandée",
-      blocked: "Indisponible"
-    },
-    paidBanner: "Paiement vérifié — Bon de réservation + QR actif",
-    proofBanner: "Preuve reçue — En cours de vérification",
-    bonRef: "Référence",
-    bonClient: "Client",
-    bonPhone: "Téléphone",
-    bonCar: "Véhicule",
-    bonPeriod: "Période",
-    bonPickup: "Retrait",
-    logoutBtn: "Déconnexion"
+  fr:{
+    out:"Déconnexion",secBadge:"Connexion username ou téléphone",
+    tLogin:"Connexion",tReg:"Créer un compte",tPay:"Bon & Acompte",
+    loginH:"Espace client",regH:"Créer un compte",
+    authSub:"Username ou téléphone uniquement — sans e-mail. Obtenez votre Bon de réservation et retirez votre voiture en agence en Tunisie.",
+    vg1t:"1. Dossier complet",vg1d:"CIN / Passeport & Permis",vg2t:"2. Bon + QR",vg2d:"Preuve de réservation",vg3t:"3. Retrait en Tunisie",vg3d:"À l'agence la plus proche",
+    lName:"Nom et prénom",lUserLogin:"Nom d'utilisateur ou téléphone",lUserReg:"Nom d'utilisateur",
+    hintReg:"Lettres latines, chiffres et _ uniquement (3 min).",hintLogin:"Saisissez votre username ou numéro de téléphone.",
+    lPhone:"Numéro de téléphone (indicatif détecté auto)",
+    phoneAutoHint:"Le drapeau et l'indicatif s'adaptent automatiquement dès la saisie (ex. 21622192727, 393401234567 ou 22192727).",
+    lPass:"Mot de passe (8 caractères minimum)",btnLogin:"Se connecter",btnReg:"Créer mon compte",
+    forgotTxt:"Mot de passe oublié ? Contactez WhatsApp :",
+    eCreds:"Identifiants incorrects.",eUser:"Username : 3 caractères min (lettres, chiffres, _).",
+    ePhone:"Numéro de téléphone invalide.",ePass:"Mot de passe : 8 caractères minimum.",eName:"Saisissez votre nom.",
+    eTaken:"Ce username est déjà pris.",eGeneric:"Une erreur est survenue.",
+    eLock:s=>`Trop de tentatives. Patientez ${s}s.`,idleOut:"Déconnexion automatique par sécurité.",
+    payH:"Bon de réservation & acompte",paySub:"Saisissez le numéro de réservation et le téléphone utilisé.",
+    lQpId:"Numéro de réservation",lQpPh:"Téléphone utilisé",qpBtn:"Afficher les détails & RIB",
+    qpBad:"Réservation introuvable ou téléphone incorrect.",
+    estNote:"Montants estimés. Le Bon de réservation (QR) est essentiel pour retirer le véhicule en agence.",
+    ribT:"Coordonnées bancaires (RIB)",warn:"Une capture seule ne suffit pas avant vérification du virement.",
+    billOptS:"Facture (optionnelle — non requise pour le retrait)",billSave:"Enregistrer",
+    billOk:"✅ Facture enregistrée",billErr:"Échec.",
+    proofT:"Preuve de virement (JPG, PNG, WebP ou PDF — 5 Mo)",send:"Envoyer",sending:"Envoi...",
+    sentOk:"✅ Preuve reçue. Activation du Bon QR en cours.",proofErr:"Échec de l'envoi.",
+    badFile:"Fichier invalide (JPG, PNG, WebP ou PDF, 5 Mo max).",
+    vipTag:"CLIENT · AMINE RENT A CAR",hello:"Bonjour",
+    helloSub:"Vos réservations, documents et Bon de réservation (QR) au même endroit.",
+    photo:"Photo",newBk:"+ Nouvelle location",
+    tunisH:"Retrait en agence en Tunisie avec votre Bon de réservation",
+    tunisBody:"Avec ou sans compte, si vous êtes en Tunisie, complétez vos étapes et présentez votre Bon de réservation (QR) à l'agence la plus proche pour récupérer votre voiture. La facture reste facultative.",
+    progT:"Votre dossier",stepsOf:(d,n)=>`${d} étape${d>1?"s":""} sur ${n}`,
+    left:r=>r?`Encore ${r} étape${r>1?"s":""} pour un retrait rapide en agence.`:"Dossier prêt pour le retrait en agence.",
+    s1:"Informations personnelles",s1d:"Nom, téléphone et adresse",
+    s2:"CIN ou Passeport",s2d:"Type, numéro et photo",
+    s3:"Permis de conduire",s3d:"Numéro, dates et photo",
+    s4:"Billet de voyage",s4d:"Uniquement si voyageur de l'étranger",
+    done:"Terminée",todo:"Requise",opt:"Facultative",
+    lAddr:"Adresse en Tunisie / résidence",lTax:"Matricule fiscal (optionnel)",
+    lIdType:"Type de document",lIdNum:"Numéro CIN ou Passeport",lIdFile:"Photo / scan identité",
+    lLicNum:"N° permis",lLicDate:"Date d'obtention",lBirth:"Date de naissance",lLicFile:"Photo / scan permis",
+    lFlight:"N° billet / vol",view:"📎 Voir le fichier",
+    saveStep:"Enregistrer",saving:"Enregistrement...",saved:"Enregistré ✓",
+    needS1:"Nom et téléphone obligatoires.",needS2:"Numéro et photo requis.",needS3:"Numéro, dates et photo du permis requis.",
+    bkH:"Mes réservations & Bon QR",bkSub:"Numéro de réservation, détails et Bon QR de retrait.",
+    fAct:"En cours",fHist:"Passées",fAll:"Tout",empty:"Aucune réservation ici.",
+    st1:"1. Demande",st2:"2. RIB & Appel",st3:"3. Preuve",st4:"4. Confirmé + QR",
+    from:"Du",to:"au",days:"jours",
+    finT:"Détail financier (TND)",htva:"Total HTVA",vat:"TVA",levy:"Taxe de location",
+    stamp:"Timbre fiscal",ttc:"Total estimé",dep:"Acompte",rec:"Vérifié",rem:"Reste",
+    ribE:"RIB disponible après confirmation.",copy:"Copier RIB",copied:"Copié ✓",
+    proofL:"Preuve de paiement",amtPh:"Montant (optionnel)",
+    viewProof:"📎 Preuve",bonBtn:"🎫 Bon de réservation + QR",inv:"Facture",cn:"Avoir",
+    cancel:"Demander l'annulation",cancelQ:"Motif (optionnel) :",cancelOk:"Demande envoyée.",cancelErr:"Échec.",
+    paid:"Confirmé — Bon de réservation + QR prêt pour retrait",wait:"Preuve reçue, vérification en cours.",
+    status:{pending:"En attente",confirmed:"Confirmée — Bon + QR prêt",completed:"Terminée",cancelled:"Annulée",expired:"Expirée",cancellation_requested:"Annulation demandée"},
+    bonH:"BON DE RÉSERVATION",bonQr:"À scanner à l'agence",
+    bonKeep:"Gardez ce Bon de réservation (QR) et rendez-vous à l'agence la plus proche en Tunisie pour récupérer votre véhicule.",
+    print:"Imprimer / PDF",ref:"N° Réservation",cl:"Client",ph:"Téléphone",car:"Véhicule",per:"Période",pick:"Agence / Retrait",
+    waTxt:"WhatsApp : 22192727",waMsg:u=>`Bonjour, mot de passe oublié${u?` (${u})`:""}.`
+  },
+  en:{
+    out:"Log out",secBadge:"Username or phone login",
+    tLogin:"Log in",tReg:"Create account",tPay:"Voucher & Deposit",
+    loginH:"Client Portal",regH:"Create account",
+    authSub:"Username or phone only — no email required. Get your Booking Voucher (QR) and pick up at the nearest agency in Tunisia.",
+    vg1t:"1. Complete profile",vg1d:"ID / Passport & License",vg2t:"2. Voucher + QR",vg2d:"Official booking pass",vg3t:"3. Pickup in Tunisia",vg3d:"At your nearest agency",
+    lName:"Full name",lUserLogin:"Username or phone number",lUserReg:"Username",
+    hintReg:"Latin letters, numbers and _ only (min 3).",hintLogin:"Enter your username or phone number.",
+    lPhone:"Phone number (country code auto-detected)",
+    phoneAutoHint:"Flag and code update automatically as you type (e.g. 21622192727, 393401234567, or 22192727).",
+    lPass:"Password (min 8 chars)",btnLogin:"Log in",btnReg:"Create account",
+    forgotTxt:"Forgot password? Message WhatsApp:",
+    eCreds:"Invalid username or password.",eUser:"Username: min 3 chars (letters, numbers, _).",
+    ePhone:"Enter a valid phone number.",ePass:"Password must be at least 8 characters.",eName:"Enter your full name.",
+    eTaken:"Username already taken.",eGeneric:"Something went wrong.",
+    eLock:s=>`Too many attempts. Wait ${s}s.`,idleOut:"Signed out automatically due to inactivity.",
+    payH:"Booking Voucher & Deposit",paySub:"Enter booking number and phone used.",
+    lQpId:"Booking number",lQpPh:"Phone used",qpBtn:"Show details & RIB",
+    qpBad:"Booking not found or phone mismatch.",
+    estNote:"Estimates only. The Booking Voucher (QR) is essential to collect your car at the agency.",
+    ribT:"Bank details (RIB)",warn:"Screenshot alone is not final until transfer is verified.",
+    billOptS:"Invoice info (optional — not required for pickup)",billSave:"Save invoice info",
+    billOk:"✅ Invoice info saved",billErr:"Could not save.",
+    proofT:"Transfer proof (JPG, PNG, WebP or PDF — 5 MB)",send:"Send proof",sending:"Uploading...",
+    sentOk:"✅ Proof received. Activating your QR voucher.",proofErr:"Failed to send proof.",
+    badFile:"Invalid file (JPG, PNG, WebP or PDF, max 5 MB).",
+    vipTag:"CLIENT · AMINE RENT A CAR",hello:"Hello",
+    helloSub:"Your bookings, documents and Booking Voucher (QR) in one place.",
+    photo:"Change photo",newBk:"+ New booking",
+    tunisH:"Pickup in Tunisia with your Booking Voucher",
+    tunisBody:"With or without an account, if you are in Tunisia, complete your steps and bring your Booking Voucher (QR) to the nearest agency to pick up your car. An invoice is optional if needed.",
+    progT:"Your dossier",stepsOf:(d,n)=>`${d} of ${n} steps done`,
+    left:r=>r?`${r} step${r>1?"s":""} left for fast agency pickup.`:"Dossier ready for agency pickup.",
+    s1:"Personal details",s1d:"Name, phone and address",
+    s2:"ID card or Passport",s2d:"Type, number and file",
+    s3:"Driving license",s3d:"Number, dates and file",
+    s4:"Travel ticket",s4d:"Only if arriving from abroad",
+    done:"Done",todo:"Required",opt:"Optional",
+    lAddr:"Address in Tunisia / residence",lTax:"Tax ID (optional)",
+    lIdType:"Document type",lIdNum:"ID or Passport number",lIdFile:"ID / Passport file",
+    lLicNum:"License number",lLicDate:"Issue date",lBirth:"Birth date",lLicFile:"License file",
+    lFlight:"Ticket / flight number",view:"📎 View saved file",
+    saveStep:"Save step",saving:"Saving...",saved:"Saved ✓",
+    needS1:"Name and phone are required.",needS2:"Number and document file required.",needS3:"Number, dates and license file required.",
+    bkH:"My bookings & Voucher",bkSub:"Booking number, financial summary and QR voucher.",
+    fAct:"Active",fHist:"Past",fAll:"All",empty:"No bookings here.",
+    st1:"1. Request",st2:"2. RIB & Call",st3:"3. Proof",st4:"4. Confirmed + QR",
+    from:"From",to:"to",days:"days",
+    finT:"Financial summary (TND)",htva:"Subtotal (HTVA)",vat:"VAT",levy:"Rental levy",
+    stamp:"Fiscal stamp",ttc:"Estimated total",dep:"Deposit",rec:"Verified",rem:"Remaining",
+    ribE:"RIB appears after confirmation.",copy:"Copy RIB",copied:"Copied ✓",
+    proofL:"Upload payment proof",amtPh:"Amount (optional)",
+    viewProof:"📎 Proof",bonBtn:"🎫 Booking Voucher + QR",inv:"Invoice",cn:"Credit note",
+    cancel:"Request cancellation",cancelQ:"Reason (optional):",cancelOk:"Cancellation requested.",cancelErr:"Failed.",
+    paid:"Confirmed — Booking Voucher + QR ready for pickup",wait:"Proof received, under review.",
+    status:{pending:"Pending",confirmed:"Confirmed — Voucher + QR ready",completed:"Completed",cancelled:"Cancelled",expired:"Expired",cancellation_requested:"Cancellation requested"},
+    bonH:"BOOKING VOUCHER",bonQr:"Scan at agency pickup",
+    bonKeep:"Keep this Booking Voucher (QR) and visit the nearest agency in Tunisia to collect your car.",
+    print:"Print / PDF",ref:"Booking No.",cl:"Client",ph:"Phone",car:"Vehicle",per:"Period",pick:"Agency / Pickup",
+    waTxt:"WhatsApp help: 22192727",waMsg:u=>`Hi, I forgot my password${u?` (${u})`:""}.`
+  },
+  it:{
+    out:"Esci",secBadge:"Accesso con username o telefono",
+    tLogin:"Accedi",tReg:"Crea account",tPay:"Voucher e Acconto",
+    loginH:"Area Cliente",regH:"Crea un account",
+    authSub:"Solo username o telefono — nessuna email. Ricevi il Voucher (QR) e ritira l'auto nell'agenzia più vicina in Tunisia.",
+    vg1t:"1. Completa profilo",vg1d:"Documento e Patente",vg2t:"2. Voucher + QR",vg2d:"Conferma prenotazione",vg3t:"3. Ritiro in Tunisia",vg3d:"Nell'agenzia più vicina",
+    lName:"Nome e cognome",lUserLogin:"Username o numero di telefono",lUserReg:"Username",
+    hintReg:"Solo lettere latine, numeri e _ (min 3).",hintLogin:"Inserisci username o numero di telefono.",
+    lPhone:"Numero di telefono (prefisso rilevato auto)",
+    phoneAutoHint:"Bandiera e prefisso si aggiornano automaticamente (es. 21622192727, 393401234567 o 22192727).",
+    lPass:"Password (min 8 caratteri)",btnLogin:"Accedi",btnReg:"Crea account",
+    forgotTxt:"Password dimenticata? Scrivi su WhatsApp:",
+    eCreds:"Username o password errati.",eUser:"Username: min 3 caratteri (lettere, numeri, _).",
+    ePhone:"Inserisci un numero di telefono valido.",ePass:"La password deve avere almeno 8 caratteri.",eName:"Inserisci nome e cognome.",
+    eTaken:"Username già in uso.",eGeneric:"Si è verificato un errore.",
+    eLock:s=>`Troppi tentativi. Attendi ${s}s.`,idleOut:"Disconnessione automatica per sicurezza.",
+    payH:"Voucher prenotazione e acconto",paySub:"Inserisci il numero di prenotazione e il telefono usato.",
+    lQpId:"Numero prenotazione",lQpPh:"Telefono usato",qpBtn:"Mostra dettagli e RIB",
+    qpBad:"Prenotazione non trovata o telefono errato.",
+    estNote:"Importi stimati. Il Voucher (QR) è essenziale per ritirare l'auto in agenzia.",
+    ribT:"Coordinate bancarie (RIB)",warn:"Uno screenshot non basta finché il bonifico non viene verificato.",
+    billOptS:"Fattura (opzionale — non richiesta per il ritiro)",billSave:"Salva fattura",
+    billOk:"✅ Dati fattura salvati",billErr:"Errore salvataggio.",
+    proofT:"Prova bonifico (JPG, PNG, WebP o PDF — 5 MB)",send:"Invia prova",sending:"Invio...",
+    sentOk:"✅ Prova ricevuta. Attivazione Voucher QR in corso.",proofErr:"Invio fallito.",
+    badFile:"File non valido (JPG, PNG, WebP o PDF, max 5 MB).",
+    vipTag:"CLIENTE · AMINE RENT A CAR",hello:"Ciao",
+    helloSub:"Prenotazioni, documenti e Voucher di prenotazione (QR) in un solo posto.",
+    photo:"Cambia foto",newBk:"+ Nuova prenotazione",
+    tunisH:"Ritiro in agenzia in Tunisia con il tuo Voucher",
+    tunisBody:"Con o senza account, se sei in Tunisia, completa i passaggi e porta il Voucher (QR) all'agenzia più vicina per ritirare l'auto. La fattura è opzionale.",
+    progT:"Il tuo profilo",stepsOf:(d,n)=>`${d} di ${n} passaggi completati`,
+    left:r=>r?`Mancano ${r} passaggi per il ritiro rapido in agenzia.`:"Profilo pronto per il ritiro in agenzia.",
+    s1:"Dati personali",s1d:"Nome, telefono e indirizzo",
+    s2:"Documento d'identità o Passaporto",s2d:"Tipo, numero e file",
+    s3:"Patente di guida",s3d:"Numero, date e file",
+    s4:"Biglietto di viaggio",s4d:"Solo se arrivi dall'estero",
+    done:"Completato",todo:"Obbligatorio",opt:"Opzionale",
+    lAddr:"Indirizzo in Tunisia / residenza",lTax:"Partita IVA / Codice fiscale (opzionale)",
+    lIdType:"Tipo documento",lIdNum:"Numero documento / Passaporto",lIdFile:"File documento",
+    lLicNum:"N° patente",lLicDate:"Data rilascio",lBirth:"Data di nascita",lLicFile:"File patente",
+    lFlight:"N° biglietto / volo",view:"📎 Vedi file salvato",
+    saveStep:"Salva passaggio",saving:"Salvataggio...",saved:"Salvato ✓",
+    needS1:"Nome e telefono obbligatori.",needS2:"Numero e file documento obbligatori.",needS3:"Numero, date e file patente obbligatori.",
+    bkH:"Le mie prenotazioni e Voucher",bkSub:"Numero prenotazione, riepilogo e Voucher QR.",
+    fAct:"In corso",fHist:"Passate",fAll:"Tutte",empty:"Nessuna prenotazione qui.",
+    st1:"1. Richiesta",st2:"2. RIB e Contatto",st3:"3. Prova",st4:"4. Confermata + QR",
+    from:"Dal",to:"al",days:"giorni",
+    finT:"Riepilogo economico (TND)",htva:"Imponibile (HTVA)",vat:"IVA",levy:"Tassa noleggio",
+    stamp:"Marca da bollo",ttc:"Totale stimato",dep:"Acconto",rec:"Verificato",rem:"Residuo",
+    ribE:"RIB disponibile dopo conferma.",copy:"Copia RIB",copied:"Copiato ✓",
+    proofL:"Carica prova pagamento",amtPh:"Importo (opzionale)",
+    viewProof:"📎 Prova",bonBtn:"🎫 Voucher prenotazione + QR",inv:"Fattura",cn:"Nota credito",
+    cancel:"Richiedi annullamento",cancelQ:"Motivo (opzionale):",cancelOk:"Richiesta inviata.",cancelErr:"Errore.",
+    paid:"Confermata — Voucher + QR pronto per il ritiro",wait:"Prova ricevuta, in verifica.",
+    status:{pending:"In attesa",confirmed:"Confermata — Voucher + QR pronto",completed:"Completata",cancelled:"Annullata",expired:"Scaduta",cancellation_requested:"Annullamento richiesto"},
+    bonH:"VOUCHER DI PRENOTAZIONE",bonQr:"Da scansionare in agenzia",
+    bonKeep:"Conserva questo Voucher (QR) e recati nell'agenzia più vicina in Tunisia per ritirare l'auto.",
+    print:"Stampa / PDF",ref:"N° Prenotazione",cl:"Cliente",ph:"Telefono",car:"Veicolo",per:"Periodo",pick:"Agenzia / Ritiro",
+    waTxt:"Assistenza WhatsApp: 22192727",waMsg:u=>`Ciao, ho dimenticato la password${u?` (${u})`:""}.`
   }
 };
 
-/* ============================================================================
-   4. APPLICATION STATE & HELPERS
-   ============================================================================ */
-let LANG = "ar";
-let AUTH_MODE = URL_BOOKING_ID ? "quickpay" : "login";
-let FILTER_MODE = "active";
-let CURRENT_USER = null;
-let PROFILE = null;
-let BANKS = [];
-let BOOKINGS = [];
-let SETTINGS = {};
-let QP_DATA = null;
-let QP_CLEAN_PHONE = "";
-let toastTimer = null;
+let LANG="ar";try{LANG=localStorage.getItem("lang")||"ar"}catch(_){}
+let MODE=RAW_REF?"pay":"login",FILTER="active",PROFILE=null,BOOKINGS=[],BANKS=[],SET={},QP=null,QPPH="",QP_ID="",toastT;
 
-const t = key => (I18N[LANG] && I18N[LANG][key]) || I18N.fr[key] || key;
-const fmtMoney = n => Number(n ?? 0).toFixed(3).replace(/\.?0+$/, "") + " TND";
+/* ---------- Sécurité : Rate Limit, Auto-Lock & Magic Bytes ---------- */
+let failCount=0,lockUntil=0,idleTimer=null;
+const checkLock=()=>Math.max(0,Math.ceil((lockUntil-Date.now())/1000));
+const recordFail=()=>{failCount++;if(failCount>=5)lockUntil=Date.now()+Math.min(120,failCount*10)*1000};
+function resetIdle(){
+  clearTimeout(idleTimer);if(!PROFILE)return;
+  idleTimer=setTimeout(async()=>{await sb.auth.signOut();PROFILE=null;BOOKINGS=[];$("app").hidden=true;$("outBtn").hidden=true;$("authSec").hidden=false;toast(t("idleOut"))},20*60*1000);
+}
+["click","keydown","touchstart"].forEach(ev=>document.addEventListener(ev,resetIdle,{passive:true}));
 
-function showToast(msg) {
-  const box = $("toastBox");
-  if (!box) return;
-  box.textContent = msg;
-  box.hidden = false;
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => { box.hidden = true; }, 2500);
+async function validateFileSecure(file,maxMB=5,allowPdf=true){
+  if(!file||!EXT[file.type]||file.size===0||file.size>maxMB*1048576)return false;
+  if(!allowPdf&&file.type==="application/pdf")return false;
+  try{
+    const b=new Uint8Array(await file.slice(0,12).arrayBuffer());
+    if(file.type==="image/jpeg")return b[0]===0xFF&&b[1]===0xD8&&b[2]===0xFF;
+    if(file.type==="image/png")return b[0]===0x89&&b[1]===0x50&&b[2]===0x4E&&b[3]===0x47;
+    if(file.type==="image/webp")return b[0]===0x52&&b[1]===0x49&&b[2]===0x46&&b[3]===0x46&&b[8]===0x57&&b[9]===0x45&&b[10]===0x42&&b[11]===0x50;
+    if(file.type==="application/pdf")return b[0]===0x25&&b[1]===0x50&&b[2]===0x44&&b[3]===0x46;
+  }catch(_){return false}
+  return false;
 }
 
-function cleanPhoneDigits(val) {
-  return String(val || "").replace(/[^\d]/g, "").replace(/^0+/, "");
+const t=k=>T[LANG]?.[k]??T.fr[k]??k;
+const toast=m=>{const b=$("toast");b.textContent=m;b.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>b.hidden=true,2800)};
+const digits=v=>String(v||"").replace(/\D/g,"").replace(/^0+/,"");
+const cleanPh=v=>String(v||"").replace(/[\s.-]/g,"").replace(/^\+?216/,"").trim();
+const fmtD=d=>new Date(d).toLocaleDateString(LANG==="ar"?"ar-TN":LANG==="it"?"it-IT":LANG==="en"?"en-GB":"fr-FR",{timeZone:"Africa/Tunis"});
+
+/* ---------- Détection automatique du drapeau et de l'indicatif ---------- */
+function detectCountryFromPhone(raw){
+  const d=String(raw||"").replace(/\D/g,"").replace(/^00/,"");
+  for(const [code,flag] of PREFIXES){
+    if(d.startsWith(code) && d.length>code.length)return{code:"+"+code,flag};
+  }
+  return{code:"+216",flag:"🇹🇳"};
 }
-
-function normalizeTnOrIntlPhone(val) {
-  return String(val || "").replace(/[\s.-]/g, "").replace(/^\+?216/, "").trim();
+function syncAutoPhone(anim=true){
+  const det=detectCountryFromPhone($("fPhone").value);
+  $("flagIcon").textContent=det.flag;
+  $("ccLabel").textContent=det.code;
+  if(anim){const b=$("autoFlag");b.classList.remove("pop");void b.offsetWidth;b.classList.add("pop")}
+  $("forgotLink").href=`https://wa.me/${ADMIN_WA}?text=${encodeURIComponent(t("waMsg")($("fUser").value.trim()))}`;
 }
+$("fPhone").oninput=()=>syncAutoPhone(true);
+$("fUser").oninput=()=>{$("forgotLink").href=`https://wa.me/${ADMIN_WA}?text=${encodeURIComponent(t("waMsg")($("fUser").value.trim()))}`};
 
-function getSelectedCountry() {
-  const code = $("countryCodeSel").value || "+216";
-  return COUNTRIES.find(c => c.code === code) || COUNTRIES[0];
+/* ---------- Langues (AR / FR / EN / IT) ---------- */
+function applyLang(){
+  document.documentElement.lang=LANG;
+  document.documentElement.dir=LANG==="ar"?"rtl":"ltr";
+  document.querySelectorAll("[data-lang]").forEach(b=>b.classList.toggle("on",b.dataset.lang===LANG));
+  document.querySelectorAll("[data-i]").forEach(e=>e.textContent=t(e.dataset.i));
+  $("outBtn").textContent=t("out");
+  const reg=MODE==="register";
+  $("authH").textContent=reg?t("regH"):t("loginH");
+  $("lUser").textContent=reg?t("lUserReg"):t("lUserLogin");
+  $("userHint").textContent=reg?t("hintReg"):t("hintLogin");
+  $("authBtn").textContent=reg?t("btnReg"):t("btnLogin");
+  $("qpBName").placeholder=t("lName");
+  $("qpBAddr").placeholder=t("lAddr");
+  $("qpBTax").placeholder=t("lTax");
+  syncAutoPhone(false);
+  if(QP)renderQp();
+  if(PROFILE){renderHero();renderSteps();renderBookings()}
 }
-
-function syncCountrySelectOptions() {
-  const sel = $("countryCodeSel");
-  const prevCode = sel.value || "+216";
-  sel.innerHTML = COUNTRIES.map(c =>
-    `<option value="${esc(c.code)}">${esc(LANG === "ar" ? c.ar : c.fr)}</option>`
-  ).join("");
-  sel.value = COUNTRIES.some(c => c.code === prevCode) ? prevCode : "+216";
-  refreshFlagAndPreview(false);
-}
-
-function refreshFlagAndPreview(animate = true) {
-  const c = getSelectedCountry();
-  const flagEl = $("countryFlag");
-  flagEl.textContent = c.flag;
-  if (animate) {
-    flagEl.classList.remove("pop");
-    void flagEl.offsetWidth;
-    flagEl.classList.add("pop");
-  }
-  const digits = cleanPhoneDigits($("phoneNumInp").value);
-  $("phoneE164Preview").textContent = digits ? `${c.code}${digits}` : c.code;
-}
-
-function autoDetectCountryPrefix() {
-  const raw = $("phoneNumInp").value.trim();
-  const match = raw.match(/^\+?(\d{1,3})[\s-]+(.*)$/);
-  if (match) {
-    const code = "+" + match[1];
-    if (COUNTRIES.some(x => x.code === code)) {
-      $("countryCodeSel").value = code;
-      $("phoneNumInp").value = match[2];
-    }
-  }
-  refreshFlagAndPreview(true);
-}
-
-/* ============================================================================
-   5. UI TRANSLATION & RENDER ORCHESTRATION
-   ============================================================================ */
-function applyLanguage() {
-  document.documentElement.lang = LANG;
-  document.documentElement.dir = LANG === "ar" ? "rtl" : "ltr";
-
-  $("langBtn").textContent = t("langBtn");
-  $("hdrBadge").textContent = t("hdrBadge");
-  $("logoutBtn").textContent = t("logoutBtn");
-
-  $("tabLogin").textContent = t("tabLogin");
-  $("tabRegister").textContent = t("tabRegister");
-  $("tabQuickPay").textContent = t("tabQuickPay");
-  $("authHeading").textContent = AUTH_MODE === "login" ? t("authLoginHeading") : t("authRegHeading");
-  $("authSubtext").textContent = t("authSubtext");
-
-  $("lblFullName").textContent = t("lblFullName");
-  $("fullNameInp").placeholder = t("fullNamePh");
-  $("lblPhoneField").textContent = t("lblPhoneField");
-  $("phoneNumInp").placeholder = t("phonePh");
-  $("phoneHintTxt").textContent = t("phoneHintTxt");
-
-  $("lblEmailField").textContent = t("lblEmailField");
-  $("emailInp").placeholder = t("emailPh");
-  $("lblPasswordField").textContent = t("lblPasswordField");
-  $("passwordInp").placeholder = t("passwordPh");
-
-  $("authSubmitBtn").textContent = AUTH_MODE === "login" ? t("btnLogin") : t("btnRegister");
-  $("forgotLink").textContent = t("forgotLink");
-  $("forgotWrap").hidden = AUTH_MODE !== "login";
-
-  /* Quick Pay labels */
-  $("qpHeading").textContent = t("qpHeading");
-  $("qpSubtext").textContent = t("qpSubtext");
-  $("lblQpBooking").textContent = t("lblQpBooking");
-  $("lblQpPhone").textContent = t("lblQpPhone");
-  $("qpLookupBtn").textContent = t("qpLookupBtn");
-  $("qpEstNote").textContent = t("qpEstNote");
-  $("qpBankTitle").textContent = t("qpBankTitle");
-  $("qpBillSummary").textContent = t("qpBillSummary");
-  $("qpBillName").placeholder = t("lblProfName");
-  $("qpBillAddr").placeholder = t("lblProfAddr");
-  $("qpBillTax").placeholder = t("lblProfTax");
-  $("qpBillSaveBtn").textContent = t("qpBillSaveBtn");
-  $("qpUpTitle").textContent = t("qpUpTitle");
-  $("qpWarnText").textContent = t("qpWarnText");
-  $("qpSendProofBtn").textContent = t("qpSendProofBtn");
-  if (QP_DATA) renderQuickPayResult();
-
-  $("recHeading").textContent = t("recHeading");
-  $("newPassInp").placeholder = t("passwordPh");
-  $("recSaveBtn").textContent = t("recSaveBtn");
-
-  $("vipLabel").textContent = t("vipLabel");
-  $("welcomeSub").textContent = t("welcomeSub");
-  $("avatarUploadTxt").textContent = t("avatarUploadTxt");
-  $("newBookingBtn").textContent = t("newBookingBtn");
-
-  $("trustHeading").textContent = t("trustHeading");
-  $("trustBody").textContent = t("trustBody");
-  $("pillDbSafe").textContent = t("pillDbSafe");
-  $("pillAgentOnly").textContent = t("pillAgentOnly");
-  $("pillContractReady").textContent = t("pillContractReady");
-
-  $("bookingsHeading").textContent = t("bookingsHeading");
-  $("bookingsSub").textContent = t("bookingsSub");
-  $("fltActiveBtn").textContent = t("fltActive");
-  $("fltHistoryBtn").textContent = t("fltHistory");
-  $("fltAllBtn").textContent = t("fltAll");
-
-  $("profileHeading").textContent = t("profileHeading");
-  $("profileSub").textContent = t("profileSub");
-  $("lblProfName").textContent = t("lblProfName");
-  $("lblProfPhone").textContent = t("lblProfPhone");
-  $("lblProfAddr").textContent = t("lblProfAddr");
-  $("lblProfTax").textContent = t("lblProfTax");
-
-  $("idBoxTitle").textContent = t("idBoxTitle");
-  $("lblIdDocType").textContent = t("lblIdDocType");
-  $("lblIdDocNum").textContent = t("lblIdDocNum");
-  $("lblIdDocFile").textContent = t("lblIdDocFile");
-  $("licBoxTitle").textContent = t("licBoxTitle");
-  $("lblLicFile").textContent = t("lblLicFile");
-  $("lblFlight").textContent = t("lblFlight");
-  $("flightInp").placeholder = t("flightPh");
-  $("saveProfileBtn").textContent = t("saveProfileBtn");
-
-  $("waText").textContent = t("waText");
-  $("bonHeading").textContent = t("bonHeading");
-  $("bonQrNote").textContent = t("bonQrNote");
-  $("bonKeepText").textContent = t("bonKeepText");
-  $("bonPrintBtn").textContent = t("bonPrintBtn");
-
-  syncCountrySelectOptions();
-
-  if (PROFILE) {
-    renderIdentityHeader();
-    renderBookingsList();
-    renderStoredDocumentLinks();
-  }
-}
-
-$("langBtn").onclick = () => {
-  LANG = LANG === "ar" ? "fr" : "ar";
-  applyLanguage();
-};
-
-$("countryCodeSel").onchange = () => refreshFlagAndPreview(true);
-$("phoneNumInp").oninput = autoDetectCountryPrefix;
-
-function switchAuthMode(nextMode) {
-  AUTH_MODE = nextMode;
-  $("tabLogin").classList.toggle("active", nextMode === "login");
-  $("tabRegister").classList.toggle("active", nextMode === "register");
-  $("tabQuickPay").classList.toggle("active", nextMode === "quickpay");
-
-  $("loginRegCard").hidden = nextMode === "quickpay";
-  $("quickPayCard").hidden = nextMode !== "quickpay";
-  $("nameWrap").hidden = nextMode !== "register";
-  $("authErr").textContent = "";
-  $("authOk").textContent = "";
-  applyLanguage();
-}
-
-$("tabLogin").onclick = () => switchAuthMode("login");
-$("tabRegister").onclick = () => switchAuthMode("register");
-$("tabQuickPay").onclick = () => switchAuthMode("quickpay");
-
-if (URL_BOOKING_ID) {
-  $("qpBookingId").value = URL_BOOKING_ID;
-}
-
-/* ============================================================================
-   6. QUICK PAY GATE (MERGED FROM pay.html)
-   ============================================================================ */
-$("qpLookupBtn").onclick = async () => {
-  $("qpErr").textContent = "";
-  const bid = $("qpBookingId").value.trim();
-  const ph = normalizeTnOrIntlPhone($("qpPhone").value);
-  if (!bid || !ph) {
-    $("qpErr").textContent = t("qpBadLookup");
-    return;
-  }
-  $("qpLookupBtn").disabled = true;
-  const { data, error } = await sb.rpc("get_payment_info", { p_booking: bid, p_phone: ph });
-  $("qpLookupBtn").disabled = false;
-
-  if (error || !data || !data.ok) {
-    $("qpErr").textContent = t("qpBadLookup");
-    return;
-  }
-  QP_DATA = data;
-  QP_CLEAN_PHONE = ph;
-  $("qpGate").hidden = true;
-  $("qpResult").hidden = false;
-  renderQuickPayResult();
-};
-
-function renderQuickPayResult() {
-  if (!QP_DATA) return;
-  const rows = [
-    [t("days"), QP_DATA.days],
-    [t("finSub"), fmtMoney(QP_DATA.subtotal_htva)],
-    [t("finVat"), (QP_DATA.vat_rate ?? 0) + " %"],
-    [t("finLevy"), fmtMoney(QP_DATA.levy)],
-    [t("finTot"), fmtMoney(QP_DATA.total_estimate)],
-    [t("finDep") + " (" + (QP_DATA.deposit_pct ?? 0) + " %)", fmtMoney(QP_DATA.deposit)],
-    [t("finRec"), fmtMoney(QP_DATA.received)],
-    [t("finRem"), fmtMoney(QP_DATA.remaining)]
-  ];
-  $("qpSumTable").innerHTML = rows.map(r => `<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join("");
-
-  const accs = Array.isArray(QP_DATA.accounts) ? QP_DATA.accounts : [];
-  $("qpBanksList").innerHTML = accs.length
-    ? accs.map((a, idx) => `
-        <div class="rib-row">
-          <div>
-            <b>${esc(a.bank)}</b> · <span class="section-sub">${esc(a.holder)}</span><br>
-            <span class="rib-val">${esc(a.rib)}</span>
-          </div>
-          <button type="button" class="btn-dark btn-sm" data-qp-copy="${idx}">${t("copyRib")}</button>
-        </div>
-      `).join("")
-    : `<p class="section-sub">${t("ribEmpty")}</p>`;
-
-  $("qpBanksList").querySelectorAll("[data-qp-copy]").forEach(btn => {
-    btn.onclick = async () => {
-      try { await navigator.clipboard.writeText(accs[btn.dataset.qpCopy].rib); } catch (_) {}
-      const prev = btn.textContent;
-      btn.textContent = t("copiedRib");
-      showToast(t("toastCopied"));
-      setTimeout(() => { btn.textContent = prev; }, 1400);
-    };
-  });
-}
-
-$("qpBillSaveBtn").onclick = async () => {
-  $("qpBillErr").textContent = "";
-  $("qpBillOk").textContent = "";
-  const bid = $("qpBookingId").value.trim();
-  const { data, error } = await sb.rpc("set_billing", {
-    p_booking: bid,
-    p_phone: QP_CLEAN_PHONE,
-    p_name: $("qpBillName").value.trim(),
-    p_address: $("qpBillAddr").value.trim(),
-    p_tax: $("qpBillTax").value.trim()
-  });
-  if (error || !data || !data.ok) $("qpBillErr").textContent = t("qpBillFail");
-  else {
-    $("qpBillOk").textContent = t("qpBillSaved");
-    showToast(t("toastSaved"));
-  }
-};
-
-$("qpSendProofBtn").onclick = async () => {
-  $("qpUpErr").textContent = "";
-  $("qpUpOk").textContent = "";
-  const file = $("qpFileInp").files[0];
-  const extMap = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp", "application/pdf": "pdf" };
-  const ext = file ? extMap[file.type] : null;
-  if (!file || !ext || file.size > 5 * 1024 * 1024) {
-    $("qpUpErr").textContent = t("errFileType");
-    return;
-  }
-
-  const bid = $("qpBookingId").value.trim();
-  $("qpSendProofBtn").disabled = true;
-  const orig = $("qpSendProofBtn").textContent;
-  $("qpSendProofBtn").textContent = t("sendingProof");
-
-  const path = `${bid}/${Date.now()}.${ext}`;
-  const up = await sb.storage.from(PROOFS_BUCKET).upload(path, file, { contentType: file.type });
-  let ok = false;
-  if (!up.error) {
-    const res = await sb.rpc("submit_proof", {
-      p_booking: bid,
-      p_phone: QP_CLEAN_PHONE,
-      p_path: path
-    });
-    ok = !res.error && res.data && res.data.ok;
-  }
-
-  $("qpSendProofBtn").disabled = false;
-  $("qpSendProofBtn").textContent = orig;
-  if (ok) {
-    $("qpUpOk").textContent = t("qpSentDone");
-    $("qpFileInp").value = "";
-    showToast(t("toastSaved"));
-  } else {
-    $("qpUpErr").textContent = t("proofErrGeneric");
-  }
-};
-
-/* ============================================================================
-   7. AUTHENTICATION & PASSWORD RECOVERY
-   ============================================================================ */
-function resolveAuthIdentifier() {
-  const emailVal = $("emailInp").value.trim().toLowerCase();
-  if (emailVal) {
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) return null;
-    return { email: emailVal, isEmail: true };
-  }
-  const c = getSelectedCountry();
-  const digits = cleanPhoneDigits($("phoneNumInp").value);
-  if (!digits || digits.length < 6) return null;
-  const codeNum = c.code.replace(/[^\d]/g, "");
-  return { email: `u_${codeNum}${digits}@tel.amine-rent-car.tn`, isEmail: false };
-}
-
-$("authSubmitBtn").onclick = async () => {
-  $("authErr").textContent = "";
-  $("authOk").textContent = "";
-
-  const pw = $("passwordInp").value;
-  if (pw.length < 8) {
-    $("authErr").textContent = t("errShortPass");
-    return;
-  }
-
-  const ident = resolveAuthIdentifier();
-  const c = getSelectedCountry();
-  const digits = cleanPhoneDigits($("phoneNumInp").value);
-  const fullPhone = digits.length >= 6 ? `${c.code}${digits}` : "";
-
-  if (!ident && !fullPhone) {
-    $("authErr").textContent = t("errBadPhone");
-    return;
-  }
-
-  $("authSubmitBtn").disabled = true;
-  try {
-    if (AUTH_MODE === "register") {
-      const fullName = $("fullNameInp").value.trim();
-      if (fullName.length < 2) {
-        $("authErr").textContent = t("errNeedName");
-        return;
-      }
-      const targetEmail = ident ? ident.email : `u_${c.code.replace(/[^\d]/g, "")}${digits}@tel.amine-rent-car.tn`;
-      const { data, error } = await sb.auth.signUp({
-        email: targetEmail,
-        password: pw,
-        options: { data: { full_name: fullName, phone: fullPhone } }
-      });
-      if (error) {
-        $("authErr").textContent = error.message;
-        return;
-      }
-      if (!data.session) {
-        $("authOk").textContent = t("okCreated");
-        return;
-      }
-    } else {
-      if (!ident) {
-        $("authErr").textContent = t("errBadPhone");
-        return;
-      }
-      const { error } = await sb.auth.signInWithPassword({ email: ident.email, password: pw });
-      if (error) {
-        $("authErr").textContent = t("errBadCreds");
-        return;
-      }
-    }
-    $("passwordInp").value = "";
-    await bootstrapClientApp();
-  } catch (err) {
-    $("authErr").textContent = err.message || t("errBadCreds");
-  } finally {
-    $("authSubmitBtn").disabled = false;
-  }
-};
-
-$("forgotLink").onclick = async e => {
-  e.preventDefault();
-  $("authErr").textContent = "";
-  $("authOk").textContent = "";
-  const em = $("emailInp").value.trim().toLowerCase();
-  if (!em) {
-    const digits = cleanPhoneDigits($("phoneNumInp").value);
-    if (digits.length >= 6) $("authOk").textContent = t("msgResetPhone");
-    else $("authErr").textContent = t("errNeedEmailReset");
-    return;
-  }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) {
-    $("authErr").textContent = t("errNeedEmailReset");
-    return;
-  }
-  const { error } = await sb.auth.resetPasswordForEmail(em, {
-    redirectTo: location.origin + location.pathname
-  });
-  if (error) $("authErr").textContent = error.message;
-  else $("authOk").textContent = t("okResetMail");
-};
-
-sb.auth.onAuthStateChange(event => {
-  if (event === "PASSWORD_RECOVERY") {
-    $("authSection").hidden = true;
-    $("clientApp").hidden = true;
-    $("recoverySection").hidden = false;
-  }
+document.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>{
+  LANG=b.dataset.lang;try{localStorage.setItem("lang",LANG)}catch(_){}applyLang();
 });
 
-$("recSaveBtn").onclick = async () => {
-  $("recErr").textContent = "";
-  const np = $("newPassInp").value;
-  if (np.length < 8) {
-    $("recErr").textContent = t("errShortPass");
-    return;
-  }
-  const { error } = await sb.auth.updateUser({ password: np });
-  if (error) {
-    $("recErr").textContent = error.message;
-    return;
-  }
-  $("newPassInp").value = "";
-  $("recoverySection").hidden = true;
-  await bootstrapClientApp();
+$("togglePw").onclick=()=>{const i=$("fPass");i.type=i.type==="password"?"text":"password";$("togglePw").textContent=i.type==="password"?"👁️":"🙈"};
+$("fPass").oninput=()=>{
+  if(MODE!=="register"){$("pwMeter").hidden=true;return}
+  const v=$("fPass").value;$("pwMeter").hidden=!v;if(!v)return;
+  let sc=(v.length>=8)+(v.length>=11)+(/[A-Z]/.test(v)&&/[a-z]/.test(v))+(/\d/.test(v)||/[^A-Za-z0-9]/.test(v));
+  $("pwBar").style.width=Math.min(100,sc*25)+"%";
+  $("pwBar").style.background=sc<=1?"var(--red)":sc<=2?"var(--gold)":"var(--green)";
 };
 
-$("logoutBtn").onclick = async () => {
-  await sb.auth.signOut();
-  CURRENT_USER = null;
-  PROFILE = null;
-  BOOKINGS = [];
-  BANKS = [];
-  $("clientApp").hidden = true;
-  $("recoverySection").hidden = true;
-  $("logoutBtn").hidden = true;
-  $("authSection").hidden = false;
+function setMode(m){
+  MODE=m;
+  [["tLogin","login"],["tReg","register"],["tPay","pay"]].forEach(([id,k])=>$(id).classList.toggle("on",m===k));
+  $("authCard").hidden=m==="pay";$("payCard").hidden=m!=="pay";
+  $("regOnly").hidden=m!=="register";$("forgotBox").hidden=m!=="login";
+  $("pwMeter").hidden=m!=="register"||!$("fPass").value;
+  $("fPass").autocomplete=m==="register"?"new-password":"current-password";
+  $("authErr").textContent=$("authOk").textContent="";
+  applyLang();
+}
+$("tLogin").onclick=()=>setMode("login");$("tReg").onclick=()=>setMode("register");$("tPay").onclick=()=>setMode("pay");
+if(RAW_REF)$("qpId").value=shortRef(RAW_REF);
+
+/* ---------- Authentification : Username ou Téléphone (Sans Email) ---------- */
+const slug=v=>String(v||"").trim().toLowerCase();
+const userAuthEmail=u=>`${u}@user.amine-rent-car.tn`;
+const phoneAuthEmail=(codeNum,d)=>`u_${codeNum}${d}@tel.amine-rent-car.tn`;
+
+$("authBtn").onclick=async()=>{
+  $("authErr").textContent=$("authOk").textContent="";
+  const wait=checkLock();if(wait>0){$("authErr").textContent=t("eLock")(wait);return}
+  const pw=$("fPass").value,id=slug($("fUser").value);
+  if(pw.length<8){$("authErr").textContent=t("ePass");return}
+
+  $("authBtn").disabled=true;
+  try{
+    if(MODE==="register"){
+      const name=$("fName").value.trim(),d=digits($("fPhone").value);
+      if(name.length<2){$("authErr").textContent=t("eName");return}
+      if(!/^[a-z0-9_]{3,40}$/.test(id)){$("authErr").textContent=t("eUser");return}
+      if(d.length<6){$("authErr").textContent=t("ePhone");return}
+      const det=detectCountryFromPhone($("fPhone").value);
+      const {data,error}=await sb.auth.signUp({
+        email:userAuthEmail(id),
+        password:pw,
+        options:{data:{full_name:name,phone:det.code+d,username:id}}
+      });
+      if(error){$("authErr").textContent=/registered|exists/i.test(error.message)?t("eTaken"):t("eGeneric");return}
+      if(!data.session){$("authOk").textContent=t("saved");return}
+    }else{
+      const d=digits(id),det=detectCountryFromPhone(id);
+      let email;
+      if(/^\+?[\d\s.-]{6,}$/.test(id)){email=phoneAuthEmail(det.code.replace(/\D/g,""),d)}
+      else if(/^[a-z0-9_]{3,40}$/.test(id)){email=userAuthEmail(id)}
+      else{recordFail();$("authErr").textContent=t("eCreds");return}
+
+      const {error}=await sb.auth.signInWithPassword({email,password:pw});
+      if(error){recordFail();$("authErr").textContent=t("eCreds");return}
+    }
+    failCount=0;lockUntil=0;$("fPass").value="";await boot();
+  }catch(_){$("authErr").textContent=t("eGeneric")}finally{$("authBtn").disabled=false}
 };
 
-/* ============================================================================
-   8. BOOTSTRAP & DASHBOARD DATA LOADING
-   ============================================================================ */
-async function bootstrapClientApp() {
-  const { data: { session } } = await sb.auth.getSession();
-  if (!session || !session.user) {
-    $("authSection").hidden = false;
-    $("clientApp").hidden = true;
-    $("logoutBtn").hidden = true;
-    return;
-  }
+$("outBtn").onclick=async()=>{
+  clearTimeout(idleTimer);await sb.auth.signOut();PROFILE=null;BOOKINGS=[];
+  $("app").hidden=true;$("outBtn").hidden=true;$("authSec").hidden=false;
+};
 
-  CURRENT_USER = session.user;
-
-  const { data: profRow } = await sb
-    .from("profiles")
-    .select("*")
-    .eq("id", CURRENT_USER.id)
-    .maybeSingle();
-
-  if (profRow && ["admin", "staff"].includes(profRow.role)) {
-    location.href = "admin.html";
-    return;
-  }
-
-  PROFILE = profRow || {
-    id: CURRENT_USER.id,
-    full_name: CURRENT_USER.user_metadata?.full_name || "",
-    phone: CURRENT_USER.user_metadata?.phone || "",
-    billing_address: "",
-    tax_id: "",
-    id_doc_type: "cin",
-    id_doc_number: "",
-    id_doc_path: "",
-    license_path: "",
-    flight_ticket: "",
-    avatar_path: ""
-  };
-
-  $("authSection").hidden = true;
-  $("recoverySection").hidden = true;
-  $("clientApp").hidden = false;
-  $("logoutBtn").hidden = false;
-
-  $("profName").value = PROFILE.full_name || "";
-  $("profPhone").value = PROFILE.phone || "";
-  $("profAddr").value = PROFILE.billing_address || "";
-  $("profTax").value = PROFILE.tax_id || "";
-  $("idDocTypeSel").value = PROFILE.id_doc_type || "cin";
-  $("idDocNumInp").value = PROFILE.id_doc_number || "";
-  $("flightInp").value = PROFILE.flight_ticket || "";
-
-  await refreshDashboardData();
+/* ---------- Paiement & Voucher Rapide ---------- */
+function ribRows(list,cls){
+  return list.length?list.map(a=>`<div class="row" style="padding:8px 0;border-top:1px solid #ECEEE9"><div><b>${esc(a.bank)}</b> · <span class="sub">${esc(a.holder)}</span><br><span class="rib">${esc(a.rib)}</span></div><button type="button" class="dark sm" data-${cls}="${esc(a.rib)}">${t("copy")}</button></div>`).join(""):`<p class="sub">${t("ribE")}</p>`;
+}
+function bindCopy(root,cls){
+  root.querySelectorAll(`[data-${cls}]`).forEach(b=>b.onclick=async()=>{
+    try{await navigator.clipboard.writeText(b.dataset[cls])}catch(_){}
+    const o=b.textContent;b.textContent=t("copied");toast(t("copied"));setTimeout(()=>b.textContent=o,1400);
+  });
 }
 
-async function refreshDashboardData() {
-  await renderIdentityHeader();
-  await renderStoredDocumentLinks();
+$("qpBtn").onclick=async()=>{
+  $("qpErr").textContent="";
+  const wait=checkLock();if(wait>0){$("qpErr").textContent=t("eLock")(wait);return}
+  const refIn=$("qpId").value.trim().replace(/^#/,""),ph=cleanPh($("qpPh").value);
+  if(refIn.length<4||ph.length<6){$("qpErr").textContent=t("qpBad");return}
+  $("qpBtn").disabled=true;
+  const {data,error}=await sb.rpc("get_payment_info",{p_booking:refIn,p_phone:ph});
+  $("qpBtn").disabled=false;
+  if(error||!data||!data.ok){recordFail();$("qpErr").textContent=t("qpBad");return}
+  failCount=0;QP=data;QPPH=ph;QP_ID=data.booking_id||refIn;
+  $("qpGate").hidden=true;$("qpRes").hidden=false;renderQp();
+};
+function renderQp(){
+  const r=[[t("ref"),"#"+shortRef(QP_ID)],[t("days"),QP.days],[t("htva"),money(QP.subtotal_htva)],[t("vat"),(QP.vat_rate??0)+" %"],[t("levy"),money(QP.levy)],[t("ttc"),money(QP.total_estimate)],[`${t("dep")} (${QP.deposit_pct??0} %)`,money(QP.deposit)],[t("rec"),money(QP.received)],[t("rem"),money(QP.remaining)]];
+  $("qpTable").innerHTML=r.map(x=>`<tr><td>${esc(x[0])}</td><td>${esc(x[1])}</td></tr>`).join("");
+  $("qpBanks").innerHTML=ribRows(Array.isArray(QP.accounts)?QP.accounts:[],"qc");bindCopy($("qpBanks"),"qc");
+}
+$("qpBSave").onclick=async()=>{
+  $("qpBErr").textContent=$("qpBOk").textContent="";
+  const {data,error}=await sb.rpc("set_billing",{p_booking:QP_ID,p_phone:QPPH,p_name:$("qpBName").value.trim(),p_address:$("qpBAddr").value.trim(),p_tax:$("qpBTax").value.trim()});
+  if(error||!data||!data.ok)$("qpBErr").textContent=t("billErr");else{$("qpBOk").textContent=t("billOk");toast(t("saved"))}
+};
+$("qpSend").onclick=async()=>{
+  $("qpUpErr").textContent=$("qpUpOk").textContent="";
+  const f=$("qpFile").files[0];
+  if(!(await validateFileSecure(f,5,true))){$("qpUpErr").textContent=t("badFile");return}
+  $("qpSend").disabled=true;const old=$("qpSend").textContent;$("qpSend").textContent=t("sending");
+  const path=`${QP_ID}/${Date.now()}.${EXT[f.type]}`;
+  const up=await sb.storage.from(PROOFS).upload(path,f,{contentType:f.type});
+  let ok=false;
+  if(!up.error){const r=await sb.rpc("submit_proof",{p_booking:QP_ID,p_phone:QPPH,p_path:path});ok=!r.error&&r.data&&r.data.ok}
+  $("qpSend").disabled=false;$("qpSend").textContent=old;
+  if(ok){$("qpUpOk").textContent=t("sentOk");$("qpFile").value="";toast(t("saved"))}else $("qpUpErr").textContent=t("proofErr");
+};
 
-  const [bkRes, bankRes, setRes] = await Promise.all([
-    sb.from("bookings")
-      .select("*,vehicles(name),payments(id,status,amount,proof_path,created_at),invoices(id,number,kind)")
-      .order("created_at", { ascending: false }),
+/* ---------- Démarrage Espace Client ---------- */
+async function boot(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session?.user){$("authSec").hidden=false;$("app").hidden=true;return}
+  const u=session.user;
+  const {data:row}=await sb.from("profiles").select("*").eq("id",u.id).maybeSingle();
+  if(row&&["admin","staff"].includes(row.role)){location.href="admin.html";return}
+  PROFILE=row||{id:u.id,full_name:u.user_metadata?.full_name||"",phone:u.user_metadata?.phone||""};
+  $("authSec").hidden=true;$("app").hidden=false;$("outBtn").hidden=false;
+  resetIdle();renderHero();renderSteps();await loadData();
+}
+async function loadData(){
+  const [b,k,s]=await Promise.all([
+    sb.from("bookings").select("*,vehicles(name),payments(id,status,amount,proof_path,created_at),invoices(id,number,kind)").order("created_at",{ascending:false}),
     sb.from("bank_accounts").select("*").order("sort"),
     sb.from("settings").select("key,value")
   ]);
-
-  if (bkRes.error) {
-    $("bookingsContainer").innerHTML = `<div class="msg-err">${esc(bkRes.error.message)}</div>`;
-    return;
-  }
-
-  SETTINGS = {};
-  (setRes.data || []).forEach(r => { SETTINGS[r.key] = r.value; });
-
-  BOOKINGS = Array.isArray(bkRes.data) ? bkRes.data : [];
-  BANKS = Array.isArray(bankRes.data) ? bankRes.data : [];
-  renderBookingsList();
+  if(b.error){$("bkList").innerHTML=`<div class="err">${esc(t("eGeneric"))}</div>`;return}
+  SET={};(s.data||[]).forEach(r=>SET[r.key]=r.value);
+  BOOKINGS=b.data||[];BANKS=k.data||[];renderBookings();
 }
 
-/* ============================================================================
-   9. HEADER IDENTITY, AVATAR & DOCUMENT PREVIEWS
-   ============================================================================ */
-async function renderIdentityHeader() {
-  const displayName = (PROFILE?.full_name || "").trim();
-  $("welcomeTitle").textContent = `${t("welcomePrefix")}${displayName ? " " + displayName : ""}`;
-
-  const circle = $("avatarCircle");
-  const initials = (displayName || "C")
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map(w => w[0])
-    .join("")
-    .toUpperCase();
-
-  if (PROFILE?.avatar_path) {
-    const { data } = await sb.storage.from(DOCS_BUCKET).createSignedUrl(PROFILE.avatar_path, 3600);
-    if (data && data.signedUrl) {
-      circle.innerHTML = `<img src="${esc(data.signedUrl)}" alt="${esc(displayName || "Avatar")}">`;
-      return;
-    }
-  }
-  circle.textContent = initials || "C";
+/* ---------- Identité & Étapes ---------- */
+const STEPS=[
+  {k:"s1",req:true,done:p=>!!(p.full_name&&p.phone)},
+  {k:"s2",req:true,done:p=>!!(p.id_doc_number&&p.id_doc_path)},
+  {k:"s3",req:true,done:p=>!!(p.license_number&&p.license_date&&p.birth_date&&p.license_path)},
+  {k:"s4",req:false,done:p=>!!p.flight_ticket}
+];
+async function signed(path,secs=300){if(!path)return null;const {data}=await sb.storage.from(DOCS).createSignedUrl(path,secs);return data?.signedUrl||null}
+async function renderHero(){
+  const n=(PROFILE.full_name||"").trim();
+  $("hello").textContent=`${t("hello")}${n?" "+n:""}`;
+  const av=$("avatar");av.textContent=(n||"C").split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join("").toUpperCase()||"C";
+  const u=await signed(PROFILE.avatar_path,3600);if(u)av.innerHTML=`<img src="${esc(u)}" alt="">`;
 }
-
-$("avatarFileInp").onchange = async () => {
-  const file = $("avatarFileInp").files[0];
-  if (!file || !PROFILE) return;
-  const extMap = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp" };
-  const ext = extMap[file.type];
-  if (!ext || file.size > 3 * 1024 * 1024) {
-    showToast(t("errAvatarType"));
-    return;
-  }
-  const path = `avatars/${PROFILE.id}_${Date.now()}.${ext}`;
-  const up = await sb.storage.from(DOCS_BUCKET).upload(path, file, { contentType: file.type });
-  if (up.error) {
-    showToast(up.error.message);
-    return;
-  }
-  const { error } = await sb.from("profiles").update({ avatar_path: path }).eq("id", PROFILE.id);
-  if (!error) {
-    PROFILE.avatar_path = path;
-    await renderIdentityHeader();
-    showToast(t("toastSaved"));
-  }
+$("avatarFile").onchange=async()=>{
+  const f=$("avatarFile").files[0];
+  if(!(await validateFileSecure(f,3,false))){toast(t("badFile"));return}
+  const path=`avatars/${PROFILE.id}_${Date.now()}.${EXT[f.type]}`;
+  const up=await sb.storage.from(DOCS).upload(path,f,{contentType:f.type});
+  if(up.error){toast(t("saveErr"));return}
+  const {error}=await sb.from("profiles").update({avatar_path:path}).eq("id",PROFILE.id);
+  if(!error){PROFILE.avatar_path=path;renderHero();toast(t("saved"))}
 };
-
-async function renderStoredDocumentLinks() {
-  const fillLink = async (path, targetId) => {
-    const el = $(targetId);
-    if (!el) return;
-    if (!path) { el.innerHTML = ""; return; }
-    const { data } = await sb.storage.from(DOCS_BUCKET).createSignedUrl(path, 300);
-    if (data && data.signedUrl) {
-      el.innerHTML = `<a class="link-inline" href="${esc(data.signedUrl)}" target="_blank" rel="noopener">📎 ${t("viewDocLink")}</a>`;
+function progress(){
+  const req=STEPS.filter(s=>s.req),done=req.filter(s=>s.done(PROFILE)).length,pct=Math.round(done/req.length*100);
+  $("progTitle").textContent=`${t("progT")} · ${t("stepsOf")(done,req.length)}`;
+  $("progPct").textContent=pct+"%";$("progBar").style.width=pct+"%";
+  const open=STEPS.findIndex(s=>s.req&&!s.done(PROFILE));
+  $("dots").innerHTML=req.map((s,i)=>`<b class="${s.done(PROFILE)?"d":i===open?"c":""}"></b>`).join("");
+  $("progNext").textContent=t("left")(req.length-done);
+  return open;
+}
+function stepFields(k){
+  const P=PROFILE,today=new Date().toISOString().slice(0,10);
+  if(k==="s1")return `<div class="g2"><div><label>${t("lName")}</label><input data-f="full_name" maxlength="120" value="${esc(P.full_name)}"></div><div><label>${t("lPhone")}</label><input data-f="phone" type="tel" dir="ltr" maxlength="32" value="${esc(P.phone)}"></div><div><label>${t("lAddr")}</label><input data-f="billing_address" maxlength="200" value="${esc(P.billing_address)}"></div><div><label>${t("lTax")}</label><input data-f="tax_id" maxlength="50" value="${esc(P.tax_id)}"></div></div>`;
+  if(k==="s2")return `<div class="g2"><div><label>${t("lIdType")}</label><select data-f="id_doc_type"><option value="cin"${P.id_doc_type!=="passport"?" selected":""}>CIN</option><option value="passport"${P.id_doc_type==="passport"?" selected":""}>Passeport</option></select></div><div><label>${t("lIdNum")}</label><input data-f="id_doc_number" dir="ltr" maxlength="45" value="${esc(P.id_doc_number)}"></div></div><label>${t("lIdFile")}</label><input type="file" data-file="id_doc_path" data-dir="id_docs" accept="image/jpeg,image/png,image/webp,application/pdf"><div data-lnk="id_doc_path" style="margin-top:6px"></div>`;
+  if(k==="s3")return `<div class="g2"><div><label>${t("lLicNum")}</label><input data-f="license_number" dir="ltr" maxlength="40" value="${esc(P.license_number)}"></div><div><label>${t("lLicDate")}</label><input data-f="license_date" type="date" dir="ltr" max="${today}" value="${esc(P.license_date)}"></div><div><label>${t("lBirth")}</label><input data-f="birth_date" type="date" dir="ltr" max="${today}" value="${esc(P.birth_date)}"></div></div><label>${t("lLicFile")}</label><input type="file" data-file="license_path" data-dir="licenses" accept="image/jpeg,image/png,image/webp,application/pdf"><div data-lnk="license_path" style="margin-top:6px"></div>`;
+  return `<label>${t("lFlight")}</label><input data-f="flight_ticket" dir="ltr" maxlength="70" value="${esc(P.flight_ticket)}">`;
+}
+async function renderSteps(){
+  const open=progress();
+  $("steps").innerHTML=STEPS.map((s,i)=>{
+    const d=s.done(PROFILE),chip=d?t("done"):s.req?t("todo"):t("opt");
+    return `<details class="step ${d?"done":""}" data-k="${s.k}"${i===open?" open":""}><summary><span class="num">${d?"✓":i+1}</span><span class="stt">${t(s.k)}<small>${t(s.k+"d")}</small></span><span class="chip ${!d&&!s.req?"opt":""}">${chip}</span></summary><div class="sbody">${stepFields(s.k)}<div class="acts"><button type="button" class="green sm" data-save="${s.k}">${t("saveStep")}</button></div><div class="err"></div><div class="ok"></div></div></details>`;
+  }).join("");
+  document.querySelectorAll("[data-lnk]").forEach(async el=>{const u=await signed(PROFILE[el.dataset.lnk],300);if(u)el.innerHTML=`<a href="${esc(u)}" target="_blank" rel="noopener noreferrer" style="color:var(--red);font-weight:700;font-size:13px">${t("view")}</a>`});
+  document.querySelectorAll("[data-save]").forEach(btn=>btn.onclick=()=>saveStep(btn));
+}
+async function saveStep(btn){
+  const k=btn.dataset.save,box=btn.closest(".sbody"),er=box.querySelector(".err"),ok=box.querySelector(".ok");
+  er.textContent=ok.textContent="";
+  const payload={};
+  box.querySelectorAll("[data-f]").forEach(i=>payload[i.dataset.f]=i.type==="date"?(i.value||null):i.value.trim());
+  btn.disabled=true;const old=btn.textContent;btn.textContent=t("saving");
+  try{
+    for(const fi of box.querySelectorAll("[data-file]")){
+      const f=fi.files[0];if(!f)continue;
+      if(!(await validateFileSecure(f,5,true)))throw new Error(t("badFile"));
+      const path=`${fi.dataset.dir}/${PROFILE.id}_${Date.now()}.${EXT[f.type]}`;
+      const up=await sb.storage.from(DOCS).upload(path,f,{contentType:f.type});
+      if(up.error)throw new Error(t("saveErr"));
+      payload[fi.dataset.file]=path;
     }
-  };
-  await Promise.all([
-    fillLink(PROFILE?.id_doc_path, "idDocPreview"),
-    fillLink(PROFILE?.license_path, "licPreview")
-  ]);
+    const m={...PROFILE,...payload};
+    if(k==="s1"&&!(m.full_name&&m.phone))throw new Error(t("needS1"));
+    if(k==="s2"&&!(m.id_doc_number&&m.id_doc_path))throw new Error(t("needS2"));
+    if(k==="s3"&&!(m.license_number&&m.license_date&&m.birth_date&&m.license_path))throw new Error(t("needS3"));
+    const {error}=await sb.from("profiles").update(payload).eq("id",PROFILE.id);
+    if(error)throw new Error(t("saveErr"));
+    Object.assign(PROFILE,payload);toast(t("saved"));await renderSteps();renderHero();
+  }catch(e){er.textContent=e.message;btn.disabled=false;btn.textContent=old}
 }
 
-/* ============================================================================
-   10. BOOKINGS LIST, FINANCIAL CALCULATOR, RIB, BILLING, PROOF & QR PASS
-   ============================================================================ */
-document.querySelectorAll("[data-flt]").forEach(btn => {
-  btn.onclick = () => {
-    FILTER_MODE = btn.dataset.flt;
-    document.querySelectorAll("[data-flt]").forEach(b => b.classList.toggle("active", b === btn));
-    renderBookingsList();
-  };
-});
-
-function isHistoricalBooking(b) {
-  if (["completed", "cancelled", "expired"].includes(b.status)) return true;
-  const endMs = b.end_at ? new Date(b.end_at).getTime() : 0;
-  return endMs > 0 && endMs < Date.now() && b.status !== "pending";
+/* ---------- الحجوزات ووصل الحجز (Bon + QR) ---------- */
+document.querySelectorAll(".pills [data-f]").forEach(b=>b.onclick=()=>{FILTER=b.dataset.f;document.querySelectorAll(".pills [data-f]").forEach(x=>x.classList.toggle("on",x===b));renderBookings()});
+const isHist=b=>["completed","cancelled","expired"].includes(b.status)||(b.end_at&&new Date(b.end_at)<Date.now()&&b.status!=="pending");
+function fin(b,pays){
+  const q=b.quote||{},days=+q.days||1,sub=+q.subtotal_htva||0,vr=+(SET.vat_rate??q.vat_rate??19);
+  const levy=+(q.levy_total??((+(SET.levy_per_day??q.levy_per_day??0))*days));
+  const stamp=SET.fiscal_stamp_enabled==="true"?+(SET.fiscal_stamp_amount??1):+(q.fiscal_stamp??0);
+  const vat=+(q.vat_amount??sub*vr/100),ttc=+(q.total_ttc??sub+vat+levy+stamp);
+  const dp=+(SET.deposit_pct??q.deposit_pct??30),dep=+(q.deposit??ttc*dp/100);
+  const rec=pays.filter(p=>p.status==="verified").reduce((a,p)=>a+(+p.amount||0),0);
+  return{days,sub,vr,vat,levy,stamp,ttc,dp,dep,rec,rem:Math.max(0,ttc-rec)};
 }
-
-function computeBookingFinancials(b, payments) {
-  const days = Number(b.quote?.days || 1);
-  const subHtva = Number(b.quote?.subtotal_htva || 0);
-  const vatRate = Number(SETTINGS.vat_rate ?? b.quote?.vat_rate ?? 19);
-  const levyPerDay = Number(SETTINGS.levy_per_day ?? b.quote?.levy_per_day ?? 0);
-  const levyTotal = Number(b.quote?.levy_total ?? (levyPerDay * days));
-  const stamp = SETTINGS.fiscal_stamp_enabled === "true" ? Number(SETTINGS.fiscal_stamp_amount ?? 1) : Number(b.quote?.fiscal_stamp ?? 0);
-  const vatAmt = Number(b.quote?.vat_amount ?? ((subHtva * vatRate) / 100));
-  const totalTtc = Number(b.quote?.total_ttc ?? (subHtva + vatAmt + levyTotal + stamp));
-  const depositPct = Number(SETTINGS.deposit_pct ?? b.quote?.deposit_pct ?? 30);
-  const depositDue = Number(b.quote?.deposit ?? ((totalTtc * depositPct) / 100));
-  const received = payments
-    .filter(p => p.status === "verified")
-    .reduce((acc, p) => acc + Number(p.amount || 0), 0);
-  const remaining = Math.max(0, totalTtc - received);
-
-  return { days, subHtva, vatRate, levyTotal, stamp, totalTtc, depositPct, depositDue, received, remaining };
-}
-
-function buildFlowStepsHtml(b, hasProof, isVerified) {
-  const isConfirmed = b.status === "confirmed" || isVerified;
-  const s1 = "done";
-  const s2 = isConfirmed || hasProof ? "done" : b.status === "pending" ? "current" : "done";
-  const s3 = isVerified ? "done" : hasProof ? "current" : "";
-  const s4 = isConfirmed ? "done" : "";
-
-  return `
-    <div class="flow-steps" aria-hidden="true">
-      <div class="flow-step ${s1}">${t("step1")}</div>
-      <div class="flow-step ${s2}">${t("step2")}</div>
-      <div class="flow-step ${s3}">${t("step3")}</div>
-      <div class="flow-step ${s4}">${t("step4")}</div>
-    </div>
-  `;
-}
-
-function renderBookingsList() {
-  const fmtDate = d => new Date(d).toLocaleDateString(LANG === "ar" ? "ar-TN" : "fr-FR", {
-    timeZone: "Africa/Tunis"
-  });
-
-  const filtered = BOOKINGS.filter(b => {
-    if (FILTER_MODE === "active") return !isHistoricalBooking(b);
-    if (FILTER_MODE === "history") return isHistoricalBooking(b);
-    return true;
-  });
-
-  if (!filtered.length) {
-    $("bookingsContainer").innerHTML = `<p class="section-sub" style="padding:8px 0">${t("emptyBookings")}</p>`;
-    return;
-  }
-
-  const banksBlock = BANKS.length
-    ? `
-      <div class="rib-panel">
-        <div style="font-weight:800;font-size:13.5px;margin-bottom:4px">${t("ribTitle")}</div>
-        ${BANKS.map(acc => `
-          <div class="rib-row">
-            <div>
-              <b>${esc(acc.bank)}</b> · <span class="section-sub">${esc(acc.holder)}</span><br>
-              <span class="rib-val">${esc(acc.rib)}</span>
-            </div>
-            <button type="button" class="btn-dark btn-sm" data-copy-rib="${esc(acc.rib)}">${t("copyRib")}</button>
-          </div>
-        `).join("")}
+function renderBookings(){
+  const list=BOOKINGS.filter(b=>FILTER==="all"||(FILTER==="history")===isHist(b));
+  if(!list.length){$("bkList").innerHTML=`<p class="sub" style="padding:10px 0">${t("empty")}</p>`;return}
+  $("bkList").innerHTML=list.map(b=>{
+    const ref=shortRef(b.id);
+    const pays=[...(b.payments||[])].sort((a,z)=>new Date(z.created_at)-new Date(a.created_at));
+    const proof=pays.find(p=>p.proof_path),dead=["cancelled","expired"].includes(b.status);
+    const verified=!dead&&pays.some(p=>p.status==="verified"),pend=!dead&&!verified&&pays.some(p=>p.status==="proof_uploaded");
+    const hist=isHist(b),f=fin(b,pays),live=!hist&&["pending","confirmed"].includes(b.status);
+    const conf=b.status==="confirmed"||verified;
+    const c=["d",conf||proof?"d":b.status==="pending"?"c":"d",verified?"d":proof?"c":"",conf?"d":""];
+    const st=(hist&&b.status==="confirmed")?t("status").completed:(t("status")[b.status]||b.status);
+    return `<article class="bk">
+      <div class="row">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><div class="car">${esc(b.vehicles?.name||"")}</div><span class="ref-tag">#${esc(ref)}</span></div>
+        <span class="badge ${esc(b.status)}">${esc(st)}</span>
       </div>
-    `
-    : `<div class="rib-panel section-sub">${t("ribEmpty")}</div>`;
-
-  $("bookingsContainer").innerHTML = filtered.map(b => {
-    const payments = [...(b.payments || [])].sort((a, z) => new Date(z.created_at) - new Date(a.created_at));
-    const latestProof = payments.find(p => p.proof_path);
-    const isCancelledOrExpired = ["cancelled", "expired"].includes(b.status);
-    const isVerified = !isCancelledOrExpired && payments.some(p => p.status === "verified");
-    const isProofPending = !isCancelledOrExpired && !isVerified && payments.some(p => p.status === "proof_uploaded");
-    const historical = isHistoricalBooking(b);
-    const fin = computeBookingFinancials(b, payments);
-
-    const statusText = (historical && b.status === "confirmed")
-      ? t("statusMap").completed
-      : (t("statusMap")[b.status] || b.status);
-
-    const canUploadProof = !historical && ["pending", "confirmed"].includes(b.status) && !isVerified;
-    const canShowBonQr = b.status === "confirmed" || isVerified;
-
-    return `
-      <article class="booking-item">
-        <div class="booking-top">
-          <div class="car-name">${esc(b.vehicles?.name || "")}</div>
-          <span class="status-badge ${esc(b.status)}">${esc(statusText)}</span>
-        </div>
-
-        <div class="section-sub" style="margin-top:4px">
-          ${t("from")} <b>${fmtDate(b.start_at)}</b> ${t("to")} <b>${fmtDate(b.end_at)}</b>
-          · ${esc(fin.days)} ${t("days")}
-          ${b.pickup_text ? ` · ${esc(b.pickup_text)}` : ""}
-        </div>
-
-        ${buildFlowStepsHtml(b, Boolean(latestProof), isVerified)}
-
-        ${isVerified ? `<div class="msg-ok">✓ ${t("paidBanner")}</div>` : ""}
-        ${isProofPending ? `<div class="section-sub" style="font-weight:700;margin-top:6px">⏳ ${t("proofBanner")}</div>` : ""}
-
-        ${fin.subHtva > 0 ? `
-          <div class="finance-box">
-            <div style="font-weight:800;font-size:13.5px;margin-bottom:6px">${t("finSummaryTitle")}</div>
-            <table class="finance-table">
-              <tr><td>${t("finSub")}</td><td>${fmtMoney(fin.subHtva)}</td></tr>
-              <tr><td>${t("finVat")} (${fin.vatRate} %)</td><td>${fmtMoney((fin.subHtva * fin.vatRate) / 100)}</td></tr>
-              ${fin.levyTotal > 0 ? `<tr><td>${t("finLevy")}</td><td>${fmtMoney(fin.levyTotal)}</td></tr>` : ""}
-              ${fin.stamp > 0 ? `<tr><td>${t("finStamp")}</td><td>${fmtMoney(fin.stamp)}</td></tr>` : ""}
-              <tr><td><b>${t("finTot")}</b></td><td><b>${fmtMoney(fin.totalTtc)}</b></td></tr>
-              <tr><td>${t("finRec")}</td><td>${fmtMoney(fin.received)}</td></tr>
-              <tr><td>${t("finRem")}</td><td>${fmtMoney(fin.remaining)}</td></tr>
-            </table>
-            <div class="finance-highlight">
-              <span>${t("finDep")} (${fin.depositPct} %)</span>
-              <span style="font-family:var(--font-mono);color:var(--red-dark)">${fmtMoney(fin.depositDue)}</span>
-            </div>
-          </div>
-        ` : ""}
-
-        ${!historical && ["pending", "confirmed"].includes(b.status) ? `
-          ${banksBlock}
-
-          <details class="billing-inline" data-bill-box="${esc(b.id)}">
-            <summary>${t("qpBillSummary")}</summary>
-            <div class="field-group">
-              <input class="bi-name" value="${esc(b.billing_name || PROFILE?.full_name || "")}" placeholder="${esc(t("lblProfName"))}">
-            </div>
-            <div class="field-group">
-              <input class="bi-addr" value="${esc(b.billing_address || PROFILE?.billing_address || "")}" placeholder="${esc(t("lblProfAddr"))}">
-            </div>
-            <div class="field-group">
-              <input class="bi-tax" value="${esc(b.billing_tax_id || PROFILE?.tax_id || "")}" placeholder="${esc(t("lblProfTax"))}">
-            </div>
-            <div class="field-group">
-              <button type="button" class="btn-dark btn-sm bi-save">${t("qpBillSaveBtn")}</button>
-            </div>
-            <div class="msg-err bi-err"></div>
-            <div class="msg-ok bi-ok"></div>
-          </details>
-
-          ${canUploadProof ? `
-            <div class="proof-panel" data-proof-for="${esc(b.id)}">
-              <div style="font-weight:800;font-size:13.5px">${t("proofLabel")}</div>
-              <div class="warn-banner">${t("qpWarnText")}</div>
-              <div class="proof-controls">
-                <input type="file" class="pf-file" accept="image/jpeg,image/png,image/webp,application/pdf" style="max-width:290px;padding:6px">
-                <input type="number" step="0.5" min="0" class="pf-amt" placeholder="${t("proofHint")}" style="max-width:210px">
-                <button type="button" class="btn-green btn-sm pf-submit">${t("sendProof")}</button>
-              </div>
-              <div class="msg-err pf-err"></div>
-              <div class="msg-ok pf-ok"></div>
-            </div>
-          ` : ""}
-        ` : ""}
-
-        <div class="action-bar">
-          ${canShowBonQr ? `<button type="button" class="btn-green btn-sm" data-open-bon="${esc(b.id)}">🎫 ${t("bonBtn")}</button>` : ""}
-          ${latestProof ? `<button type="button" class="btn-dark btn-sm" data-view-proof="${esc(latestProof.proof_path)}">📎 ${t("viewProof")}</button>` : ""}
-          ${(b.invoices || []).map(inv => `
-            <a class="btn btn-dark btn-sm" target="_blank" rel="noopener" href="invoice.html?id=${esc(inv.id)}">
-              ${inv.kind === "credit_note" ? t("cnPrefix") : t("invPrefix")} ${esc(inv.number)}
-            </a>
-          `).join("")}
-          ${!historical && ["pending", "confirmed"].includes(b.status) ? `
-            <button type="button" class="btn-red btn-sm" data-cancel-bk="${esc(b.id)}">${t("cancelBtn")}</button>
-          ` : ""}
-        </div>
-      </article>
-    `;
+      <div class="sub" style="margin-top:4px">${t("from")} <b>${fmtD(b.start_at)}</b> ${t("to")} <b>${fmtD(b.end_at)}</b> · ${f.days} ${t("days")}${b.pickup_text?" · "+esc(b.pickup_text):""}</div>
+      <div class="flow">${["st1","st2","st3","st4"].map((k,i)=>`<span class="${c[i]}">${t(k)}</span>`).join("")}</div>
+      ${verified?`<div class="ok">✓ ${t("paid")}</div>`:""}
+      ${pend?`<div class="warn" style="margin:6px 0">⏳ ${t("wait")}</div>`:""}
+      ${f.sub>0?`<div class="box"><b>${t("finT")}</b><table><tr><td>${t("htva")}</td><td>${money(f.sub)}</td></tr><tr><td>${t("vat")} (${f.vr} %)</td><td>${money(f.vat)}</td></tr>${f.levy>0?`<tr><td>${t("levy")}</td><td>${money(f.levy)}</td></tr>`:""}${f.stamp>0?`<tr><td>${t("stamp")}</td><td>${money(f.stamp)}</td></tr>`:""}<tr><td><b>${t("ttc")}</b></td><td><b>${money(f.ttc)}</b></td></tr><tr><td>${t("rec")}</td><td>${money(f.rec)}</td></tr><tr><td>${t("rem")}</td><td>${money(f.rem)}</td></tr></table><div class="dep"><span>${t("dep")} (${f.dp} %)</span><span style="font-family:var(--font-mono);color:var(--red-dark)">${money(f.dep)}</span></div></div>`:""}
+      ${live?`<div class="rib-panel"><b>${t("ribT")}</b>${ribRows(BANKS,"bc")}</div>
+      <details class="box" data-bill="${esc(b.id)}"><summary style="cursor:pointer;font-weight:700;font-size:13.5px">${t("billOptS")}</summary>
+        <input class="bn" maxlength="120" placeholder="${esc(t("lName"))}" value="${esc(b.billing_name||PROFILE.full_name||"")}" style="margin-top:8px">
+        <input class="ba" maxlength="200" placeholder="${esc(t("lAddr"))}" value="${esc(b.billing_address||PROFILE.billing_address||"")}" style="margin-top:8px">
+        <input class="bt" maxlength="50" placeholder="${esc(t("lTax"))}" value="${esc(b.billing_tax_id||PROFILE.tax_id||"")}" style="margin-top:8px">
+        <div class="acts"><button type="button" class="dark sm bs">${t("billSave")}</button></div><div class="err be"></div><div class="ok bo"></div>
+      </details>
+      ${!verified?`<div class="box" data-proof="${esc(b.id)}"><b>${t("proofL")}</b><div class="warn">${t("warn")}</div><div class="acts" style="margin-top:4px"><input type="file" class="pf" accept="image/jpeg,image/png,image/webp,application/pdf" style="max-width:270px"><input type="number" class="pa" min="0" max="99999" step="0.5" placeholder="${esc(t("amtPh"))}" style="max-width:200px"><button type="button" class="green sm ps">${t("send")}</button></div><div class="err pe"></div><div class="ok po"></div></div>`:""}`:""}
+      <div class="acts">
+        ${conf?`<button type="button" class="green sm" data-bon="${esc(b.id)}">${t("bonBtn")}</button>`:""}
+        ${proof?`<button type="button" class="dark sm" data-vp="${esc(proof.proof_path)}">${t("viewProof")}</button>`:""}
+        ${(b.invoices||[]).map(i=>`<a class="btn dark sm" target="_blank" rel="noopener noreferrer" href="invoice.html?id=${esc(i.id)}">${i.kind==="credit_note"?t("cn"):t("inv")} ${esc(i.number)}</a>`).join("")}
+        ${live?`<button type="button" class="ghost sm" data-cx="${esc(b.id)}">${t("cancel")}</button>`:""}
+      </div>
+    </article>`;
   }).join("");
 
-  // Copy RIB buttons
-  $("bookingsContainer").querySelectorAll("[data-copy-rib]").forEach(btn => {
-    btn.onclick = async () => {
-      try { await navigator.clipboard.writeText(btn.dataset.copyRib); } catch (_) {}
-      const orig = btn.textContent;
-      btn.textContent = t("copiedRib");
-      showToast(t("toastCopied"));
-      setTimeout(() => { btn.textContent = orig; }, 1400);
-    };
+  const R=$("bkList");bindCopy(R,"bc");
+  R.querySelectorAll("[data-bill]").forEach(bx=>bx.querySelector(".bs").onclick=async()=>{
+    bx.querySelector(".be").textContent=bx.querySelector(".bo").textContent="";
+    const {data,error}=await sb.rpc("set_billing",{p_booking:bx.dataset.bill,p_phone:cleanPh(PROFILE.phone),p_name:bx.querySelector(".bn").value.trim(),p_address:bx.querySelector(".ba").value.trim(),p_tax:bx.querySelector(".bt").value.trim()});
+    if(error||!data||!data.ok)bx.querySelector(".be").textContent=t("billErr");else{bx.querySelector(".bo").textContent=t("billOk");toast(t("saved"))}
   });
-
-  // Save per-booking billing info
-  $("bookingsContainer").querySelectorAll("[data-bill-box]").forEach(box => {
-    const bookingId = box.dataset.billBox;
-    const btn = box.querySelector(".bi-save");
-    btn.onclick = async () => {
-      box.querySelector(".bi-err").textContent = "";
-      box.querySelector(".bi-ok").textContent = "";
-      btn.disabled = true;
-      const phoneClean = normalizeTnOrIntlPhone(PROFILE?.phone || "");
-      const { data, error } = await sb.rpc("set_billing", {
-        p_booking: bookingId,
-        p_phone: phoneClean,
-        p_name: box.querySelector(".bi-name").value.trim(),
-        p_address: box.querySelector(".bi-addr").value.trim(),
-        p_tax: box.querySelector(".bi-tax").value.trim()
-      });
-      btn.disabled = false;
-      if (error || !data || !data.ok) {
-        box.querySelector(".bi-err").textContent = t("qpBillFail");
-      } else {
-        box.querySelector(".bi-ok").textContent = t("qpBillSaved");
-        showToast(t("toastSaved"));
-      }
-    };
+  R.querySelectorAll("[data-proof]").forEach(bx=>bx.querySelector(".ps").onclick=async()=>{
+    const er=bx.querySelector(".pe"),ok=bx.querySelector(".po"),btn=bx.querySelector(".ps"),f=bx.querySelector(".pf").files[0];
+    er.textContent=ok.textContent="";
+    if(!(await validateFileSecure(f,5,true))){er.textContent=t("badFile");return}
+    btn.disabled=true;const old=btn.textContent;btn.textContent=t("sending");
+    const path=`${PROFILE.id}/${bx.dataset.proof}_${Date.now()}.${EXT[f.type]}`;
+    const up=await sb.storage.from(PROOFS).upload(path,f,{contentType:f.type,upsert:false});
+    let e2=up.error;
+    if(!e2){const r=await sb.from("payments").insert({booking_id:bx.dataset.proof,user_id:PROFILE.id,amount:Math.max(0,+bx.querySelector(".pa").value||0),proof_path:path,status:"proof_uploaded"});e2=r.error}
+    btn.disabled=false;btn.textContent=old;
+    if(e2){er.textContent=t("proofErr");return}
+    toast(t("sentOk"));await loadData();
   });
-
-  // Upload payment proof per booking
-  $("bookingsContainer").querySelectorAll("[data-proof-for]").forEach(box => {
-    const bookingId = box.dataset.proofFor;
-    const fileInput = box.querySelector(".pf-file");
-    const amtInput = box.querySelector(".pf-amt");
-    const errOut = box.querySelector(".pf-err");
-    const okOut = box.querySelector(".pf-ok");
-    const submitBtn = box.querySelector(".pf-submit");
-
-    submitBtn.onclick = async () => {
-      errOut.textContent = "";
-      okOut.textContent = "";
-      const file = fileInput.files[0];
-      const extMap = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp", "application/pdf": "pdf" };
-      const ext = file ? extMap[file.type] : null;
-      if (!file || !ext || file.size > 5 * 1024 * 1024) {
-        errOut.textContent = t("errFileType");
-        return;
-      }
-
-      submitBtn.disabled = true;
-      const oldLabel = submitBtn.textContent;
-      submitBtn.textContent = t("sendingProof");
-
-      const storagePath = `${PROFILE.id}/${bookingId}_${Date.now()}.${ext}`;
-      const up = await sb.storage.from(PROOFS_BUCKET).upload(storagePath, file, {
-        contentType: file.type,
-        upsert: false
-      });
-
-      if (up.error) {
-        errOut.textContent = `${t("proofErrGeneric")} (${up.error.message})`;
-        submitBtn.disabled = false;
-        submitBtn.textContent = oldLabel;
-        return;
-      }
-
-      const amountNum = amtInput.value !== "" ? +amtInput.value : 0;
-      const { error: payErr } = await sb.from("payments").insert({
-        booking_id: bookingId,
-        user_id: PROFILE.id,
-        amount: amountNum,
-        proof_path: storagePath,
-        status: "proof_uploaded"
-      });
-
-      submitBtn.disabled = false;
-      submitBtn.textContent = oldLabel;
-
-      if (payErr) {
-        errOut.textContent = `${t("proofErrGeneric")} (${payErr.message})`;
-        return;
-      }
-
-      okOut.textContent = t("proofSentOk");
-      showToast(t("toastSaved"));
-      await refreshDashboardData();
-    };
-  });
-
-  // View uploaded proof via signed URL
-  $("bookingsContainer").querySelectorAll("[data-view-proof]").forEach(btn => {
-    btn.onclick = async () => {
-      const { data, error } = await sb.storage.from(PROOFS_BUCKET).createSignedUrl(btn.dataset.viewProof, 300);
-      if (error || !data?.signedUrl) {
-        showToast(error?.message || t("proofErrGeneric"));
-        return;
-      }
-      window.open(data.signedUrl, "_blank", "noopener");
-    };
-  });
-
-  // Open QR booking pass
-  $("bookingsContainer").querySelectorAll("[data-open-bon]").forEach(btn => {
-    btn.onclick = () => openBookingPassModal(btn.dataset.openBon);
-  });
-
-  // Request cancellation
-  $("bookingsContainer").querySelectorAll("[data-cancel-bk]").forEach(btn => {
-    btn.onclick = async () => {
-      const reason = prompt(t("cancelPrompt"));
-      if (reason === null) return;
-      const { data, error } = await sb.rpc("request_cancellation", {
-        p_booking: btn.dataset.cancelBk,
-        p_reason: reason
-      });
-      if (error || !data || !data.ok) showToast(t("cancelFail"));
-      else {
-        showToast(t("cancelOk"));
-        await refreshDashboardData();
-      }
-    };
+  R.querySelectorAll("[data-vp]").forEach(b=>b.onclick=async()=>{const {data,error}=await sb.storage.from(PROOFS).createSignedUrl(b.dataset.vp,300);if(error||!data?.signedUrl)return toast(t("proofErr"));window.open(data.signedUrl,"_blank","noopener,noreferrer")});
+  R.querySelectorAll("[data-bon]").forEach(b=>b.onclick=()=>openBon(b.dataset.bon));
+  R.querySelectorAll("[data-cx]").forEach(b=>b.onclick=async()=>{
+    const reason=prompt(t("cancelQ"));if(reason===null)return;
+    const {data,error}=await sb.rpc("request_cancellation",{p_booking:b.dataset.cx,p_reason:reason.slice(0,300)});
+    if(error||!data||!data.ok)toast(t("cancelErr"));else{toast(t("cancelOk"));await loadData()}
   });
 }
 
-/* ============================================================================
-   11. BOOKING PASS + QR CODE MODAL
-   ============================================================================ */
-function openBookingPassModal(bookingId) {
-  const bk = BOOKINGS.find(item => String(item.id) === String(bookingId));
-  if (!bk) return;
-
-  const fmtDate = d => new Date(d).toLocaleDateString(LANG === "ar" ? "ar-TN" : "fr-FR", {
-    timeZone: "Africa/Tunis"
-  });
-  const refCode = String(bk.id).slice(0, 8).toUpperCase();
-
-  $("bonRefLine").textContent = `${t("bonRef")}: #${refCode}`;
-  $("bonRows").innerHTML = `
-    <div><b>${t("bonClient")}:</b> ${esc(bk.guest_name || PROFILE?.full_name || "")}</div>
-    <div><b>${t("bonPhone")}:</b> <span dir="ltr">${esc(bk.guest_phone || PROFILE?.phone || "")}</span></div>
-    <div><b>${t("bonCar")}:</b> ${esc(bk.vehicles?.name || "")}</div>
-    <div><b>${t("bonPeriod")}:</b> ${t("from")} ${fmtDate(bk.start_at)} ${t("to")} ${fmtDate(bk.end_at)} (${esc(bk.quote?.days ?? "")} ${t("days")})</div>
-    ${bk.pickup_text ? `<div><b>${t("bonPickup")}:</b> ${esc(bk.pickup_text)}</div>` : ""}
-  `;
-
-  const qrData = JSON.stringify({
-    brand: "AMINE_RENT_A_CAR",
-    booking_id: bk.id,
-    ref: refCode,
-    status: bk.status
-  });
-
-  if (window.QRCode) {
-    QRCode.toCanvas($("bonQrCanvas"), qrData, { width: 152, margin: 1 }, err => {
-      if (err) console.error(err);
-    });
-  }
-
-  $("bonModal").hidden = false;
+/* ---------- Bon de Réservation + QR ---------- */
+function openBon(id){
+  const b=BOOKINGS.find(x=>String(x.id)===String(id));if(!b)return;
+  const ref=shortRef(b.id);
+  $("bonRef").textContent=`${t("ref")}: #${ref}`;
+  $("bonRows").innerHTML=`<div><b>${t("cl")}:</b> ${esc(b.guest_name||PROFILE.full_name||"")}</div><div><b>${t("ph")}:</b> <span dir="ltr">${esc(b.guest_phone||PROFILE.phone||"")}</span></div><div><b>${t("car")}:</b> ${esc(b.vehicles?.name||"")}</div><div><b>${t("per")}:</b> ${t("from")} ${fmtD(b.start_at)} ${t("to")} ${fmtD(b.end_at)} (${esc(b.quote?.days??"")} ${t("days")})</div>${b.pickup_text?`<div><b>${t("pick")}:</b> ${esc(b.pickup_text)}</div>`:""}`;
+  if(window.QRCode)QRCode.toCanvas($("qr"),JSON.stringify({brand:"AMINE_RENT_A_CAR",ref,status:b.status}),{width:152,margin:1},()=>{});
+  $("bon").hidden=false;
 }
+$("bonX").onclick=()=>$("bon").hidden=true;
+$("bon").onclick=e=>{if(e.target===$("bon"))$("bon").hidden=true};
+$("bonPrint").onclick=()=>window.print();
 
-$("bonCloseBtn").onclick = () => { $("bonModal").hidden = true; };
-$("bonModal").onclick = e => { if (e.target === $("bonModal")) $("bonModal").hidden = true; };
-$("bonPrintBtn").onclick = () => window.print();
-
-/* ============================================================================
-   12. SAVE PROFILE, ID DOCS (CIN / PASSPORT), LICENSE & FLIGHT TICKET
-   ============================================================================ */
-async function uploadDocumentFile(fileInput, subFolder) {
-  const file = fileInput.files[0];
-  if (!file) return null;
-  const extMap = {
-    "image/jpeg": "jpg",
-    "image/png": "png",
-    "image/webp": "webp",
-    "application/pdf": "pdf"
-  };
-  const ext = extMap[file.type];
-  if (!ext || file.size > 5 * 1024 * 1024) {
-    throw new Error(t("errFileType"));
-  }
-  const path = `${subFolder}/${PROFILE.id}_${Date.now()}.${ext}`;
-  const up = await sb.storage.from(DOCS_BUCKET).upload(path, file, { contentType: file.type });
-  if (up.error) throw new Error(up.error.message);
-  return path;
-}
-
-$("saveProfileBtn").onclick = async () => {
-  $("profOk").textContent = "";
-  $("profErr").textContent = "";
-  $("saveProfileBtn").disabled = true;
-  const origTxt = $("saveProfileBtn").textContent;
-  $("saveProfileBtn").textContent = t("savingProfile");
-
-  try {
-    const uploadedIdPath = await uploadDocumentFile($("idDocFileInp"), "id_docs");
-    const uploadedLicPath = await uploadDocumentFile($("licFileInp"), "licenses");
-
-    const payload = {
-      full_name: $("profName").value.trim(),
-      phone: $("profPhone").value.trim(),
-      billing_address: $("profAddr").value.trim(),
-      tax_id: $("profTax").value.trim(),
-      id_doc_type: $("idDocTypeSel").value,
-      id_doc_number: $("idDocNumInp").value.trim(),
-      flight_ticket: $("flightInp").value.trim()
-    };
-
-    if (uploadedIdPath) payload.id_doc_path = uploadedIdPath;
-    if (uploadedLicPath) payload.license_path = uploadedLicPath;
-
-    const { error } = await sb.from("profiles").update(payload).eq("id", PROFILE.id);
-    if (error) throw new Error(error.message);
-
-    Object.assign(PROFILE, payload);
-    $("idDocFileInp").value = "";
-    $("licFileInp").value = "";
-    $("profOk").textContent = t("profileSavedOk");
-    showToast(t("toastSaved"));
-    await renderIdentityHeader();
-    await renderStoredDocumentLinks();
-  } catch (err) {
-    $("profErr").textContent = `${t("profileSaveErr")} (${err.message})`;
-  } finally {
-    $("saveProfileBtn").disabled = false;
-    $("saveProfileBtn").textContent = origTxt;
-  }
-};
-
-/* ============================================================================
-   13. INITIALIZATION
-   ============================================================================ */
-switchAuthMode(AUTH_MODE);
-bootstrapClientApp();
+setMode(MODE);boot();
 </script>
 </body>
 </html>
