@@ -1,122 +1,2716 @@
-<script>
-  /* =========================================================================
-     PATCH FINAL: FIX BROKEN SCRIPT, ROUTE TO compte.html & ADD MISSING INFO
-     ========================================================================= */
-  (function () {
-    // 1. تحويل أي رابط pay.html إلى compte.html
-    document.querySelectorAll('a[href^="pay.html"]').forEach((a) => {
-      a.href = a.getAttribute("href").replace(/^pay\.html/, "compte.html");
-    });
-
-    if (typeof window.__origPayHref === "undefined") {
-      window.__origPayHref = true;
-      const origSetAttribute = Element.prototype.setAttribute;
-      Element.prototype.setAttribute = function (name, value) {
-        if (
-          this.tagName === "A" &&
-          name === "href" &&
-          typeof value === "string" &&
-          value.startsWith("pay.html")
-        ) {
-          return origSetAttribute.call(this, name, value.replace(/^pay\.html/, "compte.html"));
-        }
-        return origSetAttribute.call(this, name, value);
-      };
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amine Rent A Car | Location de voitures en Tunisie</title>
+  <meta
+    name="description"
+    content="Location de voitures en Tunisie à Tunis, Le Bardo et Yasmine Hammamet. Flotte récente, livraison en Tunisie, VIP avec chauffeur et suivi dans votre compte."
+  />
+  <meta property="og:title" content="Amine Rent A Car | Location de voitures en Tunisie" />
+  <meta
+    property="og:description"
+    content="Choisissez vos dates, vérifiez les voitures disponibles et envoyez votre demande en ligne. Suivi complet dans votre compte."
+  />
+  <meta property="og:type" content="website" />
+  <link
+    rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Ccircle cx='60' cy='60' r='56' fill='%2314171a'/%3E%3Cg stroke='%23f3f2ee' stroke-width='6' stroke-linecap='round'%3E%3Cline x1='35' y1='42' x2='35' y2='80'/%3E%3Cline x1='60' y1='42' x2='60' y2='80'/%3E%3Cline x1='85' y1='42' x2='85' y2='80'/%3E%3Cline x1='35' y1='61' x2='85' y2='61'/%3E%3C/g%3E%3C/svg%3E"
+  />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "AutoRental",
+      "name": "Amine Rent A Car",
+      "telephone": "+21621289073",
+      "areaServed": ["Tunis", "Le Bardo", "Yasmine Hammamet", "Aéroport Tunis-Carthage"],
+      "sameAs": ["https://www.tiktok.com/@amine.rentacar"]
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Work+Sans:wght@400;500;600;700&family=Cairo:wght@400;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    /* =========================================================================
+       1. DESIGN TOKENS & THEME VARIABLES
+       ========================================================================= */
+    :root {
+      --ink: #14171a;
+      --ink-2: #1f2328;
+      --ink-3: #2b3038;
+      --paper: #f3f2ee;
+      --sand: #e7e5de;
+      --surface: #ffffff;
+      --red: #d62828;
+      --red-dark: #a61c1c;
+      --red-soft: rgba(214, 40, 40, 0.12);
+      --gold: #c9a227;
+      --gold-soft: rgba(201, 162, 39, 0.16);
+      --ok: #1f9d57;
+      --ok-soft: #e6f6ed;
+      --warn: #e67e22;
+      --warn-soft: #fff3e6;
+      --bad: #b42318;
+      --bad-soft: #fdecec;
+      --line: rgba(20, 23, 26, 0.13);
+      --line-strong: rgba(20, 23, 26, 0.24);
+      --muted: #5d6268;
+      --text: #1c1f23;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-pill: 999px;
+      --shadow-sm: 0 4px 14px rgba(20, 23, 26, 0.06);
+      --shadow-md: 0 14px 34px rgba(20, 23, 26, 0.11);
+      --shadow-lg: 0 24px 60px rgba(10, 12, 15, 0.22);
+      --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    // 2. إضافة مفاتيح المعلومات الناقصة (الضمان، الكيلومتراج، التأخير، الوقود، الوثائق)
-    if (typeof T === "object" && T) {
-      T.py = ["Voir dans Mon compte", "عرض في حسابي", "Vedi nel tuo account", "View in My account"];
-      T.payLink = ["Voir dans Mon compte", "عرض في حسابي", "Vedi nel tuo account", "View in My account"];
-
-      T.extraInfoTitle = [
-        "Informations essentielles avant la prise en charge",
-        "معلومات أساسية يستحق الحريف معرفتها قبل الاستلام",
-        "Informazioni essenziali prima del ritiro",
-        "Essential details before vehicle pickup"
-      ];
-      T.extraInfoDesc = [
-        "Points pratiques complémentaires pour éviter toute ambiguïté le jour de la livraison et du retour.",
-        "نقاط عملية مكمّلة لتفادي أي التباس يوم تسليم السيارة ويوم إرجاعها.",
-        "Dettagli pratici per evitare dubbi al ritiro e alla riconsegna.",
-        "Practical details to avoid any ambiguity at pickup and return."
-      ];
-
-      T.infoCautionT = [
-        "Caution & restitution du véhicule",
-        "الضمان (Caution) وترجيع السيارة"
-      ];
-      T.infoCautionP = [
-        "Les modalités de caution et l'état du véhicule sont vérifiés à la remise et au retour (avec vidéo VD sur WhatsApp et restitution à la même heure).",
-        "تُضبط شروط الضمان وحالة السيارة عند التسليم وعند الإرجاع (مع فيديو VD على واتساب والترجيع في نفس التوقيت)."
-      ];
-
-      T.infoDocsT = [
-        "Pièces à présenter à la remise",
-        "الوثائق المطلوبة وقت الاستلام"
-      ];
-      T.infoDocsP = [
-        "Originaux du permis de conduire, CIN ou passeport valide, et références du dossier / paiement dans votre espace compte.",
-        "أصل رخصة السياقة، أصل بطاقة التعريف أو جواز السفر الساري المفعول، ومعطيات الحجز والدفع في حسابك."
-      ];
-
-      T.infoFuelDelayT = [
-        "Carburant, kilométrage & ponctualité",
-        "الوقود، الكيلومتراج والالتزام بالوقت"
-      ];
-      T.infoFuelDelayP = [
-        "La voiture est remise et restituée à la même heure prévue, selon les règles de carburant, kilométrage et conditions convenues au contrat.",
-        "يتم تسليم السيارة وإرجاعها في نفس الموعد المحدد، وفق شروط الوقود والكيلومتراج والبنود المنصوص عليها في العقد."
-      ];
-
-      T.infoFiscalEntityT = [
-        "Facturation, fiscalité & sociétés liées",
-        "الفوترة، الجباية وتطابق الأسماء"
-      ];
-      T.infoFiscalEntityP = [
-        "Facturation claire (TVA 19 %, 2 TND/j, timbre fiscal 1 TND, enregistrement du contrat) sous l'identité commune Amine / Cargo / Genial Rent A Car.",
-        "فوترة واضحة (TVA 19%، 2 د.ت/يوم، طابع جبائي 1 د.ت، تسجيل العقد) تحت الهوية الموحّدة Amine / Cargo / Genial Rent A Car."
-      ];
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    // 3. إدراج بطاقات المعلومات الإضافية في قسم السياسة (#politique)
-    const polSection = document.getElementById("politique");
-    if (polSection && !document.getElementById("extraEssentialInfo")) {
-      const wrap = polSection.querySelector(".wrap");
-      if (wrap) {
-        const block = document.createElement("div");
-        block.id = "extraEssentialInfo";
-        block.style.marginTop = "24px";
-        block.innerHTML = `
-          <div class="sec-head" style="margin-bottom:14px">
-            <h2 data-i="extraInfoTitle"></h2>
-            <p data-i="extraInfoDesc"></p>
-          </div>
-          <div class="policy-grid">
-            <article class="policy-card">
-              <h3 data-i="infoCautionT"></h3>
-              <p data-i="infoCautionP"></p>
-            </article>
-            <article class="policy-card">
-              <h3 data-i="infoDocsT"></h3>
-              <p data-i="infoDocsP"></p>
-            </article>
-            <article class="policy-card">
-              <h3 data-i="infoFuelDelayT"></h3>
-              <p data-i="infoFuelDelayP"></p>
-            </article>
-            <article class="policy-card">
-              <h3 data-i="infoFiscalEntityT"></h3>
-              <p data-i="infoFiscalEntityP"></p>
-            </article>
-          </div>
-        `;
-        wrap.appendChild(block);
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: "Work Sans", system-ui, -apple-system, sans-serif;
+      font-size: 16px;
+      line-height: 1.55;
+      color: var(--text);
+      background: var(--paper);
+      overflow-x: clip;
+    }
+
+    html[lang="ar"] body,
+    html[lang="ar"] h1,
+    html[lang="ar"] h2,
+    html[lang="ar"] h3,
+    html[lang="ar"] button,
+    html[lang="ar"] select,
+    html[lang="ar"] input,
+    [dir="rtl"] body {
+      font-family: "Cairo", "Work Sans", sans-serif;
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: "Barlow Condensed", "Cairo", sans-serif;
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.01em;
+    }
+
+    html[lang="ar"] h1,
+    html[lang="ar"] h2,
+    html[lang="ar"] h3 {
+      font-family: "Cairo", sans-serif;
+      letter-spacing: 0;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    button,
+    select,
+    input {
+      font-family: inherit;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--gold);
+      outline-offset: 2px;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    @keyframes floatSlow {
+      0%, 100% {
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+      50% {
+        transform: translate3d(18px, -16px, 0) scale(1.06);
       }
     }
 
-    if (typeof applyLanguage === "function") {
+    @keyframes pulseDot {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.35);
+        opacity: 0.65;
+      }
+    }
+
+    @keyframes modalRise {
+      from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.985);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes shimmerSweep {
+      0% {
+        transform: translateX(-120%) skewX(-18deg);
+      }
+      100% {
+        transform: translateX(240%) skewX(-18deg);
+      }
+    }
+
+    @keyframes marqueeTrack {
+      0% {
+        transform: translate3d(0, 0, 0);
+      }
+      100% {
+        transform: translate3d(-50%, 0, 0);
+      }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.65s var(--ease-out), transform 0.65s var(--ease-out);
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+      .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.08ms !important;
+      }
+    }
+
+    .scroll-bar {
+      position: fixed;
+      top: 0;
+      inset-inline-start: 0;
+      height: 3px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--red), var(--gold));
+      z-index: 120;
+      transition: width 0.1s linear;
+    }
+
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .btn {
+      position: relative;
+      overflow: hidden;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 0;
+      border-radius: var(--radius-sm);
+      padding: 12px 18px;
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      transition:
+        transform 0.22s var(--ease-spring),
+        background-color 0.2s ease,
+        box-shadow 0.25s ease,
+        opacity 0.2s ease;
+    }
+
+    .btn::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      width: 45%;
+      background: rgba(255, 255, 255, 0.22);
+      transform: translateX(-140%) skewX(-18deg);
+      pointer-events: none;
+    }
+
+    .btn:hover:not(:disabled)::after {
+      animation: shimmerSweep 0.65s var(--ease-out);
+    }
+
+    .btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn:active:not(:disabled) {
+      transform: translateY(0) scale(0.985);
+    }
+
+    .btn:disabled {
+      opacity: 0.52;
+      cursor: not-allowed;
+    }
+
+    .btn-red { background: var(--red); }
+    .btn-red:hover:not(:disabled) { background: var(--red-dark); }
+    .btn-wa { background: var(--ok); }
+    .btn-wa:hover:not(:disabled) { background: #178246; }
+    .btn-dark { background: var(--ink); }
+    .btn-dark:hover:not(:disabled) { background: var(--red); }
+    .btn-gold { background: var(--gold); color: #14171a; }
+    .btn-gold:hover:not(:disabled) { background: #deb635; }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1.5px solid var(--line-strong);
+    }
+    .btn-ghost:hover:not(:disabled) { background: var(--sand); }
+
+    /* Header — 3 Links Maximum */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 80;
+      background: rgba(243, 242, 238, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 12px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: "Barlow Condensed", sans-serif;
+      font-size: 25px;
+      font-weight: 900;
+      line-height: 1;
+      border-inline-start: 4px solid var(--red);
+      padding-inline-start: 11px;
+    }
+
+    .brand small {
+      display: block;
+      margin-top: 2px;
+      font-family: "Work Sans", sans-serif;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--red);
+      letter-spacing: 0.03em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      font-size: 14.5px;
+      font-weight: 700;
+    }
+
+    .nav-links a {
+      position: relative;
+      padding: 4px 0;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      inset-inline-start: 0;
+      width: 0;
+      height: 2px;
+      background: var(--red);
+      transition: width 0.24s var(--ease-out);
+    }
+
+    .nav-links a:hover { color: var(--red); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-actions .btn,
+    .nav-actions select {
+      padding: 8px 12px;
+      font-size: 13px;
+      border-radius: var(--radius-sm);
+    }
+
+    .lang-select {
+      background: var(--surface);
+      color: var(--text);
+      border: 1.5px solid var(--line-strong);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .trust-strip {
+      background: var(--sand);
+      border-bottom: 1px solid var(--line);
+      padding: 11px 0;
+    }
+
+    .trust-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 10px 26px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-2);
+    }
+
+    .trust-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--ok);
+      box-shadow: 0 0 0 4px rgba(31, 157, 87, 0.2);
+      animation: pulseDot 2.2s infinite;
+    }
+
+    /* Hero + Search + Range Calendar */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 82% 18%, rgba(214, 40, 40, 0.22), transparent 45%),
+        radial-gradient(circle at 15% 85%, rgba(201, 162, 39, 0.14), transparent 42%),
+        linear-gradient(165deg, var(--ink), var(--ink-2));
+      color: #fff;
+      padding: 46px 0 56px;
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: -90px;
+      inset-inline-end: -70px;
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201, 162, 39, 0.18), transparent 70%);
+      pointer-events: none;
+      animation: floatSlow 9s ease-in-out infinite;
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1.35fr 0.65fr;
+      gap: 24px;
+      align-items: start;
+      margin-bottom: 24px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #f4d36b;
+      font-size: 12.5px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .hero h1 {
+      font-size: clamp(36px, 5.5vw, 62px);
+      max-width: 17ch;
+      color: #fff;
+    }
+
+    .hero-lead {
+      margin: 14px 0 20px;
+      color: #d2d6dc;
+      max-width: 54ch;
+      font-size: 15.5px;
+    }
+
+    .hero-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .concierge-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      backdrop-filter: blur(8px);
+    }
+
+    .concierge-card h3 {
+      font-size: 24px;
+      color: #fff;
+    }
+
+    .concierge-card p {
+      margin: 8px 0 14px;
+      font-size: 13.5px;
+      color: #c8cdd4;
+    }
+
+    .phone-banner {
+      display: block;
+      text-align: center;
+      background: #fff;
+      color: var(--red);
+      border: 2.5px solid var(--ink);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      font-family: "Barlow Condensed", sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      box-shadow: 0 3px 0 var(--ink);
+      direction: ltr;
+      transition: transform 0.2s var(--ease-spring);
+    }
+
+    .phone-banner:hover { transform: translateY(-2px); }
+
+    .trust-mini {
+      margin-top: 12px;
+      display: grid;
+      gap: 6px;
+      font-size: 12.5px;
+      color: #dfe3e8;
+    }
+
+    .search-panel {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr) auto;
+      gap: 12px;
+      align-items: end;
+      background: var(--surface);
+      color: var(--text);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .field label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+
+    .field select,
+    .field input {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1.5px solid var(--line-strong);
+      border-radius: var(--radius-sm);
+      background: #fff;
+      color: var(--text);
+      font-size: 14.5px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .field select:focus,
+    .field input:focus {
+      border-color: var(--ink);
+      box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.22);
+    }
+
+    .range-box {
+      position: relative;
+      z-index: 1;
+      background: var(--surface);
+      color: var(--text);
+      border-radius: var(--radius-md);
+      margin-top: 14px;
+      padding: 18px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .range-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+      padding-inline-end: 84px;
+    }
+
+    .range-label {
+      font-family: "Barlow Condensed", "Cairo", sans-serif;
+      font-size: 23px;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .month-nav {
+      position: absolute;
+      top: 14px;
+      inset-inline-end: 16px;
+      display: flex;
+      gap: 6px;
+    }
+
+    .month-nav button {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1.5px solid var(--line-strong);
+      background: #fff;
+      color: var(--ink);
+      font-size: 19px;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.2s var(--ease-spring);
+    }
+
+    .month-nav button:hover:not(:disabled) {
+      background: var(--sand);
+      transform: scale(1.06);
+    }
+
+    .month-nav button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .months-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 26px;
+    }
+
+    .month-card h3 {
+      font-size: 20px;
+      margin-bottom: 8px;
+      text-transform: capitalize;
+    }
+
+    .days-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      text-align: center;
+    }
+
+    .days-grid b {
+      font-size: 12px;
+      color: var(--muted);
+      padding-bottom: 4px;
+    }
+
+    .day-btn {
+      position: relative;
+      aspect-ratio: 1;
+      border: 0;
+      border-radius: var(--radius-sm);
+      background: var(--ok-soft);
+      color: #14532d;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.16s var(--ease-spring), background-color 0.18s ease, color 0.18s ease;
+    }
+
+    .day-btn:hover:not(:disabled) {
+      background: var(--ok);
+      color: #fff;
+      transform: scale(1.06);
+    }
+
+    .day-btn.is-past {
+      background: transparent;
+      color: #b4b8bd;
+      cursor: default;
+    }
+
+    .day-btn.is-busy {
+      background: var(--bad-soft);
+      color: var(--bad);
+      text-decoration: line-through;
+      cursor: not-allowed;
+    }
+
+    .day-btn.is-between {
+      background: #cfead9;
+      color: #124829;
+    }
+
+    .day-btn.is-selected {
+      background: var(--ink);
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(20, 23, 26, 0.25);
+    }
+
+    .day-btn u {
+      position: absolute;
+      bottom: 3px;
+      inset-inline-start: 50%;
+      width: 5px;
+      height: 5px;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+      font-size: 12.5px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend i {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      display: inline-block;
+      background: var(--c, var(--ok));
+    }
+
+    .alert-bar {
+      position: relative;
+      z-index: 1;
+      margin-top: 10px;
+      min-height: 20px;
+      color: #ffc2c2;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    /* Sections & Fleet */
+    .section { padding: 54px 0; }
+    .section-alt {
+      background: var(--surface);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .sec-head { margin-bottom: 22px; }
+    .sec-head h2 { font-size: clamp(30px, 4.2vw, 44px); color: var(--ink); }
+    .sec-head p { margin-top: 6px; color: var(--muted); max-width: 68ch; }
+
+    .cars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 18px;
+    }
+
+    .car-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.28s var(--ease-out), box-shadow 0.28s var(--ease-out), border-color 0.28s ease;
+    }
+
+    .car-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--line-strong);
+    }
+
+    .car-media {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      background: var(--sand);
+    }
+
+    .car-ph {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #e9e7e0, #dbd8cf);
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .car-body {
+      padding: 15px;
+      display: grid;
+      gap: 9px;
+      flex: 1;
+      align-content: start;
+    }
+
+    .car-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .car-top h3 { font-size: 23px; }
+
+    .avail-pill {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--ok);
+      background: var(--ok-soft);
+      padding: 3px 9px;
+      border-radius: var(--radius-pill);
+    }
+
+    .specs { display: flex; flex-wrap: wrap; gap: 6px; }
+    .specs span {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-pill);
+      padding: 2px 10px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--ink-2);
+    }
+
+    .tn-plate {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      color: var(--ink);
+      border: 2.5px solid var(--ink);
+      border-radius: 7px;
+      padding: 3px 10px;
+      box-shadow: 0 2px 0 var(--ink);
+      direction: ltr;
+      font-family: "Barlow Condensed", sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .tn-plate i {
+      font-style: normal;
+      font-family: "Cairo", sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--red);
+      border-inline: 2px solid var(--ink);
+      padding: 0 7px;
+    }
+
+    .tn-plate em {
+      font-style: normal;
+      font-family: "Work Sans", sans-serif;
+      font-size: 12.5px;
+      font-weight: 700;
+    }
+
+    .cat-cols {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .cat-box {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .cat-box h3 { font-size: 24px; }
+    .cat-sub {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .cat-item {
+      border-top: 1px solid var(--line);
+      padding: 14px 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    .cat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .cat-row strong { font-size: 16.5px; display: block; }
+    .cat-row small { display: block; font-size: 12.5px; color: var(--muted); }
+
+    .status-tag {
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+      border-radius: var(--radius-pill);
+      padding: 4px 10px;
+      white-space: nowrap;
+    }
+
+    .status-tag.ok { background: var(--ok); }
+    .status-tag.no { background: var(--red); }
+
+    .price-line { font-size: 13.5px; font-weight: 700; color: var(--red-dark); }
+
+    .vip-panel {
+      margin-top: 30px;
+      background: linear-gradient(155deg, var(--ink), var(--ink-2));
+      color: #fff;
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      border: 1px solid rgba(201, 162, 39, 0.38);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .vip-panel .sec-head h2 { color: #fff; }
+    .vip-panel .sec-head p { color: #c5cbd2; }
+
+    .vip-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0 24px;
+    }
+
+    .vip-panel .cat-item { border-color: rgba(255, 255, 255, 0.12); }
+    .vip-panel .cat-row small { color: #b7bec6; }
+
+    /* Delivery Schema + Brands Marquee */
+    .schema-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .schema-step {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.25s var(--ease-out), border-color 0.25s ease;
+    }
+
+    .schema-step:hover {
+      transform: translateY(-4px);
+      border-color: var(--red);
+    }
+
+    .schema-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      background: var(--ink);
+      color: #fff;
+      font-weight: 800;
+      display: grid;
+      place-items: center;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .schema-step h3 { font-size: 20px; margin-bottom: 6px; }
+    .schema-step p { font-size: 13.5px; color: var(--muted); }
+
+    .marquee-wrap {
+      margin-top: 22px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 14px 0;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .marquee-track {
+      display: flex;
+      gap: 10px;
+      width: max-content;
+      animation: marqueeTrack 28s linear infinite;
+    }
+
+    .marquee-wrap:hover .marquee-track {
+      animation-play-state: paused;
+    }
+
+    .brand-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 15px;
+      border-radius: var(--radius-pill);
+      background: var(--paper);
+      border: 1px solid var(--line);
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    .brand-chip::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--ok);
+    }
+
+    /* Policy, Legal Rules & Compact Payment Strip */
+    .policy-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .policy-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .policy-card h3 {
+      font-size: 20px;
+      margin-bottom: 7px;
+      color: var(--ink);
+    }
+
+    .policy-card p {
+      font-size: 13.5px;
+      color: var(--muted);
+    }
+
+    .compact-pay-bar {
+      margin-top: 18px;
+      background: var(--sand);
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .pay-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pay-chips span {
+      background: var(--surface);
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius-sm);
+      padding: 5px 12px;
+      font-size: 12.5px;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .pay-chips span.wallet-tag {
+      background: var(--gold-soft);
+      border-color: var(--gold);
+      color: var(--ink);
+    }
+
+    .security-note {
+      margin-top: 14px;
+      background: var(--sand);
+      border-inline-start: 4px solid var(--gold);
+      border-radius: var(--radius-sm);
+      padding: 13px 16px;
+      font-size: 13.5px;
+      color: var(--ink-2);
+    }
+
+    /* Footer */
+    footer {
+      background: var(--ink);
+      color: #fff;
+      padding: 36px 0;
+      border-top: 3px solid var(--red);
+    }
+
+    .footer-grid {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    footer h3 { font-size: 25px; }
+    footer p { color: #b4bac2; font-size: 14px; margin-top: 6px; }
+    footer .gold-phone { color: var(--gold); font-size: 19px; font-weight: 700; }
+
+    .social-row { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+    .social-row a {
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: var(--radius-pill);
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .social-row a:hover {
+      background: var(--red);
+      border-color: var(--red);
+    }
+
+    .serie-box {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.14);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 13px;
+      color: #cbd5e1;
+    }
+
+    .serie-plate {
+      font-family: "Barlow Condensed", sans-serif;
+      background: #1f242b;
+      color: #f4d36b;
+      border: 1.5px solid rgba(255, 255, 255, 0.25);
+      padding: 4px 12px;
+      border-radius: 7px;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+    }
+
+    .wa-float {
+      position: fixed;
+      bottom: 18px;
+      inset-inline-end: 18px;
+      z-index: 95;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--ok);
+      color: #fff;
+      border-radius: var(--radius-pill);
+      padding: 12px 18px;
+      font-size: 14px;
+      font-weight: 700;
+      box-shadow: 0 10px 25px rgba(31, 157, 87, 0.36);
+      transition: transform 0.22s var(--ease-spring), background-color 0.2s ease;
+    }
+
+    .wa-float:hover {
+      transform: translateY(-3px) scale(1.03);
+      background: #178246;
+    }
+
+    /* Dialogs */
+    dialog.quote-dlg {
+      margin: auto;
+      border: 0;
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      max-width: 490px;
+      width: calc(100% - 28px);
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: var(--shadow-lg);
+    }
+
+    dialog.quote-dlg::backdrop {
+      background: rgba(10, 12, 15, 0.72);
+      backdrop-filter: blur(3px);
+    }
+
+    dialog.quote-dlg[open] { animation: modalRise 0.28s var(--ease-out); }
+    dialog.quote-dlg h3 { font-size: 28px; }
+    dialog.quote-dlg table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+    dialog.quote-dlg td {
+      padding: 6px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 14px;
+    }
+    dialog.quote-dlg td:last-child { text-align: end; font-weight: 700; }
+    dialog.quote-dlg tr.total-row td {
+      font-size: 18px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 110;
+      background: rgba(14, 16, 20, 0.76);
+      backdrop-filter: blur(3px);
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+    }
+
+    .modal-backdrop.is-open { display: flex; }
+
+    .modal-card {
+      position: relative;
+      background: var(--surface);
+      color: var(--text);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      max-width: 520px;
+      width: 100%;
+      max-height: 92vh;
+      overflow: auto;
+      box-shadow: var(--shadow-lg);
+      animation: modalRise 0.28s var(--ease-out);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 12px;
+      inset-inline-end: 14px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 0;
+      background: var(--sand);
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .req-form { display: grid; gap: 11px; margin-top: 14px; }
+    .req-form label { display: block; font-size: 12.5px; font-weight: 700; margin-bottom: 4px; }
+    .req-form input,
+    .req-form select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid var(--line-strong);
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+    }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .err-text { display: none; margin-top: 4px; color: var(--bad); font-size: 12.5px; font-weight: 700; }
+    .quote-box { background: var(--sand); border-radius: var(--radius-sm); padding: 12px; font-size: 13.5px; font-weight: 600; }
+    .small-muted { font-size: 12px; color: var(--muted); }
+    .msg-bad { color: var(--bad); font-weight: 700; }
+    .msg-good { color: var(--ok); font-weight: 700; }
+    .dlg-actions { display: flex; justify-content: space-between; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+
+    @media (max-width: 960px) {
+      .hero-grid,
+      .policy-grid { grid-template-columns: 1fr; }
+      .schema-grid { grid-template-columns: repeat(2, 1fr); }
+      .cat-cols { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 860px) {
+      .search-panel { grid-template-columns: 1fr; }
+      .months-grid { grid-template-columns: 1fr; }
+      .months-grid .month-card:nth-child(2) { display: none; }
+      .nav-links { display: none; }
+    }
+
+    @media (max-width: 640px) {
+      .schema-grid,
+      .cat-cols,
+      .vip-grid,
+      .two-col { grid-template-columns: 1fr; }
+      .nav-actions .btn-red { display: none; }
+      .brand { font-size: 21px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="scroll-bar" id="scrollBar" aria-hidden="true"></div>
+
+  <a
+    class="wa-float"
+    id="waFloat"
+    href="https://wa.me/21621289073"
+    target="_blank"
+    rel="noopener"
+  >
+    <span>💬</span>
+    <span>WhatsApp</span>
+  </a>
+
+  <!-- Header with 3 Links -->
+  <header class="topbar">
+    <div class="wrap nav">
+      <a class="brand" href="#top">
+        <div>
+          AMINE
+          <small data-i="brandSub"></small>
+        </div>
+      </a>
+
+      <nav class="nav-links" aria-label="Navigation principale">
+        <a href="#flotte" data-i="nFleet"></a>
+        <a href="#politique" data-i="nPolicy"></a>
+        <a href="compte.html" data-i="nAccount"></a>
+      </nav>
+
+      <div class="nav-actions">
+        <select id="langSel" class="lang-select" aria-label="Language">
+          <option value="fr">Français</option>
+          <option value="ar">العربية</option>
+          <option value="it">Italiano</option>
+          <option value="en">English</option>
+        </select>
+        <a class="btn btn-dark" href="compte.html" data-i="acct"></a>
+        <a class="btn btn-red" href="#flotte" data-i="bookNow"></a>
+      </div>
+    </div>
+  </header>
+
+  <div class="trust-strip" role="region" aria-label="Engagements">
+    <div class="wrap trust-inner">
+      <span class="trust-item"><span class="live-dot" aria-hidden="true"></span><span data-i="t1"></span></span>
+      <span class="trust-item" data-i="t2"></span>
+      <span class="trust-item" data-i="t3"></span>
+      <span class="trust-item" data-i="t4"></span>
+      <span class="trust-item" data-i="t5"></span>
+    </div>
+  </div>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="wrap">
+        <div class="hero-grid">
+          <div>
+            <div class="hero-badge" data-i="badge"></div>
+            <h1 data-i="h1"></h1>
+            <p class="hero-lead" data-i="lede"></p>
+            <div class="hero-cta-row">
+              <a class="btn btn-red" href="#flotte" data-i="seeCars"></a>
+              <a class="btn btn-wa" id="heroWa" href="https://wa.me/21621289073" target="_blank" rel="noopener">WhatsApp</a>
+            </div>
+          </div>
+
+          <aside class="concierge-card" aria-label="Assistance directe">
+            <h3 data-i="helpTitle"></h3>
+            <p data-i="helpDesc"></p>
+            <a class="phone-banner" id="heroPhone" href="tel:+21621289073">+216 21 289 073</a>
+            <div class="trust-mini">
+              <span data-i="trNote1"></span>
+              <span data-i="trNote2"></span>
+              <span data-i="trNote3"></span>
+            </div>
+          </aside>
+        </div>
+
+        <form class="search-panel" id="searchForm" novalidate>
+          <div class="field">
+            <label for="pickupLoc" data-i="pl"></label>
+            <select id="pickupLoc"></select>
+          </div>
+          <div class="field">
+            <label for="returnLoc" data-i="rl"></label>
+            <select id="returnLoc"></select>
+          </div>
+          <div class="field">
+            <label for="modelFilter" data-i="fc"></label>
+            <select id="modelFilter"></select>
+          </div>
+          <button type="submit" class="btn btn-red" id="searchBtn" data-i="go"></button>
+        </form>
+
+        <div class="range-box">
+          <div class="range-header">
+            <output class="range-label" id="rangeOut"></output>
+          </div>
+          <div class="month-nav">
+            <button type="button" id="prevMonth" aria-label="Previous">&lsaquo;</button>
+            <button type="button" id="nextMonth" aria-label="Next">&rsaquo;</button>
+          </div>
+          <div class="months-grid" id="rangeCal"></div>
+          <div class="legend">
+            <span style="--c: #cfead9"><i aria-hidden="true"></i><em data-i="lf" style="font-style: normal"></em></span>
+            <span style="--c: #f8d7da"><i aria-hidden="true"></i><em data-i="lx" style="font-style: normal"></em></span>
+            <span style="--c: #c9a227"><i aria-hidden="true"></i><em data-i="lh" style="font-style: normal"></em></span>
+          </div>
+        </div>
+
+        <p class="alert-bar" id="searchMsg" role="alert"></p>
+      </div>
+    </section>
+
+    <section class="section" id="resultsSection" aria-live="polite" hidden>
+      <div class="wrap" id="resultsContainer"></div>
+    </section>
+
+    <section class="section reveal" id="flotte">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 data-i="fleetTitle"></h2>
+          <p data-i="fleetDesc"></p>
+        </div>
+
+        <div class="cat-cols" id="normalFleet"></div>
+
+        <div class="vip-panel reveal" id="vip">
+          <div class="sec-head" style="margin-bottom: 14px">
+            <h2 data-i="vipTitle"></h2>
+            <p data-i="vipDesc"></p>
+          </div>
+          <div class="vip-grid" id="vipFleet"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Delivery Diagram + Animated Tunisian Fleet Brands -->
+    <section class="section section-alt reveal" id="livraison-tunisie">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 data-i="schemaTitle"></h2>
+          <p data-i="schemaDesc"></p>
+        </div>
+
+        <div class="schema-grid">
+          <article class="schema-step">
+            <div class="schema-num">1</div>
+            <h3 data-i="sc1T"></h3>
+            <p data-i="sc1P"></p>
+          </article>
+          <article class="schema-step">
+            <div class="schema-num">2</div>
+            <h3 data-i="sc2T"></h3>
+            <p data-i="sc2P"></p>
+          </article>
+          <article class="schema-step">
+            <div class="schema-num">3</div>
+            <h3 data-i="sc3T"></h3>
+            <p data-i="sc3P"></p>
+          </article>
+          <article class="schema-step">
+            <div class="schema-num">4</div>
+            <h3 data-i="sc4T"></h3>
+            <p data-i="sc4P"></p>
+          </article>
+        </div>
+
+        <div class="marquee-wrap" aria-label="Marques automobiles en Tunisie">
+          <div class="marquee-track">
+            <span class="brand-chip">Peugeot</span>
+            <span class="brand-chip">Renault</span>
+            <span class="brand-chip">Volkswagen</span>
+            <span class="brand-chip">Hyundai</span>
+            <span class="brand-chip">Kia</span>
+            <span class="brand-chip">Toyota</span>
+            <span class="brand-chip">Citroën</span>
+            <span class="brand-chip">Dacia</span>
+            <span class="brand-chip">Suzuki</span>
+            <span class="brand-chip">Mercedes-Benz</span>
+            <span class="brand-chip">Land Rover</span>
+            <span class="brand-chip">BYD</span>
+            <!-- Loop clone -->
+            <span class="brand-chip">Peugeot</span>
+            <span class="brand-chip">Renault</span>
+            <span class="brand-chip">Volkswagen</span>
+            <span class="brand-chip">Hyundai</span>
+            <span class="brand-chip">Kia</span>
+            <span class="brand-chip">Toyota</span>
+            <span class="brand-chip">Citroën</span>
+            <span class="brand-chip">Dacia</span>
+            <span class="brand-chip">Suzuki</span>
+            <span class="brand-chip">Mercedes-Benz</span>
+            <span class="brand-chip">Land Rover</span>
+            <span class="brand-chip">BYD</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Legal Terms, Caution 1000 DT, KM & Delay Rules, Tax & Compact Payment Strip -->
+    <section class="section reveal" id="politique">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 data-i="polTitle"></h2>
+          <p data-i="polDesc"></p>
+        </div>
+
+        <div class="policy-grid">
+          <article class="policy-card">
+            <h3 data-i="polCautionT"></h3>
+            <p data-i="polCautionP"></p>
+          </article>
+          <article class="policy-card">
+            <h3 data-i="polKmDelayT"></h3>
+            <p data-i="polKmDelayP"></p>
+          </article>
+          <article class="policy-card">
+            <h3 data-i="polAgeVideoT"></h3>
+            <p data-i="polAgeVideoP"></p>
+          </article>
+          <article class="policy-card">
+            <h3 data-i="polFiscalT"></h3>
+            <p data-i="polFiscalP"></p>
+          </article>
+          <article class="policy-card">
+            <h3 data-i="polInsBrandT"></h3>
+            <p data-i="polInsBrandP"></p>
+          </article>
+          <article class="policy-card">
+            <h3 data-i="polSiegeT"></h3>
+            <p data-i="polSiegeP" style="margin-bottom:10px"></p>
+            <a
+              class="btn btn-dark"
+              style="padding:7px 12px;font-size:12.5px"
+              href="https://maps.app.goo.gl/pwhUuGSvdzpbf6JY7?g_st=ac"
+              target="_blank"
+              rel="noopener"
+              data-i="openMapBtn"
+            ></a>
+          </article>
+        </div>
+
+        <div class="compact-pay-bar">
+          <strong style="font-size:13.5px" data-i="payStripLbl"></strong>
+          <div class="pay-chips">
+            <span>UIB</span>
+            <span>STB</span>
+            <span>RIA</span>
+            <span class="wallet-tag">D17</span>
+            <span class="wallet-tag">FLOUCI</span>
+          </div>
+        </div>
+
+        <p class="security-note" data-i="paySecurity"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <h3>AMINE RENT A CAR</h3>
+          <p data-i="agenciesText"></p>
+          <p style="color:#f4d36b;font-weight:700;font-size:12.5px" data-i="brandEquivNote"></p>
+          <div class="social-row">
+            <a href="https://www.tiktok.com/@amine.rentacar" target="_blank" rel="noopener">TikTok</a>
+            <a id="footerWa" href="https://wa.me/21621289073" target="_blank" rel="noopener">WhatsApp</a>
+          </div>
+        </div>
+        <div>
+          <p data-i="resContact" style="color: #fff; font-weight: 700"></p>
+          <p class="gold-phone" id="footerPhone">+216 21 289 073</p>
+          <p><span data-i="assistLabel"></span> +216 29 855 924</p>
+        </div>
+      </div>
+
+      <div class="serie-box">
+        <div>
+          <span data-i="serieLbl"></span>
+          <span class="serie-plate" id="tnSerieBadge">تونس — ...</span>
+          <span id="tnSerieMeta" style="margin-inline-start:8px;font-size:12px;color:#94a3b8"></span>
+        </div>
+        <button type="button" class="btn btn-ghost" style="padding:6px 12px;font-size:12px;color:#fff;border-color:rgba(255,255,255,0.25)" id="refreshSerieBtn" data-i="refreshSerie"></button>
+      </div>
+    </div>
+  </footer>
+
+  <dialog class="quote-dlg" id="quoteDlg">
+    <h3 id="dlgVeh"></h3>
+    <p id="dlgDates"></p>
+    <p class="small-muted" id="dlgLocs"></p>
+    <div id="dlgQuoteBody" style="margin-top: 10px"></div>
+    <p class="small-muted" id="dlgNote" style="margin-top: 8px"></p>
+    <p id="dlgMsg" role="alert" style="margin-top: 8px"></p>
+    <div class="dlg-actions">
+      <button class="btn btn-red" type="button" id="dlgConfirm" data-i="cf"></button>
+      <button class="btn btn-ghost" type="button" id="dlgClose" data-i="cl"></button>
+    </div>
+  </dialog>
+
+  <div class="modal-backdrop" id="reqModal" role="dialog" aria-modal="true" aria-labelledby="reqTitle">
+    <div class="modal-card">
+      <button class="modal-close" type="button" id="reqClose" aria-label="Close">&times;</button>
+      <h3 style="font-size: 27px">
+        <span data-i="reqTitle"></span> : <span id="reqCarName"></span>
+      </h3>
+
+      <form class="req-form" id="reqForm" novalidate>
+        <div>
+          <label for="reqName" data-i="nameLbl"></label>
+          <input id="reqName" autocomplete="name" required />
+        </div>
+
+        <div>
+          <label for="reqPhone" data-i="phoneLbl"></label>
+          <input id="reqPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="22123456" required />
+          <div class="err-text" id="phoneErr" data-i="phoneErr"></div>
+        </div>
+
+        <div class="two-col">
+          <div>
+            <label for="reqStart" data-i="fromLbl"></label>
+            <input id="reqStart" type="date" required />
+          </div>
+          <div>
+            <label for="reqEnd" data-i="toLbl"></label>
+            <input id="reqEnd" type="date" required />
+          </div>
+        </div>
+        <div class="err-text" id="dateErr" data-i="dateErr"></div>
+
+        <div>
+          <label for="reqLoc" data-i="pickLbl"></label>
+          <select id="reqLoc"></select>
+        </div>
+
+        <div class="quote-box" id="reqQuoteBox"></div>
+        <p class="small-muted" data-i="reqHint"></p>
+        <div class="err-text" id="reqSubmitErr"></div>
+
+        <button class="btn btn-red" type="submit" id="reqSubmitBtn" data-i="sendBtn"></button>
+      </form>
+
+      <div id="reqSuccessBox" hidden>
+        <h3 style="font-size: 25px; margin: 10px 0" data-i="okTitle"></h3>
+        <p data-i="okDesc" style="margin-bottom: 14px; font-size: 14.5px"></p>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px">
+          <a class="btn btn-red" id="payActionLink" data-i="payLink"></a>
+          <a class="btn btn-wa" id="waActionLink" target="_blank" rel="noopener" data-i="openWa"></a>
+          <button class="btn btn-dark" type="button" id="doneCloseBtn" data-i="close"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script>
+    const SUPABASE_URL = "https://tadaqaqvtjcnanspcboj.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_fA2Est6rYrP6Sx1xfyhdOA_IA5TQ6MO";
+    const IMG_BUCKET_URL = `${SUPABASE_URL}/storage/v1/object/public/vehicle-images/`;
+    const WA_DEFAULT = "21621289073";
+
+    let sb = null;
+    try {
+      if (window.supabase && typeof window.supabase.createClient === "function") {
+        sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      }
+    } catch (err) {
+      console.warn("Supabase fallback:", err);
+    }
+
+    const $ = (id) => document.getElementById(id);
+    const esc = (s) =>
+      String(s ?? "").replace(/[&<>"']/g, (ch) =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch])
+      );
+
+    const LANGS = ["fr", "ar", "it", "en"];
+    const LOCALES = { fr: "fr-FR", ar: "ar-TN", it: "it-IT", en: "en-GB" };
+
+    const DEFAULT_LOCS = [
+      ["Aéroport Tunis-Carthage", "مطار تونس قرطاج"],
+      ["Agence Tunis (Ezzouhour 4)", "وكالة تونس (الزهور 4)"],
+      ["Agence Le Bardo", "وكالة باردو"],
+      ["Agence Yasmine Hammamet", "وكالة ياسمين الحمامات"]
+    ];
+
+    const CATALOG_GROUPS = [
+      {
+        price: 71,
+        title: ["Économiques", "اقتصادية", "Economiche", "Economy"],
+        cars: [
+          ["Dacia Logan", 71, true, ["Manuelle · Grand coffre", "يدوي · صندوق واسع", "Manuale · Ampio bagagliaio", "Manual · Large boot"]],
+          ["Suzuki Swift", 71, true, ["Manuelle · Faible consommation", "يدوي · استهلاك منخفض", "Manuale · Bassi consumi", "Manual · Low fuel use"]],
+          ["Kia Picanto", 71, true, ["Manuelle ou Automatique", "يدوي أو أوتوماتيك", "Manuale o Automatica", "Manual or Automatic"]]
+        ]
+      },
+      {
+        price: 81,
+        title: ["Confort", "راحة", "Comfort", "Comfort"],
+        cars: [
+          ["Dacia Sandero Stepway", 81, true, ["Robuste · Confort", "متينة · مريحة", "Robusta · Comfort", "Sturdy · Comfortable"]],
+          ["Kia Stonic", 81, true, ["Automatique · Crossover", "أوتوماتيك · كروس أوفر", "Automatica · Crossover", "Automatic · Crossover"]]
+        ]
+      },
+      {
+        price: 91,
+        title: ["Citadines & Berlines", "مدمجة وسيدان", "Compatti & Berline", "Compact & Sedans"],
+        cars: [
+          ["Renault Clio 5", 91, true, ["Manuelle · Essence", "يدوي · بنزين", "Manuale · Benzina", "Manual · Petrol"]],
+          ["Seat Ibiza", 91, true, ["Manuelle · Essence", "يدوي · بنزين", "Manuale · Benzina", "Manual · Petrol"]],
+          ["Hyundai i20", 91, true, ["Manuelle · Essence", "يدوي · بنزين", "Manuale · Benzina", "Manual · Petrol"]],
+          ["Volkswagen Golf 8", 91, false, ["Boîte DSG", "ناقل DSG", "Cambio DSG", "DSG Gearbox"]]
+        ]
+      }
+    ];
+
+    const VIP_CATALOG = [
+      ["Mazda", ["Chauffeur professionnel", "مع سائق محترف", "Autista professionale", "Professional driver"]],
+      ["Mercedes C200", ["Pack AMG · Automatique", "حزمة AMG · أوتوماتيك", "Pack AMG · Automatica", "AMG Pack · Automatic"]],
+      ["Land Rover Defender", ["7 places · Familles et groupes", "7 مقاعد · عائلات ومجموعات", "7 posti · Famiglie e gruppi", "7 seats · Families & groups"]],
+      ["BYD", ["Électrique / Hybride", "كهربائية / هجينة", "Elettrica / Ibrida", "Electric / Hybrid"]],
+      ["Kia Sportage", ["SUV · Confort", "SUV · راحة", "SUV · Comfort", "SUV · Comfort"]]
+    ];
+
+    const T = {
+      brandSub: ["Rent a Car", "لتأجير السيارات", "Rent a Car", "Rent a Car"],
+      nFleet: ["Flotte", "الأسطول", "Flotta", "Fleet"],
+      nPolicy: ["Conditions & Paiement", "الشروط والدفع", "Condizioni & Pagamento", "Terms & Payment"],
+      nAccount: ["Mon compte", "حسابي", "Il mio account", "My account"],
+      acct: ["Mon compte", "حسابي", "Il mio account", "My account"],
+      bookNow: ["Réserver", "احجز الآن", "Prenota", "Book now"],
+      t1: ["Réponse rapide garantie", "رد سريع ومضمون", "Risposta rapida garantita", "Fast response guaranteed"],
+      t2: ["3 agences & aéroport", "3 وكالات والمطار", "3 sedi e aeroporto", "3 branches & airport"],
+      t3: ["Assistance 24/7", "مساعدة 24/7", "Assistenza 24/7", "24/7 assistance"],
+      t4: ["Acompte & suivi en compte", "عربون ومتابعة في حسابك", "Acconto e suivi nell'account", "Deposit & tracking in account"],
+      t5: ["Véhicules contrôlés", "سيارات مفحوصة", "Veicoli controllati", "Inspected vehicles"],
+      badge: ["Service en Tunisie · Livraison à votre lieu", "خدمة في تونس · توصيل حتى موقعك", "Servizio in Tunisia · Consegna ovunque", "Service in Tunisia · Delivery anywhere"],
+      h1: ["Louez votre voiture en Tunisie et recevez-la où vous êtes.", "اكتري سيارتك في تونس وتصلك أينما كنت.", "Noleggia in Tunisia e ricevi l'auto ovunque.", "Rent your car in Tunisia and get it delivered."],
+      lede: [
+        "Choisissez vos dates sur le calendrier, vérifiez les voitures disponibles et envoyez votre demande. Tout le suivi et le règlement se font dans votre espace compte.",
+        "اختر تواريخك من التقويم، تحقق من السيارات المتاحة، وأرسل طلبك. المتابعة والدفع يتمّان مباشرة عبر فضاء حسابك.",
+        "Seleziona le date, verifica le auto libere e invia la richiesta con gestione nel tuo account.",
+        "Select dates, check available cars, and send your request with account tracking."
+      ],
+      seeCars: ["Explorer la flotte", "استكشف الأسطول", "Scopri la flotta", "Explore fleet"],
+      helpTitle: ["Ligne directe", "خط مباشر للمساعدة", "Linea diretta", "Direct line"],
+      helpDesc: [
+        "Besoin d'aide pour la livraison ou les conditions de location ? Contactez notre équipe.",
+        "تحتاج مساعدة في التسليم أو شروط الكراء؟ تواصل مع فريقنا مباشرة.",
+        "Serve aiuto per consegna o condizioni? Contatta il team.",
+        "Need help with delivery or rental terms? Contact our team."
+      ],
+      trNote1: ["✓ Caution : 1000 DT", "✓ الضمان (Caution): 1000 د.ت", "✓ Cauzione: 1000 DT", "✓ Deposit (Caution): 1000 DT"],
+      trNote2: ["✓ Livraison en Tunisie selon demande", "✓ تسليم في تونس حسب الطلب", "✓ Consegna in Tunisia su richiesta", "✓ Delivery in Tunisia on request"],
+      trNote3: ["✓ Suivi complet dans Mon compte", "✓ متابعة كاملة في حسابي", "✓ Gestione nel tuo account", "✓ Full tracking in My account"],
+      pl: ["Lieu de prise en charge", "مكان الاستلام", "Luogo di ritiro", "Pickup location"],
+      rl: ["Lieu de retour", "مكان الإرجاع", "Luogo di riconsegna", "Return location"],
+      fc: ["Modèle", "الموديل", "Modello", "Model"],
+      all: ["Tous les modèles", "كل الموديلات", "Tutti i modelli", "All models"],
+      go: ["Voir les voitures disponibles", "عرض السيارات المتاحة", "Vedi auto disponibili", "Show available cars"],
+      pick: ["Choisissez la date de prise puis la date de retour", "اختر تاريخ الاستلام ثم تاريخ الإرجاع", "Scegli data di ritiro e riconsegna", "Choose pickup then return date"],
+      min: ["Durée minimale : {n} jours.", "أدنى مدة كراء: {n} أيام.", "Durata minima: {n} giorni.", "Minimum rental: {n} days."],
+      days: ["jours", "أيام", "giorni", "days"],
+      pd: ["/ jour HT", "/ اليوم دون أداء", "/ giorno IVA escl.", "/ day excl. VAT"],
+      tot: ["≈ {n} TND HT pour {d} jours", "≈ {n} د.ت دون أداء لمدة {d} أيام", "≈ {n} TND IVA escl. per {d} giorni", "≈ {n} TND excl. VAT for {d} days"],
+      av: ["{n} disponible(s)", "{n} متوفرة", "{n} disponibile/i", "{n} available"],
+      none: ["Aucune voiture disponible à ces dates.", "لا توجد سيارة متاحة في هذه التواريخ.", "Nessuna auto disponibile in queste date.", "No car available on these dates."],
+      rq: ["Prix sur demande", "السعر عند الطلب", "Prezzo su richiesta", "Price on request"],
+      bk: ["Réserver", "احجز", "Prenota", "Book"],
+      wa: ["Demander sur WhatsApp", "اطلب عبر واتساب", "Richiedi su WhatsApp", "Ask on WhatsApp"],
+      cf: ["Envoyer la demande", "إرسال الطلب", "Invia la richiesta", "Send request"],
+      cl: ["Fermer", "إغلاق", "Chiudi", "Close"],
+      s1: ["Sous-total HT", "المجموع دون أداء", "Subtotale IVA escl.", "Subtotal excl. VAT"],
+      lv: ["Contribution (2 TND/j)", "معلوم الكراء (2 د.ت/يوم)", "Contributo (2 TND/g)", "Contribution (2 TND/d)"],
+      bs: ["Base taxable", "الأساس الخاضع للأداء", "Base imponibile", "Taxable base"],
+      vt: ["TVA 19 %", "الأداء على القيمة المضافة 19%", "IVA 19%", "VAT 19%"],
+      st: ["Timbre fiscal (1 TND)", "الطابع الجبائي (1 د.ت)", "Marca da bollo (1 TND)", "Fiscal stamp (1 TND)"],
+      tt: ["Total TTC", "المجموع مع الأداء", "Totale IVA incl.", "Total incl. VAT"],
+      dp: ["Acompte", "العربون", "Acconto", "Deposit"],
+      rs: ["Reste à payer", "المتبقي", "Saldo", "Balance"],
+      est: [
+        "Montants indicatifs : caution 1000 DT. Suivi et règlement via votre compte.",
+        "مبالغ تقديرية: الضمان 1000 د.ت. المتابعة والدفع عبر فضاء حسابك.",
+        "Importi indicativi: cauzione 1000 DT. Gestione tramite account.",
+        "Indicative figures: 1000 DT deposit. Track and pay via your account."
+      ],
+      tx: ["Traitement fiscal selon règles en vigueur.", "المعالجة الجبائية حسب التراتيب السارية.", "Trattamento fiscale secondo norme vigenti.", "Tax treatment per applicable rules."],
+      er: ["Calcul impossible pour le moment.", "تعذّر الحساب حاليا.", "Calcolo non disponibile.", "Cannot compute right now."],
+      ok: ["Demande enregistrée.", "تم تسجيل الطلب بنجاح.", "Richiesta registrata.", "Request registered."],
+      py: ["Ouvrir Mon compte", "افتح حسابي", "Apri il mio account", "Open My account"],
+      lf: ["Disponible", "متاح", "Libero", "Available"],
+      lx: ["Indisponible", "غير متاح", "Non disponibile", "Unavailable"],
+      lh: ["Férié ou événement", "عطلة أو مناسبة", "Festivo o evento", "Holiday or event"],
+      seats: ["places", "مقاعد", "posti", "seats"],
+      fleetTitle: ["Flotte automobile", "أسطول السيارات", "Flotta auto", "Car fleet"],
+      fleetDesc: ["Tarifs journaliers HTVA. Location minimale : 3 jours · Caution : 1000 DT.", "أسعار اليوم دون أداء. أدنى مدة: 3 أيام · الضمان: 1000 د.ت.", "Tariffe giornaliere IVA escl. Minimo 3 giorni · Cauzione 1000 DT.", "Daily rates excl. VAT. Minimum 3 days · 1000 DT deposit."],
+      vipTitle: ["Location avec chauffeur (VIP)", "تأجير مع سائق (VIP)", "Noleggio con autista (VIP)", "Chauffeur service (VIP)"],
+      vipDesc: ["Véhicules haut de gamme avec chauffeur professionnel sur demande.", "سيارات فاخرة مع سائق محترف حسب الطلب.", "Auto top di gamma con autista su richiesta.", "Executive vehicles with professional driver on request."],
+      day: ["/ jour HTVA", "/ اليوم دون أداء", "/ giorno IVA escl.", "/ day excl. VAT"],
+      onReq: ["Prix sur demande", "السعر عند الطلب", "Prezzo su richiesta", "Price on request"],
+      avTag: ["Disponible", "متوفرة", "Disponibile", "Available"],
+      naTag: ["Pas disponible", "غير متوفرة", "Non disponibile", "Unavailable"],
+      reserveBtn: ["Réserver", "احجز", "Prenota", "Book"],
+      waitBtn: ["Demande d'attente", "طلب انتظار", "Lista d'attesa", "Waitlist"],
+      schemaTitle: ["Comment louer et recevoir la voiture partout en Tunisie", "كيف تكري وتصلك السيارة في أي مكان في تونس", "Come noleggiare e ricevere l'auto in Tunisia", "How to rent and receive your car in Tunisia"],
+      schemaDesc: ["Parcours simple : vous choisissez votre lieu en Tunisie, validez votre dossier dans votre compte et recevez le véhicule.", "مسار واضح: تحدد مكانك في تونس، تكمل ملفك ودفعك في حسابك، وتصلك السيارة في الموعد."],
+      sc1T: ["1. Choix & lieu en Tunisie", "1. تحديد الطلب والمكان في تونس"],
+      sc1P: ["Choisissez vos dates et le point de livraison (Tunis, Bardo, Hammamet, aéroport ou adresse en Tunisie).", "تحدد المدة ومكان التسليم في تونس (مطار، مدينة أو عنوان محدد)."],
+      sc2T: ["2. Compte & acompte", "2. الحساب والعربون"],
+      sc2P: ["Gérez votre réservation, vos documents et votre règlement directement dans Mon compte.", "تابع حجزك ووثائقك وخلاص العربون مباشرة من صفحة حسابي."],
+      sc3T: ["3. Acheminement vers vous", "3. انتقال السيارة إلى موقعك"],
+      sc3P: ["Préparation et acheminement du véhicule vers votre emplacement en Tunisie à l'heure convenue.", "تجهيز السيارة وتوجيهها نحو المكان المتفق عليه في تونس حسب الطلب."],
+      sc4T: ["4. Contrat & remise", "4. العقد واستلام السيارة"],
+      sc4P: ["Vérification des pièces, signature du contrat et remise des clés.", "مطابقة الوثائق، إمضاء العقد، واستلام المفاتيح."],
+      polTitle: ["Conditions légales, règles & fiscalité", "الشروط القانونية، القواعد والجباية", "Condizioni legali, regole e fiscalità", "Legal terms, rules & taxation"],
+      polDesc: ["Règles applicables à la location, au retour, à la fiscalité et au règlement.", "الأحكام المنظمة للكراء، الترجيع، الجباية، وطرق الدفع."],
+      polCautionT: ["Caution de 1000 DT", "الضمان (Caution): 1000 د.ت"],
+      polCautionP: ["Une caution de 1000 DT est exigée selon les conditions du contrat et vérifiée lors de la remise et de la restitution du véhicule.", "يُشترط ضمان قدره 1000 د.ت وفق بنود العقد ويُراجع عند التسليم وعند إرجاع السيارة."],
+      polKmDelayT: ["Kilométrage & retard (> 1h)", "الكيلومتراج والتأخير (أكثر من ساعة)"],
+      polKmDelayP: ["Le kilométrage limité est proposé uniquement dans notre agence. Au-delà d'1 heure de retard, des frais de retard s'appliquent selon la demande ; si aucun client n'attend le véhicule, aucun frais supplémentaire n'est facturé.", "الكيلومتراج المحدود متوفر حصراً في وكالتنا. إذا تجاوز التأخير ساعة واحدة تُحتسب رسوم تأخير حسب الطلب؛ أما إذا لم يكن هناك حريف بانتظار السيارة فلا يُحتسب أي مقابل إضافي."],
+      polAgeVideoT: ["Âge, permis, même heure & vidéo VD", "السن، الرخصة، نفس التوقيت وفيديو VD"],
+      polAgeVideoP: ["Tunisiens : permis > 2 ans et âge > 23 ans. Non-Tunisiens : âge ≥ 18 ans. Retour à la même heure que le départ avec vidéo (VD) envoyée sur WhatsApp.", "للتونسي: رخصة سياقة أكثر من سنتين والعمر أكثر من 23 سنة. لغير التونسي: العمر 18 سنة فما فوق. الترجيع في نفس وقت الاستلام مع فيديو (VD) على واتساب."],
+      polFiscalT: ["Fiscalité & contrat (2 TND/j · TVA 19% · 1 TND)", "الجباية والعقد (2 د.ت/يوم · TVA 19% · 1 د.ت)"],
+      polFiscalP: ["Application de 2 TND/jour, TVA de 19 %, timbre fiscal de 1 TND et enregistrement du contrat selon la réglementation fiscale en vigueur.", "تطبيق 2 د.ت لليوم، الأداء على القيمة المضافة TVA بنسبة 19%، طابع جبائي 1 د.ت، وتسجيل العقد وفق النصوص الجبائية المعمول بها."],
+      polInsBrandT: ["Assurance & identité commune", "التأمين وتطابق الأسماء"],
+      polInsBrandP: ["Pas d'assurance tous risques, ni vol ou bris de glace selon les règles indiquées. Amine Rent A Car est la même société que Cargo Rent A Car et Genial Rent A Car.", "لا يوجد تأمين كل الأخطار ولا تأمين ضد السرقة وكسر البلور. Amine Rent A Car هي نفسها Cargo Rent A Car وهي نفسها Genial Rent A Car."],
+      polSiegeT: ["Siège social & localisation", "المقر الاجتماعي (Siège) والموقع"],
+      polSiegeP: ["Retrouvez notre siège social et nos coordonnées de localisation sur Google Maps.", "اعثر على مقرنا الاجتماعي وتفاصيل الموقع مباشرة عبر خرائط غوغل."],
+      openMapBtn: ["Ouvrir Google Maps", "فتح خرائط غوغل", "Apri Google Maps", "Open Google Maps"],
+      payStripLbl: ["Moyens de paiement & transfert :", "وسائل الدفع والتحويل:"],
+      paySecurity: ["Le règlement et le suivi de dossier s'effectuent via votre espace compte et les canaux confirmés par l'agence.", "يتم الدفع ومتابعة الملف عبر فضاء حسابك والقنوات التي تؤكدها الوكالة."],
+      agenciesText: ["Tunis (Ezzouhour 4) · Le Bardo · Yasmine Hammamet · Aéroport", "تونس (الزهور 4) · باردو · ياسمين الحمامات · المطار"],
+      brandEquivNote: ["Amine Rent A Car = Cargo Rent A Car = Genial Rent A Car", "Amine Rent A Car هي نفسها Cargo Rent A Car وهي نفسها Genial Rent A Car"],
+      resContact: ["Réservations :", "الحجوزات:"],
+      assistLabel: ["Assistance 24/7 :", "مساعدة 24/7:"],
+      serieLbl: ["Série d'immatriculation tunisienne (MAJ auto internet) :", "سلسلة الترقيم التونسي (تحديث تلقائي من الإنترنت):"],
+      refreshSerie: ["Actualiser", "تحديث"],
+      reqTitle: ["Demande de réservation", "طلب حجز"],
+      nameLbl: ["Nom et prénom *", "الاسم واللقب *"],
+      phoneLbl: ["Téléphone *", "رقم الهاتف *"],
+      phoneErr: ["Numéro invalide (8 chiffres, ex. 22123456).", "رقم غير صالح (8 أرقام، مثال: 22123456)."],
+      fromLbl: ["Date de début *", "تاريخ البداية *"],
+      toLbl: ["Date de fin *", "تاريخ النهاية *"],
+      dateErr: ["Durée minimale : 3 jours à partir d'aujourd'hui.", "أدنى مدة 3 أيام ابتداءً من اليوم."],
+      pickLbl: ["Lieu de prise en charge *", "مكان الاستلام *"],
+      reqHint: ["Suivi et paiement gérés via votre espace compte.", "المتابعة والدفع عبر فضاء حسابك."],
+      sendBtn: ["Envoyer la demande", "إرسال الطلب"],
+      okTitle: ["Demande enregistrée", "تم تسجيل الطلب بنجاح"],
+      okDesc: ["Votre demande est enregistrée. Vous pouvez continuer dans votre compte ou envoyer sur WhatsApp.", "تم تسجيل طلبك. يمكنك المتابعة في حسابك أو الإرسال عبر واتساب."],
+      payLink: ["Ouvrir Mon compte", "افتح حسابي"],
+      openWa: ["Envoyer sur WhatsApp", "إرسال عبر واتساب"],
+      close: ["Fermer", "إغلاق"],
+      estBox: ["Estimation : {d} jours × {p} TND = {tot} TND HT", "تقدير: {d} أيام × {p} د.ت = {tot} د.ت دون أداء"],
+      e_unavailable: ["Cette voiture n'est plus disponible à ces dates.", "هذه السيارة غير متاحة في هذه التواريخ."],
+      e_dates: ["Dates invalides.", "تواريخ غير صالحة."],
+      e_location: ["Lieu invalide.", "مكان غير صالح."],
+      e_too_many: ["Trop de demandes en attente : patientez svp.", "طلبات كثيرة في الانتظار، يرجى الانتظار."],
+      e_other: ["Erreur d'envoi. Réessayez ou contactez-nous.", "حدث خطأ. أعد المحاولة أو تواصل معنا."]
+    };
+
+    let lang = "fr";
+    try { lang = localStorage.getItem("lang") || "fr"; } catch (e) {}
+    if (!LANGS.includes(lang)) lang = "fr";
+
+    const langIdx = () => Math.max(0, LANGS.indexOf(lang));
+    const tr = (key) => (T[key] && (T[key][langIdx()] ?? T[key][0])) || key;
+
+    const state = {
+      settings: { min_days: "3", whatsapp: WA_DEFAULT, company_phone: "+216 21 289 073" },
+      vehicles: [],
+      imagesById: {},
+      imagesByName: {},
+      locations: [],
+      availability: [],
+      events: {},
+      range: { s: "", e: "" },
+      monthOffset: 0,
+      resultsShown: false,
+      selectedVehicleId: "",
+      modalCar: "",
+      modalPrice: 0
+    };
+
+    const pad2 = (n) => String(n).padStart(2, "0");
+    const parseIsoParts = (isoStr) => {
+      const [y, m, d] = String(isoStr).split("-").map(Number);
+      return { y, m, d };
+    };
+    const toUtcMidnight = (isoStr) => {
+      const { y, m, d } = parseIsoParts(isoStr);
+      return Date.UTC(y, m - 1, d);
+    };
+    const diffDays = (a, b) => Math.round((toUtcMidnight(b) - toUtcMidnight(a)) / 86400000);
+    const addDaysIso = (isoStr, deltaDays) =>
+      new Date(toUtcMidnight(isoStr) + deltaDays * 86400000).toISOString().slice(0, 10);
+    const tunisDate = (d) => new Date(d).toLocaleDateString("sv-SE", { timeZone: "Africa/Tunis" });
+    const todayIso = () => tunisDate(new Date());
+    const minRentalDays = () => Math.max(1, Number(state.settings.min_days) || 3);
+    const fmtDate = (isoStr) =>
+      new Date(toUtcMidnight(isoStr)).toLocaleDateString(LOCALES[lang], {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+        timeZone: "UTC"
+      });
+    const fmtMoney = (val) => `${Number(val).toFixed(3)} TND`;
+
+    const isVehicleBusy = (veh, startIso, endIso) =>
+      state.availability.some(
+        (b) => b.vehicle_id === veh.id && tunisDate(b.start_at) < endIso && tunisDate(b.end_at) > startIso
+      );
+
+    const activePool = () => {
+      const modelVal = $("modelFilter").value;
+      return state.vehicles.filter(
+        (v) => v.daily_price_htva != null && (!modelVal || v.name === modelVal)
+      );
+    };
+
+    const isDayFree = (isoDate) => {
+      const pool = activePool();
+      if (!pool.length) return true;
+      return pool.some((v) => !isVehicleBusy(v, isoDate, addDaysIso(isoDate, 1)));
+    };
+
+    function setSearchMessage(text) {
+      $("searchMsg").textContent = text || "";
+    }
+
+    function getVehicleImageSrc(veh) {
+      if (veh && veh.id && state.imagesById[veh.id]) {
+        return `${IMG_BUCKET_URL}${state.imagesById[veh.id]}`;
+      }
+      if (veh && veh.name && state.imagesByName[veh.name]) {
+        return state.imagesByName[veh.name];
+      }
+      return "";
+    }
+
+    function renderVehicleMedia(veh, altText, imgClass = "car-media") {
+      const src = getVehicleImageSrc(veh);
+      if (src) {
+        return `<img class="${imgClass}" loading="lazy" src="${esc(src)}" alt="${esc(altText)}" />`;
+      }
+      return `<div class="car-ph">${esc(altText)}</div>`;
+    }
+
+    function renderRangeCalendar() {
+      const today = todayIso();
+      const { y: ty, m: tm } = parseIsoParts(today);
+      let html = "";
+
+      for (let k = 0; k < 2; k++) {
+        const mDate = new Date(Date.UTC(ty, tm - 1 + state.monthOffset + k, 1));
+        const y = mDate.getUTCFullYear();
+        const m = mDate.getUTCMonth();
+        const daysInMonth = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
+        const monthTitle = mDate.toLocaleDateString(LOCALES[lang], {
+          month: "long",
+          year: "numeric",
+          timeZone: "UTC"
+        });
+
+        html += `<div class="month-card"><h3>${esc(monthTitle)}</h3><div class="days-grid">`;
+        for (let w = 0; w < 7; w++) {
+          const wd = new Date(Date.UTC(2024, 0, 1 + w)).toLocaleDateString(LOCALES[lang], {
+            weekday: "narrow",
+            timeZone: "UTC"
+          });
+          html += `<b>${esc(wd)}</b>`;
+        }
+
+        const leadingBlanks = (mDate.getUTCDay() + 6) % 7;
+        for (let b = 0; b < leadingBlanks; b++) html += `<i></i>`;
+
+        for (let day = 1; day <= daysInMonth; day++) {
+          const dStr = `${y}-${pad2(m + 1)}-${pad2(day)}`;
+          const past = dStr < today;
+          const free = !past && isDayFree(dStr);
+          const ev = state.events[dStr];
+
+          let cls = "";
+          if (past) cls = "is-past";
+          else if (!free) cls = "is-busy";
+          else if (dStr === state.range.s || dStr === state.range.e) cls = "is-selected";
+          else if (state.range.s && state.range.e && dStr > state.range.s && dStr < state.range.e) {
+            cls = "is-between";
+          }
+
+          const evLabel = ev ? ev[`label_${lang}`] || ev.label_fr || "" : "";
+          const titleAttr = evLabel ? ` title="${esc(evLabel)}"` : "";
+          const dotHtml = evLabel ? "<u></u>" : "";
+          const disabledAttr = past || !free ? " disabled" : "";
+
+          html += `<button type="button" class="day-btn ${cls}" data-date="${dStr}"${disabledAttr}${titleAttr}>${day}${dotHtml}</button>`;
+        }
+
+        html += `</div></div>`;
+      }
+
+      $("rangeCal").innerHTML = html;
+      $("prevMonth").disabled = state.monthOffset <= 0;
+      $("nextMonth").disabled = state.monthOffset >= 5;
+
+      $("rangeCal").querySelectorAll("[data-date]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const picked = btn.dataset.date;
+          if (!state.range.s || state.range.e || picked <= state.range.s) {
+            state.range = { s: picked, e: "" };
+          } else {
+            state.range.e = picked;
+          }
+          setSearchMessage("");
+          renderRangeCalendar();
+        });
+      });
+
+      $("rangeOut").textContent = state.range.s
+        ? `${fmtDate(state.range.s)} – ${state.range.e ? fmtDate(state.range.e) : "..."}`
+        : tr("pick");
+    }
+
+    function populateModelSelect() {
+      const prev = $("modelFilter").value;
+      const names = new Set(CATALOG_GROUPS.flatMap((g) => g.cars.map((c) => c[0])));
+      state.vehicles.forEach((v) => v.name && names.add(v.name));
+      const sorted = [...names].sort();
+
+      $("modelFilter").innerHTML =
+        `<option value="">${esc(tr("all"))}</option>` +
+        sorted.map((n) => `<option value="${esc(n)}">${esc(n)}</option>`).join("");
+      $("modelFilter").value = prev;
+    }
+
+    function renderSearchResults() {
+      state.resultsShown = true;
+      const filterModel = $("modelFilter").value;
+      const grouped = {};
+
+      state.vehicles
+        .filter((v) => (!filterModel || v.name === filterModel) && !isVehicleBusy(v, state.range.s, state.range.e))
+        .forEach((v) => {
+          grouped[v.name] = grouped[v.name] || [];
+          grouped[v.name].push(v);
+        });
+
+      const days = diffDays(state.range.s, state.range.e);
+      const modelNames = Object.keys(grouped);
+      const waClean = (state.settings.whatsapp || WA_DEFAULT).replace(/\D/g, "");
+
+      $("resultsSection").hidden = false;
+
+      if (!modelNames.length) {
+        $("resultsContainer").innerHTML = `
+          <div class="sec-head">
+            <h2>${esc(fmtDate(state.range.s))} – ${esc(fmtDate(state.range.e))}</h2>
+            <p>${esc(tr("none"))}</p>
+          </div>
+        `;
+        $("resultsSection").scrollIntoView({ behavior: "smooth" });
+        return;
+      }
+
+      const cardsHtml = modelNames.map((modelName) => {
+        const units = grouped[modelName];
+        const sample = units[0];
+        const dailyPrice = sample.daily_price_htva;
+        const specsList = [
+          sample.transmission,
+          sample.fuel,
+          sample.seats ? `${sample.seats} ${tr("seats")}` : ""
+        ].filter(Boolean);
+
+        const specsHtml = specsList.length
+          ? `<div class="specs">${specsList.map((s) => `<span>${esc(s)}</span>`).join("")}</div>`
+          : "";
+
+        const priceActionHtml = dailyPrice != null
+          ? `
+            <div>
+              <span class="tn-plate"><b>${esc(Number(dailyPrice))}</b><i>تونس</i><em>TND</em></span>
+              <span class="small-muted">${esc(tr("pd"))}</span>
+            </div>
+            <p class="small-muted">${esc(
+              tr("tot").replace("{n}", (dailyPrice * days).toFixed(0)).replace("{d}", days)
+            )}</p>
+            <button class="btn btn-red" type="button" data-book-id="${esc(sample.id)}">${esc(tr("bk"))}</button>
+          `
+          : `
+            <p class="small-muted">${esc(tr("rq"))}</p>
+            <a
+              class="btn btn-wa"
+              target="_blank"
+              rel="noopener"
+              href="https://wa.me/${esc(waClean)}?text=${encodeURIComponent(
+                `${modelName} ${state.range.s} -> ${state.range.e}`
+              )}"
+            >${esc(tr("wa"))}</a>
+          `;
+
+        return `
+          <article class="car-card">
+            ${renderVehicleMedia(sample, modelName, "car-media")}
+            <div class="car-body">
+              <div class="car-top">
+                <h3>${esc(modelName)}</h3>
+                <span class="avail-pill">${esc(tr("av").replace("{n}", units.length))}</span>
+              </div>
+              ${specsHtml}
+              ${priceActionHtml}
+            </div>
+          </article>
+        `;
+      }).join("");
+
+      $("resultsContainer").innerHTML = `
+        <div class="sec-head">
+          <h2>${esc(fmtDate(state.range.s))} – ${esc(fmtDate(state.range.e))}</h2>
+          <p>${esc(`${days} ${tr("days")}`)}</p>
+        </div>
+        <div class="cars-grid">${cardsHtml}</div>
+      `;
+
+      $("resultsContainer").querySelectorAll("[data-book-id]").forEach((btn) => {
+        btn.addEventListener("click", () => openServerQuoteDialog(btn.dataset.bookId));
+      });
+
+      $("resultsSection").scrollIntoView({ behavior: "smooth" });
+    }
+
+    function renderFleetCatalogue() {
+      const idx = langIdx();
+      const locIdx = lang === "ar" ? 1 : 0;
+
+      $("normalFleet").innerHTML = CATALOG_GROUPS.map((grp) => {
+        const groupTitle = grp.title[idx] || grp.title[0];
+        const itemsHtml = grp.cars.map((c) => {
+          const [carName, rate, isAvail, descArr] = c;
+          const descText = descArr[idx] || descArr[0];
+          const vehMatch = state.vehicles.find((v) => v.name === carName);
+          const displayRate = vehMatch && vehMatch.daily_price_htva != null ? Number(vehMatch.daily_price_htva) : rate;
+          const mediaHtml = renderVehicleMedia(vehMatch || { name: carName }, carName, "car-media");
+
+          return `
+            <div class="cat-item">
+              ${mediaHtml}
+              <div class="cat-row">
+                <div>
+                  <strong>${esc(carName)}</strong>
+                  <small>${esc(descText)}</small>
+                </div>
+                <span class="status-tag ${isAvail ? "ok" : "no"}">${esc(
+                  isAvail ? tr("avTag") : tr("naTag")
+                )}</span>
+              </div>
+              <div class="price-line">${esc(displayRate)} TND ${esc(tr("day"))}</div>
+              <button
+                class="btn btn-dark"
+                type="button"
+                data-quick-car="${esc(carName)}"
+                data-quick-price="${esc(displayRate)}"
+              >${esc(isAvail ? tr("reserveBtn") : tr("waitBtn"))}</button>
+            </div>
+          `;
+        }).join("");
+
+        return `
+          <div class="cat-box">
+            <h3>${esc(groupTitle)}</h3>
+            <small class="cat-sub">${esc(grp.price)} TND ${esc(tr("day"))}</small>
+            ${itemsHtml}
+          </div>
+        `;
+      }).join("");
+
+      $("vipFleet").innerHTML = VIP_CATALOG.map(([vipName, descArr]) => {
+        const descText = descArr[idx] || descArr[0];
+        const vehMatch = state.vehicles.find((v) => v.name.toLowerCase().includes(vipName.toLowerCase()));
+        const mediaHtml = renderVehicleMedia(vehMatch || { name: vipName }, vipName, "car-media");
+
+        return `
+          <div class="cat-item">
+            ${mediaHtml}
+            <div class="cat-row">
+              <div>
+                <strong style="color: #fff">${esc(vipName)}</strong>
+                <small>✦ ${esc(descText)}</small>
+              </div>
+              <span class="status-tag ok">${esc(tr("avTag"))}</span>
+            </div>
+            <div class="price-line" style="color: var(--gold)">${esc(tr("onReq"))}</div>
+            <button
+              class="btn btn-gold"
+              type="button"
+              data-quick-car="${esc(`${vipName} (VIP)`)}"
+              data-quick-price="0"
+            >${esc(tr("reserveBtn"))}</button>
+          </div>
+        `;
+      }).join("");
+
+      const locOptions = state.locations.length
+        ? state.locations.map((l) => `<option value="${esc(l.name)}">${esc(l.name)}</option>`).join("")
+        : DEFAULT_LOCS.map((l) => `<option value="${esc(l[0])}">${esc(l[locIdx])}</option>`).join("");
+      $("reqLoc").innerHTML = locOptions;
+
+      document.querySelectorAll("[data-quick-car]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          openQuickModal(btn.dataset.quickCar, Number(btn.dataset.quickPrice) || 0);
+        });
+      });
+    }
+
+    const locationNameById = (id) => state.locations.find((l) => l.id === id)?.name || id || "";
+
+    async function openServerQuoteDialog(vehicleId) {
+      state.selectedVehicleId = vehicleId;
+      const veh = state.vehicles.find((v) => v.id === vehicleId) || { name: "" };
+
+      $("dlgVeh").textContent = veh.name;
+      $("dlgDates").textContent = `${fmtDate(state.range.s)} – ${fmtDate(state.range.e)} (${diffDays(
+        state.range.s,
+        state.range.e
+      )} ${tr("days")})`;
+      $("dlgLocs").textContent = `${locationNameById($("pickupLoc").value)} / ${locationNameById(
+        $("returnLoc").value
+      )}`;
+      $("dlgMsg").textContent = "";
+      $("dlgMsg").className = "";
+      $("dlgNote").textContent = tr("est");
+      $("dlgQuoteBody").textContent = "...";
+      $("dlgConfirm").disabled = true;
+
+      const dlg = $("quoteDlg");
+      if (typeof dlg.showModal === "function") dlg.showModal();
+
+      if (!sb) {
+        $("dlgQuoteBody").innerHTML = `<p class="msg-bad">${esc(tr("er"))}</p>`;
+        return;
+      }
+
+      const { data, error } = await sb.rpc("quote_booking", {
+        p_vehicle: vehicleId,
+        p_start: state.range.s,
+        p_end: state.range.e
+      });
+
+      if (error || !data || !data.ok) {
+        $("dlgQuoteBody").innerHTML = `<p class="msg-bad">${esc(tr("er"))}</p>`;
+        return;
+      }
+
+      const row = (labelKey, valText, extraCls = "") =>
+        `<tr${extraCls ? ` class="${extraCls}"` : ""}><td>${esc(tr(labelKey))}</td><td>${esc(valText)}</td></tr>`;
+
+      const stampRow = Number(data.fiscal_stamp) > 0 ? row("st", fmtMoney(data.fiscal_stamp)) : "";
+      const taxWarning = data.treatment_confirmed
+        ? ""
+        : `<p class="small-muted">${esc(tr("tx"))}</p>`;
+
+      $("dlgQuoteBody").innerHTML = `
+        <table>
+          ${row("s1", fmtMoney(data.subtotal_htva))}
+          ${row("lv", fmtMoney(data.levy))}
+          ${row("bs", fmtMoney(data.taxable_base))}
+          ${row("vt", `${data.vat_rate} % : ${fmtMoney(data.vat_amount)}`)}
+          ${stampRow}
+          ${row("tt", fmtMoney(data.total_ttc), "total-row")}
+          ${row("dp", `${data.deposit_pct} % : ${fmtMoney(data.deposit)}`)}
+          ${row("rs", fmtMoney(data.balance))}
+        </table>
+        ${taxWarning}
+      `;
+      $("dlgConfirm").disabled = false;
+    }
+
+    function updateQuickQuote() {
+      const sVal = $("reqStart").value;
+      const eVal = $("reqEnd").value;
+      const box = $("reqQuoteBox");
+      const d = sVal && eVal ? diffDays(sVal, eVal) : 0;
+
+      if (d < minRentalDays()) {
+        box.hidden = true;
+        return;
+      }
+
+      box.hidden = false;
+      if (state.modalPrice > 0) {
+        box.textContent = tr("estBox")
+          .replace("{d}", d)
+          .replace("{p}", state.modalPrice)
+          .replace("{tot}", d * state.modalPrice);
+      } else {
+        box.textContent = tr("onReq");
+      }
+    }
+
+    function openQuickModal(carTitle, dailyRate) {
+      state.modalCar = carTitle;
+      state.modalPrice = dailyRate;
+      $("reqCarName").textContent = carTitle;
+
+      const todayStr = todayIso();
+      const minEndStr = addDaysIso(todayStr, minRentalDays());
+
+      $("reqStart").min = todayStr;
+      $("reqStart").value = todayStr;
+      $("reqEnd").min = minEndStr;
+      $("reqEnd").value = minEndStr;
+
+      $("phoneErr").style.display = "none";
+      $("dateErr").style.display = "none";
+      $("reqSubmitErr").style.display = "none";
+      $("reqForm").hidden = false;
+      $("reqSuccessBox").hidden = true;
+
+      $("reqModal").classList.add("is-open");
+      updateQuickQuote();
+      prefillUserProfile();
+      setTimeout(() => $("reqName").focus(), 60);
+    }
+
+    function closeQuickModal() {
+      $("reqModal").classList.remove("is-open");
+    }
+
+    async function prefillUserProfile() {
+      if (!sb) return;
+      try {
+        const { data: { session } } = await sb.auth.getSession();
+        if (!session) return;
+        const { data: prof } = await sb
+          .from("profiles")
+          .select("full_name,phone")
+          .eq("id", session.user.id)
+          .maybeSingle();
+        if (prof) {
+          if (prof.full_name && !$("reqName").value) $("reqName").value = prof.full_name;
+          if (prof.phone && !$("reqPhone").value) $("reqPhone").value = prof.phone;
+        }
+      } catch (e) {}
+    }
+
+    /* Tunisian Registration Series Auto-Update via Internet */
+    const SERIE_CACHE_KEY = "amine_tn_serie_cache_v2";
+    function estimateTnSerie(dateObj = new Date()) {
+      const refDate = new Date("2025-11-01T00:00:00Z");
+      const months = (dateObj.getTime() - refDate.getTime()) / (1000 * 60 * 60 * 24 * 30.4375);
+      return Math.max(1, Math.round(248 + months * 1.15));
+    }
+
+    let serieState = {
+      serie: estimateTnSerie(),
+      source: "auto",
+      updatedAt: new Date().toISOString()
+    };
+
+    try {
+      const cached = JSON.parse(localStorage.getItem(SERIE_CACHE_KEY) || "null");
+      if (cached && cached.serie) serieState = cached;
+    } catch (e) {}
+
+    function renderTnSerie() {
+      const prefix = lang === "ar" ? "تونس" : "TUN";
+      $("tnSerieBadge").textContent = `${prefix} — ${serieState.serie}`;
+      const dt = new Date(serieState.updatedAt);
+      const dateTxt = isNaN(dt.getTime()) ? "" : dt.toLocaleDateString(LOCALES[lang]);
+      $("tnSerieMeta").textContent = `${serieState.source} · ${dateTxt}`;
+    }
+
+    async function syncTnSerieFromInternet() {
+      const urls = [
+        "https://worldtimeapi.org/api/timezone/Africa/Tunis",
+        "https://timeapi.io/api/time/current/zone?timeZone=Africa%2FTunis"
+      ];
+      let netDate = null;
+      for (const u of urls) {
+        try {
+          const ctrl = new AbortController();
+          const timer = setTimeout(() => ctrl.abort(), 3500);
+          const resp = await fetch(u, { signal: ctrl.signal, cache: "no-store" });
+          clearTimeout(timer);
+          if (!resp.ok) continue;
+          const j = await resp.json();
+          const rawIso = j.datetime || j.dateTime || j.utc_datetime;
+          if (rawIso) {
+            const parsed = new Date(rawIso);
+            if (!isNaN(parsed.getTime())) {
+              netDate = parsed;
+              break;
+            }
+          }
+        } catch (e) {}
+      }
+      const d = netDate || new Date();
+      serieState = {
+        serie: estimateTnSerie(d),
+        source: netDate ? "Internet sync" : "Local sync",
+        updatedAt: d.toISOString()
+      };
+      try { localStorage.setItem(SERIE_CACHE_KEY, JSON.stringify(serieState)); } catch (e) {}
+      renderTnSerie();
+    }
+
+    function applyLanguage() {
+      document.documentElement.lang = lang;
+      document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+      $("langSel").value = lang;
+
+      document.querySelectorAll("[data-i]").forEach((el) => {
+        el.textContent = tr(el.dataset.i);
+      });
+
+      populateModelSelect();
+      renderRangeCalendar();
+      renderFleetCatalogue();
+      updateQuickQuote();
+      renderTnSerie();
+
+      if (state.resultsShown && state.range.s && state.range.e) {
+        renderSearchResults();
+      }
+    }
+
+    function syncContactLinks() {
+      const phoneRaw = state.settings.company_phone || "+216 21 289 073";
+      const waDigits = (state.settings.whatsapp || WA_DEFAULT).replace(/\D/g, "");
+      const waHref = `https://wa.me/${waDigits}`;
+
+      $("heroPhone").textContent = phoneRaw;
+      $("heroPhone").href = `tel:${phoneRaw.replace(/\s+/g, "")}`;
+      $("footerPhone").textContent = phoneRaw;
+
+      ["waFloat", "heroWa", "footerWa"].forEach((id) => {
+        if ($(id)) $(id).href = waHref;
+      });
+    }
+
+    async function loadSupabaseData() {
+      if (!sb) return;
+      const safeQuery = (promiseLike) =>
+        Promise.resolve(promiseLike)
+          .then((res) => res.data || [])
+          .catch(() => []);
+
+      const now = new Date();
+      const fromStr = todayIso();
+      const toStr = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 6, 0))
+        .toISOString()
+        .slice(0, 10);
+
+      const [vehRows, imgRows, locRows, evRows, settingsObj, availRows] = await Promise.all([
+        safeQuery(
+          sb
+            .from("vehicles")
+            .select("id,name,category,transmission,fuel,seats,daily_price_htva,sort")
+            .order("sort")
+        ),
+        safeQuery(sb.from("vehicle_images").select("vehicle_id,path,sort").order("sort")),
+        safeQuery(sb.from("locations").select("id,name").order("name")),
+        safeQuery(sb.from("calendar_events").select("on_date,label_fr,label_ar,label_it,label_en")),
+        Promise.resolve(sb.rpc("get_public_settings"))
+          .then((res) => res.data || {})
+          .catch(() => ({})),
+        safeQuery(sb.rpc("public_availability", { from_d: fromStr, to_d: toStr }))
+      ]);
+
+      state.vehicles = vehRows;
+      state.locations = locRows;
+      state.availability = availRows;
+      Object.assign(state.settings, settingsObj);
+
+      state.imagesById = {};
+      state.imagesByName = {};
+      imgRows.forEach((row) => {
+        if (!state.imagesById[row.vehicle_id]) {
+          state.imagesById[row.vehicle_id] = row.path;
+        }
+        const matchedVeh = vehRows.find((v) => v.id === row.vehicle_id);
+        if (matchedVeh && !state.imagesByName[matchedVeh.name]) {
+          state.imagesByName[matchedVeh.name] = `${IMG_BUCKET_URL}${row.path}`;
+        }
+      });
+
+      state.events = {};
+      evRows.forEach((ev) => { state.events[ev.on_date] = ev; });
+
+      if (locRows.length) {
+        const locOpts = locRows.map((l) => `<option value="${esc(l.id)}">${esc(l.name)}</option>`).join("");
+        $("pickupLoc").innerHTML = locOpts;
+        $("returnLoc").innerHTML = locOpts;
+      } else {
+        const fallbackOpts = DEFAULT_LOCS.map((l) => `<option value="${esc(l[0])}">${esc(l[0])}</option>`).join("");
+        $("pickupLoc").innerHTML = fallbackOpts;
+        $("returnLoc").innerHTML = fallbackOpts;
+      }
+
+      syncContactLinks();
       applyLanguage();
     }
-  })();
-</script>
+
+    function initMotionEffects() {
+      const bar = $("scrollBar");
+      const updateProgress = () => {
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = maxScroll > 0 ? Math.min(100, Math.max(0, (window.scrollY / maxScroll) * 100)) : 0;
+        if (bar) bar.style.width = `${pct}%`;
+      };
+      window.addEventListener("scroll", updateProgress, { passive: true });
+      updateProgress();
+
+      const revealEls = document.querySelectorAll(".reveal");
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+        revealEls.forEach((el) => el.classList.add("is-visible"));
+        return;
+      }
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: "0px 0px -24px 0px" }
+      );
+      revealEls.forEach((el) => observer.observe(el));
+    }
+
+    $("langSel").addEventListener("change", () => {
+      lang = $("langSel").value;
+      try { localStorage.setItem("lang", lang); } catch (e) {}
+      applyLanguage();
+    });
+
+    $("prevMonth").addEventListener("click", () => {
+      state.monthOffset = Math.max(0, state.monthOffset - 1);
+      renderRangeCalendar();
+    });
+
+    $("nextMonth").addEventListener("click", () => {
+      state.monthOffset = Math.min(5, state.monthOffset + 1);
+      renderRangeCalendar();
+    });
+
+    $("modelFilter").addEventListener("change", () => {
+      renderRangeCalendar();
+      if (state.resultsShown && state.range.s && state.range.e) renderSearchResults();
+    });
+
+    $("searchForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      setSearchMessage("");
+      if (!state.range.s || !state.range.e) return setSearchMessage(tr("pick"));
+      if (diffDays(state.range.s, state.range.e) < minRentalDays()) {
+        return setSearchMessage(tr("min").replace("{n}", minRentalDays()));
+      }
+      renderSearchResults();
+    });
+
+    $("refreshSerieBtn").addEventListener("click", syncTnSerieFromInternet);
+    $("dlgClose").addEventListener("click", () => $("quoteDlg").close());
+
+    $("dlgConfirm").addEventListener("click", async () => {
+      if (!sb) {
+        location.href = "compte.html";
+        return;
+      }
+      const { data: { session } } = await sb.auth.getSession();
+      if (!session) {
+        location.href = "compte.html?next=index";
+        return;
+      }
+
+      $("dlgConfirm").disabled = true;
+      const { data, error } = await sb.rpc("request_booking_v2", {
+        p_vehicle: state.selectedVehicleId,
+        p_start: state.range.s,
+        p_end: state.range.e,
+        p_pickup: $("pickupLoc").value,
+        p_return: $("returnLoc").value
+      });
+
+      if (error || !data || !data.ok) {
+        const errKey = `e_${data && data.error}`;
+        $("dlgMsg").className = "msg-bad";
+        $("dlgMsg").textContent = T[errKey] ? tr(errKey) : tr("e_other");
+        $("dlgConfirm").disabled = false;
+        return;
+      }
+
+      $("dlgMsg").className = "msg-good";
+      $("dlgMsg").innerHTML = `${esc(tr("ok"))} <a href="compte.html?b=${esc(data.id)}"><b>${esc(tr("py"))}</b></a>`;
+    });
+
+    $("reqClose").addEventListener("click", closeQuickModal);
+    $("doneCloseBtn").addEventListener("click", closeQuickModal);
+    $("reqModal").addEventListener("click", (e) => {
+      if (e.target === $("reqModal")) closeQuickModal();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeQuickModal();
+        if ($("quoteDlg").open) $("quoteDlg").close();
+      }
+    });
+
+    $("reqStart").addEventListener("change", () => {
+      if (!$("reqStart").value) return;
+      const isoMin = addDaysIso($("reqStart").value, minRentalDays());
+      $("reqEnd").min = isoMin;
+      if ($("reqEnd").value < isoMin) $("reqEnd").value = isoMin;
+      updateQuickQuote();
+    });
+
+    $("reqEnd").addEventListener("change", updateQuickQuote);
+
+    $("reqForm").addEventListener("submit", async (ev) => {
+      ev.preventDefault();
+      const fullName = $("reqName").value.trim();
+      const phoneVal = $("reqPhone").value.replace(/\s+/g, "");
+      const startVal = $("reqStart").value;
+      const endVal = $("reqEnd").value;
+      const locVal = $("reqLoc").value;
+
+      const phoneOk = /^(\+216)?[2459][0-9]{7}$/.test(phoneVal);
+      const datesOk =
+        Boolean(startVal && endVal) &&
+        startVal >= todayIso() &&
+        diffDays(startVal, endVal) >= minRentalDays();
+
+      $("phoneErr").style.display = phoneOk ? "none" : "block";
+      $("dateErr").style.display = datesOk ? "none" : "block";
+
+      if (!phoneOk || !datesOk || !fullName) {
+        if (!fullName) $("reqName").focus();
+        return;
+      }
+
+      const submitBtn = $("reqSubmitBtn");
+      submitBtn.disabled = true;
+      $("reqSubmitErr").style.display = "none";
+
+      const cleanVehicle = state.modalCar.replace(" (VIP)", "");
+      let rpcResult;
+      try {
+        if (!sb) throw new Error("no_sb");
+        const { data, error } = await sb.rpc("request_booking", {
+          p_vehicle_name: cleanVehicle,
+          p_start: startVal,
+          p_end: endVal,
+          p_name: fullName,
+          p_phone: phoneVal,
+          p_location: locVal
+        });
+        rpcResult = error ? { ok: false, error: "other" } : data;
+      } catch (e) {
+        rpcResult = { ok: false, error: "other" };
+      }
+
+      submitBtn.disabled = false;
+      const waDigits = (state.settings.whatsapp || WA_DEFAULT).replace(/\D/g, "");
+
+      if (!rpcResult || (!rpcResult.ok && rpcResult.error === "other")) {
+        const fallbackMsg =
+          `Bonjour, demande de réservation - AMINE RENT A CAR\n` +
+          `Véhicule : ${state.modalCar}\nNom : ${fullName}\nTél : ${phoneVal}\nDu : ${startVal} Au : ${endVal}\nPrise en charge : ${locVal}`;
+        rpcResult = { ok: true, id: "", days: diffDays(startVal, endVal), fallback: fallbackMsg };
+      }
+
+      if (!rpcResult.ok) {
+        const errMap = {
+          unavailable: "e_unavailable",
+          too_many: "e_too_many",
+          dates: "dateErr",
+          location: "e_location",
+          phone: "phoneErr"
+        };
+        const mappedKey = errMap[rpcResult.error] || "e_other";
+        $("reqSubmitErr").textContent = tr(mappedKey);
+        $("reqSubmitErr").style.display = "block";
+        return;
+      }
+
+      const summaryText =
+        rpcResult.fallback ||
+        `Bonjour, demande de réservation - AMINE RENT A CAR\nRéf : ${String(rpcResult.id || "").slice(0, 8)}\nVéhicule : ${state.modalCar}\nNom : ${fullName}\nTél : ${phoneVal}\nDu : ${startVal} Au : ${endVal} (${rpcResult.days} ${tr("days")})\nPrise en charge : ${locVal}`;
+
+      $("waActionLink").href = `https://wa.me/${waDigits}?text=${encodeURIComponent(summaryText)}`;
+      $("payActionLink").href = rpcResult.id
+        ? `compte.html?b=${encodeURIComponent(rpcResult.id)}`
+        : "compte.html";
+
+      $("reqForm").hidden = true;
+      $("reqSuccessBox").hidden = false;
+    });
+
+    syncContactLinks();
+    applyLanguage();
+    initMotionEffects();
+    loadSupabaseData();
+    syncTnSerieFromInternet();
+  </script>
+</body>
+</html>
