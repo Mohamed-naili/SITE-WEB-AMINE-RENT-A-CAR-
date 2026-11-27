@@ -2221,3 +2221,174 @@ bootstrapClientApp();
 </script>
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>حسابي والدفع | Amine Rent A Car</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+<style>
+/* ============================================================================
+   1. DESIGN TOKENS & THEME VARIABLES
+   ============================================================================ */
+:root {
+  --ink: #12161B;
+  --ink-2: #1E252E;
+  --ink-3: #2C3542;
+  --paper: #EEF0EC;
+  --surface: #FFFFFF;
+  --surface-2: #F8F9F7;
+  --surface-3: #F1F3EE;
+
+  --red: #D62828;
+  --red-dark: #A61B1B;
+  --red-soft: rgba(214, 40, 40, 0.10);
+
+  --green: #1B9952;
+  --green-dark: #13743D;
+  --green-soft: rgba(27, 153, 82, 0.11);
+
+  --gold: #C9A227;
+  --gold-dark: #9B7A14;
+  --gold-soft: rgba(201, 162, 39, 0.15);
+
+  --wa: #128C7E;
+  --wa-dark: #0B6B60;
+
+  --line: #D7D9D3;
+  --line-strong: #BFC4BA;
+  --text: #1B1F24;
+  --muted: #5A6068;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+
+  --shadow-sm: 0 4px 14px rgba(18, 22, 27, 0.05);
+  --shadow-md: 0 10px 28px rgba(18, 22, 27, 0.08);
+  --shadow-lg: 0 22px 54px rgba(18, 22, 27, 0.18);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --font-display: "Barlow Condensed", "Cairo", sans-serif;
+  --font-body: "Cairo", "Work Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+
+/* ============================================================================
+   2. RESET & BASE STYLES
+   ============================================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.58;
+  background: var(--paper);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: -20%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 12% 14%, rgba(214, 40, 40, 0.06), transparent 42%),
+    radial-gradient(circle at 88% 18%, rgba(201, 162, 39, 0.08), transparent 45%),
+    radial-gradient(circle at 50% 92%, rgba(27, 153, 82, 0.06), transparent 48%);
+  animation: ambientDrift 18s ease-in-out infinite alternate;
+}
+
+@keyframes ambientDrift {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(-1.5%, 1.2%, 0) scale(1.02); }
+  100% { transform: translate3d(1.5%, -1%, 0) scale(1.01); }
+}
+
+[hidden] {
+  display: none !important;
+}
+
+:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+a {
+  color: inherit;
+}
+
+/* ============================================================================
+   3. TOP HEADER
+   ============================================================================ */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: linear-gradient(95deg, var(--ink) 0%, var(--ink-2) 65%, #27191C 100%);
+  color: #FFFFFF;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 3px solid var(--red);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.16);
+}
+
+.brand-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-link {
+  text-decoration: none;
+  color: #FFFFFF;
+  font-family: var(--font-display);
+  font-size: 23px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-badge {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(201, 162, 39, 0.18);
+  color: #F6DC7E
