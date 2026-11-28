@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>قارئ QR لوصول الحجز | Amine Rent A Car</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js" crossorigin="anonymous"></script>
+<style>
+:root{
+  --ink:#12161B;--surface:#FFFFFF;--paper:#EEF0EC;--line:#D7D9D3;
+  --red:#D62828;--green:#1B9952;--green-soft:rgba(27,153,82,.12);
+  --red-soft:rgba(214,40,40,.11);--gold:#C9A227;--muted:#5A6068;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Cairo",system-ui,sans-serif;background:var(--paper);color:var(--ink);min-height:100vh}
+header{background:var(--ink);color:#fff;padding:14px 20px;border-bottom:3px solid var(--red);display:flex;justify-content:space-between;align-items:center}
+header b{font-size:18px;letter-spacing:.03em}
+main{max-width:720px;margin:24px auto;padding:0 16px 48px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 8px 24px rgba(18,22,27,.07)}
+h1{font-size:22px;margin-bottom:6px}
+.sub{color:var(--muted);font-size:13.5px;margin-bottom:14px}
+#reader{width:100%;border-radius:12px;overflow:hidden;border:1.5px solid var(--line);background:#0f1318}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+button,label.btn{border:0;border-radius:9px;padding:10px 15px;font:700 13.5px "Cairo",sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:6px;background:var(--ink);color:#fff}
+button.green{background:var(--green)}
+button.red{background:var(--red)}
+button:disabled{opacity:.5;cursor:not-allowed}
+.res-box{margin-top:16px;padding:14px;border-radius:12px;border:1.5px solid var(--line);background:#fafbf9}
+.res-box.ok{border-color:var(--green);background:var(--green-soft)}
+.res-box.bad{border-color:var(--red);background:var(--red-soft)}
+.mono{font-family:"JetBrains Mono",monospace;direction:ltr;display:inline-block}
+.kv{display:grid;grid-template-columns:130px 1fr;gap:6px 12px;margin-top:10px;font-size:14px}
+.kv span:first-child{color:var(--muted);font-weight:700}
+</style>
+</head>
+<body>
+<header>
+  <b>AMINE RENT A CAR — QR SCANNER</b>
+  <span style="font-size:12.5px;color:#d6dde6">تحقق من وصول الحجز</span>
+</header>
+<main>
+  <div class="card">
+    <h1>قارئ رمز QR لوصل الحجز</h1>
+    <p class="sub">وجّه الكاميرا نحو رمز QR في وصل الحجز أو اختر صورة تحتوي على رمز QR.</p>
+
+    <div id="reader"></div>
+
+    <div class="actions">
+      <button type="button" class="green" id="startBtn">تشغيل الكاميرا</button>
+      <button type="button" class="red" id="stopBtn" disabled>إيقاف الكاميرا</button>
+      <label class="btn">
+        رفع صورة QR
+        <input type="file" id="fileInput" accept="image/png,image/jpeg,image/webp" hidden>
+      </label>
+    </div>
+
+    <div id="resultBox" class="res-box" hidden></div>
+  </div>
+</main>
+
+<script>
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+}[c]));
+
+let scanner = null;
+let running = false;
+
+function verifyQrText(rawText){
+  const box = $("resultBox");
+  box.hidden = false;
+  let parsed = null;
+  try {
+    parsed = JSON.parse(String(rawText || "").trim());
+  } catch (_) {
+    parsed = null;
+  }
+
+  if(!parsed || parsed.doc !== "BON_DE_RESERVATION" || parsed.brand !== "AMINE_RENT_A_CAR" || !parsed.ref){
+    box.className = "res-box bad";
+    box.innerHTML = `
+      <b>رمز QR غير مطابق لوصول Amine Rent A Car</b>
+      <div class="kv">
+        <span>المحتوى المقروء:</span>
+        <span class="mono">${esc(String(rawText || "").slice(0, 180))}</span>
+      </div>
+    `;
+    return;
+  }
+
+  const refClean = String(parsed.ref).replace(/[^A-Za-z0-9_-]/g, "").slice(0, 24).toUpperCase();
+  const statusClean = String(parsed.status || "pending");
+  const isConfirmed = statusClean === "confirmed";
+
+  box.className = "res-box " + (isConfirmed ? "ok" : "");
+  box.innerHTML = `
+    <b>${isConfirmed ? "وصل حجز مؤكد وصالح للمراجعة" : "وصل حجز قيد الانتظار"}</b>
+    <div class="kv">
+      <span>رقم المرجع:</span>
+      <span class="mono">#${esc(refClean)}</span>
+      <span>الحالة:</span>
+      <span>${isConfirmed ? "مؤكّد (Confirmed)" : "في الانتظار (" + esc(statusClean) + ")"}</span>
+      <span>الجهة المصدرة:</span>
+      <span>Amine Rent A Car</span>
+    </div>
+  `;
+}
+
+async function startCamera(){
+  if(running || !window.Html5Qrcode) return;
+  try{
+    if(!scanner) scanner = new Html5Qrcode("reader");
+    await scanner.start(
+      { facingMode: "environment" },
+      { fps: 10, qrbox: { width: 230, height: 230 } },
+      (decodedText) => {
+        verifyQrText(decodedText);
+        stopCamera();
+      },
+      () => {}
+    );
+    running = true;
+    $("startBtn").disabled = true;
+    $("stopBtn").disabled = false;
+  } catch (err) {
+    $("resultBox").hidden = false;
+    $("resultBox").className = "res-box bad";
+    $("resultBox").textContent = "تعذّر تشغيل الكاميرا. تأكد من إعطاء الإذن أو استعمل خيار رفع الصورة.";
+  }
+}
+
+async function stopCamera(){
+  if(!scanner || !running) return;
+  try{
+    await scanner.stop();
+  } catch (_) {}
+  running = false;
+  $("startBtn").disabled = false;
+  $("stopBtn").disabled = true;
+}
+
+$("startBtn").onclick = startCamera;
+$("stopBtn").onclick = stopCamera;
+
+$("fileInput").onchange = async () => {
+  const f = $("fileInput").files && $("fileInput").files[0];
+  if(!f || !window.Html5Qrcode) return;
+  try{
+    if(!scanner) scanner = new Html5Qrcode("reader");
+    const decoded = await scanner.scanFile(f, true);
+    verifyQrText(decoded);
+  } catch (_) {
+    $("resultBox").hidden = false;
+    $("resultBox").className = "res-box bad";
+    $("resultBox").textContent = "لم يتم التعرّف على رمز QR واضح في هذه الصورة.";
+  } finally {
+    $("fileInput").value = "";
+  }
+};
+})();
+</script>
+</body>
+</html>
