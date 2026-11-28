@@ -443,9 +443,9 @@ const T={
     bonKeep:"احتفظ بهذا الوصل (Bon + QR) وتوجّه به إلى أقرب وكالة في تونس لاستلام السيارة.",
     print:"طباعة / PDF",ref:"رقم الحجز",cl:"الحريف",ph:"الهاتف",car:"السيارة",per:"الفترة",pick:"الوكالة / الاستلام",
     waTxt:"مساعدة واتساب: 22192727",waMsg:u=>`سلام، نسيت كلمة السر متاع حسابي${u?` (${u})`:""}.`,
-    studyTitle:"ملفك قيد الدراسة مع الإدارة",
-    studyBody:"تم تسجيل معطياتك ووثائقك؛ يجب انتظار موافقة الإدارة. عند الموافقة يُعتمد الـ RIB لتحويل المبلغ، ويمكنك من الآن طباعة أو حفظ وصل الحجز (Bon) كـ PDF.",
-    studyBonBtn:"🎫 وصل الحجز (PDF / طباعة)"
+    studyTitle:"بانتظار موافقة الإدارة · En attente d'acceptation",
+    studyBody:"ما دامت الإدارة لم تقبل الحجز بعد، لا تُحوّل المبلغ الآن. بمجرد القبول يظهر لك الـ RIB وطريقة التحويل أو إخراج وصل الحجز (Bon de réservation) لاستلام السيارة من أقرب وكالة في تونس.",
+    studyBonBtn:"📄 وصل الحجز (A4 / PDF)"
   },
   fr:{
     out:"Déconnexion",secBadge:"Comptes SQL directs (Username / Tél)",
@@ -507,9 +507,9 @@ const T={
     bonKeep:"Gardez ce Bon de réservation (QR) et rendez-vous à l'agence la plus proche en Tunisie pour récupérer votre véhicule.",
     print:"Imprimer / PDF",ref:"N° Réservation",cl:"Client",ph:"Téléphone",car:"Véhicule",per:"Période",pick:"Agence / Retrait",
     waTxt:"WhatsApp : 22192727",waMsg:u=>`Bonjour, mot de passe oublié${u?` (${u})`:""}.`,
-    studyTitle:"Dossier en cours d'étude avec l'administration",
-    studyBody:"Vos informations sont enregistrées ; attendez l'accord de l'administration. Après accord, le RIB s'applique pour le règlement et vous pouvez imprimer ou enregistrer votre Bon en PDF.",
-    studyBonBtn:"🎫 Bon de réservation (PDF / Imprimer)"
+    studyTitle:"En attente d'acceptation par l'administration",
+    studyBody:"Tant que l'administration n'a pas accepté, n'envoyez pas encore le paiement. Après acceptation, le RIB s'applique pour le virement ou l'édition du Bon de réservation pour retrait à l'agence la plus proche en Tunisie.",
+    studyBonBtn:"📄 Bon de réservation (A4 / PDF)"
   },
   en:{
     out:"Log out",secBadge:"Direct SQL accounts (Username / Phone)",
@@ -571,9 +571,9 @@ const T={
     bonKeep:"Keep this Booking Voucher (QR) and visit the nearest agency in Tunisia to collect your car.",
     print:"Print / PDF",ref:"Booking No.",cl:"Client",ph:"Phone",car:"Vehicle",per:"Period",pick:"Agency / Pickup",
     waTxt:"WhatsApp help: 22192727",waMsg:u=>`Hi, I forgot my password${u?` (${u})`:""}.`,
-    studyTitle:"Dossier under review by administration",
-    studyBody:"Your details are saved; wait for administration approval. Once approved, RIB is used for payment and you can print or save your Voucher as PDF now.",
-    studyBonBtn:"🎫 Booking Voucher (PDF / Print)"
+    studyTitle:"Awaiting administration approval",
+    studyBody:"Do not transfer funds until the administration accepts. Once accepted, RIB applies for payment or issuing your Booking Voucher for pickup at the nearest agency in Tunisia.",
+    studyBonBtn:"📄 Booking Voucher (A4 / PDF)"
   },
   it:{
     out:"Esci",secBadge:"Account SQL diretti (Username / Telefono)",
@@ -635,15 +635,16 @@ const T={
     bonKeep:"Conserva questo Voucher (QR) e recati nell'agenzia più vicina in Tunisia per ritirare l'auto.",
     print:"Stampa / PDF",ref:"N° Prenotazione",cl:"Cliente",ph:"Telefono",car:"Veicolo",per:"Periodo",pick:"Agenzia / Ritiro",
     waTxt:"WhatsApp: 22192727",waMsg:u=>`Ciao, ho dimenticato la password${u?` (${u})`:""}.`,
-    studyTitle:"Pratica in fase di valutazione con l'amministrazione",
-    studyBody:"I tuoi dati sono salvati; attendi l'approvazione dell'amministrazione. Dopo l'approvazione si usa il RIB per il pagamento e puoi stampare o salvare il Voucher in PDF ora.",
-    studyBonBtn:"🎫 Voucher prenotazione (PDF / Stampa)"
+    studyTitle:"In attesa di accettazione dall'amministrazione",
+    studyBody:"Non inviare il pagamento finché l'amministrazione non accetta. Dopo l'accettazione si applica il RIB per il bonifico o l'emissione del Voucher per il ritiro nell'agenzia più vicina in Tunisia.",
+    studyBonBtn:"📄 Voucher prenotazione (A4 / PDF)"
   }
 };
 
 let LANG="ar";try{LANG=localStorage.getItem("lang")||"ar"}catch(_){}
 if(!T[LANG])LANG="ar";
 let MODE=RAW_REF?"pay":"login",FILTER="active",TOKEN="",PROFILE=null,BOOKINGS=[],BANKS=[],SET={},QP=null,QPPH="",QP_ID="",toastT;
+let studyTimerInterval=null,studyRemainingSec=60*60;
 
 let failCount=0,lockUntil=0,idleTimer=null;
 const checkLock=()=>Math.max(0,Math.ceil((lockUntil-Date.now())/1000));
@@ -675,6 +676,11 @@ const digits=v=>String(v||"").replace(/\D/g,"").replace(/^0+/,"");
 const cleanPh=v=>String(v||"").replace(/[\s.-]/g,"").replace(/^\+?216/,"").trim();
 const fmtD=d=>new Date(d).toLocaleDateString(LANG==="ar"?"ar-TN":LANG==="it"?"it-IT":LANG==="en"?"en-GB":"fr-FR",{timeZone:"Africa/Tunis"});
 
+const PREFIXES = [
+  ["216","🇹🇳"],["33","🇫🇷"],["39","🇮🇹"],["49","🇩🇪"],["44","🇬🇧"],["34","🇪🇸"],
+  ["32","🇧🇪"],["41","🇨🇭"],["1","🇺🇸"],["971","🇦🇪"],["966","🇸🇦"],["974","🇶🇦"],
+  ["213","🇩🇿"],["212","🇲🇦"],["218","🇱🇾"]
+];
 function detectCountryFromPhone(raw){
   const d=String(raw||"").replace(/\D/g,"").replace(/^00/,"");
   for(let i=0;i<PREFIXES.length;i++){
@@ -894,14 +900,34 @@ async function renderSteps(){
   document.querySelectorAll("[data-save]").forEach(btn=>btn.onclick=()=>saveStep(btn));
 }
 
+function formatCountdown(sec){
+  const s=Math.max(0,sec);
+  const mins=String(Math.floor(s/60)).padStart(2,"0");
+  const secs=String(s%60).padStart(2,"0");
+  return `${mins}:${secs}`;
+}
+function buildBonUrl(b){
+  const q=new URLSearchParams({
+    ref:shortRef(b.id||PROFILE.id||"BON"),
+    client:b.guest_name||PROFILE.full_name||PROFILE.username||"",
+    phone:b.guest_phone||PROFILE.phone||"",
+    car:b.vehicles?.name||"Véhicule",
+    period:`${fmtD(b.start_at)} → ${fmtD(b.end_at)}`,
+    pickup:b.pickup_text||PROFILE.billing_address||"Agence Tunisie",
+    status:b.status||"pending"
+  });
+  return `bon-reservation.html?${q.toString()}`;
+}
 function renderDossierStudyBox(){
   const box=$("dossierStudyBox");
   if(!PROFILE||!box)return;
   const allReqDone=STEPS.filter(s=>s.req).every(s=>s.done(PROFILE));
   if(!allReqDone){box.hidden=true;return;}
   box.hidden=false;
-  box.className="trust-panel";
-  box.style.marginTop="14px";
+  box.className="card";
+  box.style.marginTop="16px";
+  box.style.border="2px solid var(--gold)";
+
   const targetBooking=BOOKINGS[0]||{
     id:PROFILE.id||"DOSSIER",
     status:"pending",
@@ -913,25 +939,30 @@ function renderDossierStudyBox(){
     quote:{days:1},
     vehicles:{name:"Véhicule"}
   };
-  if(!BOOKINGS.length)BOOKINGS=[targetBooking];
+
   box.innerHTML=`
-    <div class="row">
+    <div style="background:linear-gradient(120deg,var(--ink),#232c38);color:#fff;border-radius:14px;padding:16px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap">
       <div>
-        <div class="trust-title"><span>⏳</span><span>${esc(t("studyTitle"))}</span></div>
-        <div class="trust-copy">${esc(t("studyBody"))}</div>
+        <div style="font-size:12px;color:#FCE49C;font-weight:700">${esc(t("studyTitle"))}</div>
+        <h3 style="color:#fff;font-size:24px;margin-top:3px"><span id="studyCountdown" style="font-family:var(--font-mono);color:#96f3be">${formatCountdown(studyRemainingSec)}</span></h3>
+        <p style="color:#d6dde6;font-size:13px;margin-top:4px">${esc(t("studyBody"))}</p>
       </div>
-      <button type="button" class="green sm" id="studyBonPrintBtn">${esc(t("studyBonBtn"))}</button>
+      <a class="btn green" href="${esc(buildBonUrl(targetBooking))}" target="_blank" rel="noopener noreferrer">${esc(t("studyBonBtn"))}</a>
     </div>
-    <div class="rib-panel" style="margin-top:10px">
+    <div class="rib-panel" style="margin-top:12px">
       <b>${esc(t("ribT"))}:</b>
       <div id="studyRibList">${ribRows(BANKS,"sr")}</div>
     </div>
   `;
   bindCopy($("studyRibList"),"sr");
-  $("studyBonPrintBtn").onclick=()=>{
-    openBon(targetBooking.id);
-    setTimeout(()=>window.print(),250);
-  };
+
+  if(!studyTimerInterval){
+    studyTimerInterval=setInterval(()=>{
+      studyRemainingSec=Math.max(0,studyRemainingSec-1);
+      const el=$("studyCountdown");
+      if(el)el.textContent=formatCountdown(studyRemainingSec);
+    },1000);
+  }
 }
 
 async function saveStep(btn){
@@ -960,7 +991,7 @@ async function saveStep(btn){
         p_account_id:PROFILE.id||null,
         p_client_name:PROFILE.full_name||PROFILE.username||"Client",
         p_client_phone:PROFILE.phone||"",
-        p_title:`تحديث ملف الحريف (${k}) — بانتظار دراسة الإدارة`,
+        p_title:`ملف حريف (${k}) — بانتظار موافقة الإدارة`,
         p_payload:{step:k,license_number:PROFILE.license_number||""}
       });
     }catch(_){}
@@ -1038,7 +1069,10 @@ function renderBookings(){
     toast(t("sentOk"));await loadPortal();
   });
   R.querySelectorAll("[data-vp]").forEach(b=>b.onclick=async()=>{const {data,error}=await sb.storage.from(PROOFS).createSignedUrl(b.dataset.vp,300);if(error||!data?.signedUrl)return toast(t("proofErr"));window.open(data.signedUrl,"_blank","noopener,noreferrer")});
-  R.querySelectorAll("[data-bon]").forEach(b=>b.onclick=()=>openBon(b.dataset.bon));
+  R.querySelectorAll("[data-bon]").forEach(b=>b.onclick=()=>{
+    const bk=BOOKINGS.find(x=>String(x.id)===String(b.dataset.bon));
+    if(bk)window.open(buildBonUrl(bk),"_blank","noopener,noreferrer");
+  });
   R.querySelectorAll("[data-inv]").forEach(b=>b.onclick=()=>openInvoiceModal(b.dataset.inv));
   R.querySelectorAll("[data-cx]").forEach(b=>b.onclick=async()=>{
     const reason=prompt(t("cancelQ"));if(reason===null)return;
@@ -1047,16 +1081,6 @@ function renderBookings(){
   });
 }
 
-function openBon(id){
-  const b=BOOKINGS.find(x=>String(x.id)===String(id));if(!b)return;
-  const ref=shortRef(b.id);
-  $("bonRef").textContent=`${t("ref")}: #${ref}`;
-  $("bonRows").innerHTML=`<div><b>${t("cl")}:</b> ${esc(b.guest_name||PROFILE.full_name||"")}</div><div><b>${t("ph")}:</b> <span dir="ltr">${esc(b.guest_phone||PROFILE.phone||"")}</span></div><div><b>${t("car")}:</b> ${esc(b.vehicles?.name||"")}</div><div><b>${t("per")}:</b> ${t("from")} ${fmtD(b.start_at)} ${t("to")} ${fmtD(b.end_at)} (${esc(b.quote?.days??"")} ${t("days")})</div>${b.pickup_text?`<div><b>${t("pick")}:</b> ${esc(b.pickup_text)}</div>`:""}`;
-  if(window.QRCode && typeof window.QRCode.toCanvas==="function"){
-    try{window.QRCode.toCanvas($("qr"),JSON.stringify({brand:"AMINE_RENT_A_CAR",ref,status:b.status}),{width:152,margin:1},function(){})}catch(_){}
-  }
-  $("bon").hidden=false;
-}
 $("bonX").onclick=()=>$("bon").hidden=true;
 $("bon").onclick=e=>{if(e.target===$("bon"))$("bon").hidden=true};
 $("bonPrint").onclick=()=>window.print();
