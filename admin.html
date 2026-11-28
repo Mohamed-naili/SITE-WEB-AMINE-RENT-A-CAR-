@@ -12,6 +12,7 @@
     rel="stylesheet"
   />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
   <style>
     :root {
       --ink: #15181c;
@@ -197,7 +198,7 @@
 
     .stats-bar {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap: 10px;
       margin-bottom: 14px;
     }
@@ -221,6 +222,28 @@
       font-family: "Barlow Condensed", sans-serif;
       font-size: 28px;
       color: var(--ink);
+    }
+
+    .alert-item {
+      border: 1px solid var(--line);
+      border-inline-start: 4px solid var(--red);
+      border-radius: 10px;
+      padding: 11px 13px;
+      background: #fafbf9;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .alert-badge {
+      background: var(--red);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 2px 9px;
+      border-radius: 999px;
     }
 
     .tabs {
@@ -365,20 +388,132 @@
       box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
     }
 
-    @media (max-width: 820px) {
-      .stats-bar,
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 18, 22, 0.68);
+      z-index: 80;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .sheet {
+      background: #fff;
+      border-radius: 14px;
+      max-width: 780px;
+      width: 100%;
+      max-height: 90vh;
+      overflow: auto;
+      padding: 20px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+    }
+
+    .inv-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 3px solid var(--red);
+      padding-bottom: 12px;
+    }
+
+    .inv-two {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin: 14px 0;
+    }
+
+    .inv-box {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+
+    .inv-tbl {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+    }
+
+    .inv-tbl th {
+      background: var(--paper);
+      text-align: left;
+      font-size: 12px;
+      padding: 8px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .inv-tbl td {
+      padding: 8px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .inv-tbl td.r,
+    .inv-tbl th.r {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .inv-tot {
+      width: 65%;
+      margin-left: auto;
+      margin-top: 8px;
+    }
+
+    .inv-tot td {
+      padding: 4px 8px;
+    }
+
+    .inv-tot .g td {
+      font-size: 16px;
+      font-weight: 800;
+      border-top: 2px solid var(--ink);
+      padding-top: 8px;
+    }
+
+    @media (max-width: 900px) {
+      .stats-bar {
+        grid-template-columns: repeat(2, 1fr);
+      }
       .ev-grid {
         grid-template-columns: 1fr 1fr;
       }
     }
 
     @media (max-width: 700px) {
-      .vrow {
-        grid-template-columns: 1fr 1fr;
+      .vrow,
+      .inv-head,
+      .inv-two {
+        grid-template-columns: 1fr;
       }
       .stats-bar,
       .ev-grid {
         grid-template-columns: 1fr;
+      }
+      .inv-tot {
+        width: 100%;
+      }
+    }
+
+    @media print {
+      header,
+      main,
+      .toast,
+      .np {
+        display: none !important;
+      }
+      .modal {
+        position: static;
+        background: none;
+        padding: 0;
+      }
+      .sheet {
+        box-shadow: none;
+        max-width: none;
+        max-height: none;
+        padding: 0;
       }
     }
   </style>
@@ -410,10 +545,24 @@
 
     <div id="app" hidden>
       <div class="stats-bar" id="statsBar">
+        <div class="stat-box"><small>Alertes non lues</small><strong id="stAlerts">0</strong></div>
         <div class="stat-box"><small>Réservations</small><strong id="stBookings">0</strong></div>
         <div class="stat-box"><small>En attente</small><strong id="stPending">0</strong></div>
         <div class="stat-box"><small>Véhicules</small><strong id="stVehicles">0</strong></div>
         <div class="stat-box"><small>Factures</small><strong id="stInvoices">0</strong></div>
+      </div>
+
+      <div class="card" id="alertsCard">
+        <div class="row" style="margin-bottom: 10px">
+          <div style="display: flex; align-items: center; gap: 8px">
+            <h3 style="font-size: 22px">Notifications Clients (Nouvelles réservations & dossiers)</h3>
+            <span class="alert-badge" id="alertsBadge">0</span>
+          </div>
+          <button type="button" id="refreshAlertsBtn">Actualiser alertes</button>
+        </div>
+        <div id="alertsList" style="display: grid; gap: 8px">
+          <p class="small">Chargement des notifications...</p>
+        </div>
       </div>
 
       <div class="tabs">
@@ -436,12 +585,24 @@
 
   <div class="toast" id="toast" hidden></div>
 
+  <div class="modal" id="invModal" hidden>
+    <div class="sheet" role="dialog" aria-modal="true">
+      <div class="row np" style="margin-bottom: 12px">
+        <button type="button" class="g" id="invPrintBtn">Imprimer / PDF</button>
+        <button type="button" id="invCloseBtn">Fermer</button>
+      </div>
+      <div id="invModalBody"></div>
+    </div>
+  </div>
+
   <script>
     const SUPABASE_URL = "https://tadaqaqvtjcnanspcboj.supabase.co";
     const SUPABASE_KEY = "sb_publishable_fA2Est6rYrP6Sx1xfyhdOA_IA5TQ6MO";
     const IMG_PUBLIC_BASE = `${SUPABASE_URL}/storage/v1/object/public/vehicle-images/`;
 
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    window.SB = sb;
+
     const $ = (id) => document.getElementById(id);
     const esc = (s) =>
       String(s ?? "").replace(/[&<>"']/g, (c) =>
@@ -471,6 +632,204 @@
         t.hidden = true;
       }, 2400);
     }
+
+    let alertsChannel = null;
+    function subscribeAlerts() {
+      if (alertsChannel || typeof sb.channel !== "function") return;
+      alertsChannel = sb
+        .channel("admin_notifications_realtime")
+        .on(
+          "postgres_changes",
+          { event: "INSERT", schema: "public", table: "admin_notifications" },
+          async (payload) => {
+            await loadAlerts();
+            await loadB();
+            const title = payload?.new?.title || "Nouvelle notification client";
+            notify("🔔 " + title);
+          }
+        )
+        .subscribe();
+    }
+
+    async function loadAlerts() {
+      const { data, error } = await sb
+        .from("admin_notifications")
+        .select("*")
+        .eq("is_read", false)
+        .order("created_at", { ascending: false })
+        .limit(50);
+
+      if (error) {
+        $("alertsList").innerHTML = `<p class="small">Notifications : ${esc(error.message)}</p>`;
+        return;
+      }
+
+      const items = data || [];
+      $("stAlerts").textContent = String(items.length);
+      $("alertsBadge").textContent = String(items.length);
+
+      if (!items.length) {
+        $("alertsList").innerHTML = `<p class="small">Aucune nouvelle alerte non lue.</p>`;
+        return;
+      }
+
+      $("alertsList").innerHTML = items
+        .map((n) => {
+          const p = n.payload || {};
+          const when = n.created_at
+            ? new Date(n.created_at).toLocaleString("fr-FR", { timeZone: "Africa/Tunis" })
+            : "";
+          const meta = [
+            n.client_phone ? `Tél: ${esc(n.client_phone)}` : "",
+            p.pickup_text ? `Agence: ${esc(p.pickup_text)}` : "",
+            p.license_number ? `Permis: ${esc(p.license_number)}` : "",
+            when ? esc(when) : ""
+          ]
+            .filter(Boolean)
+            .join(" · ");
+
+          return `<div class="alert-item">
+            <div>
+              <b>${esc(n.title)}</b> — <span>${esc(n.client_name || "Client")}</span>
+              <div class="small">${meta}</div>
+            </div>
+            <button type="button" class="g" data-mark-read="${esc(n.id)}">Marquer lu</button>
+          </div>`;
+        })
+        .join("");
+
+      $("alertsList").querySelectorAll("[data-mark-read]").forEach((btn) => {
+        btn.onclick = async () => {
+          btn.disabled = true;
+          const { error: uErr } = await sb
+            .from("admin_notifications")
+            .update({ is_read: true })
+            .eq("id", btn.dataset.markRead);
+          if (!uErr) {
+            await loadAlerts();
+            notify("Notification marquée comme lue ✓");
+          } else {
+            btn.disabled = false;
+            alert(uErr.message);
+          }
+        };
+      });
+    }
+
+    $("refreshAlertsBtn").onclick = async () => {
+      await loadAlerts();
+      notify("Notifications actualisées ✓");
+    };
+
+    async function openInvoicePreview(invId) {
+      $("invModalBody").innerHTML = `<p class="small">Chargement de la facture...</p>`;
+      $("invModal").hidden = false;
+      const { data: inv, error } = await sb
+        .from("invoices")
+        .select("*")
+        .eq("id", invId)
+        .maybeSingle();
+
+      if (error || !inv || !inv.snapshot) {
+        $("invModalBody").innerHTML = `<div class="msg">Facture introuvable : ${esc(
+          error?.message || ""
+        )}</div>`;
+        return;
+      }
+
+      const s = inv.snapshot,
+        c = s.company || {},
+        cu = s.customer || {},
+        isCN = inv.kind === "credit_note",
+        ov = isCN ? s.original?.vehicle || {} : s.vehicle || {};
+
+      const lines = isCN
+        ? `<tr><td>Avoir annulant la facture ${esc(s.original_number)}</td><td class="r">${money(
+            s.total_ttc
+          )} TND</td></tr>`
+        : `<tr><td>Location ${esc(ov.name)}${
+            ov.plate ? ` (${esc(ov.plate)})` : ""
+          }<div class="small">du ${fmt(s.start_date)} au ${fmt(s.end_date)} : ${esc(
+            s.days
+          )} jour(s) × ${money(s.daily_htva)} TND HTVA</div></td><td class="r">${money(
+            s.subtotal_htva
+          )} TND</td></tr>
+           <tr><td>Taxe de location (${money(s.levy_per_day)} × ${esc(
+            s.days
+          )} jour(s))</td><td class="r">${money(s.levy_total)} TND</td></tr>`;
+
+      const totals = isCN
+        ? `<tr class="g"><td>Total TTC de l'avoir</td><td class="r">${money(s.total_ttc)} TND</td></tr>`
+        : `<tr><td>Sous-total HTVA</td><td class="r">${money(s.subtotal_htva)} TND</td></tr>
+           <tr><td>TVA (${esc(s.vat_rate)} %)</td><td class="r">${money(s.vat_amount)} TND</td></tr>
+           <tr><td>Taxe de location</td><td class="r">${money(s.levy_total)} TND</td></tr>
+           ${
+             +s.fiscal_stamp > 0
+               ? `<tr><td>Timbre fiscal</td><td class="r">${money(s.fiscal_stamp)} TND</td></tr>`
+               : ""
+           }
+           <tr class="g"><td>Total TTC</td><td class="r">${money(s.total_ttc)} TND</td></tr>
+           <tr><td>Acompte versé</td><td class="r">${money(s.deposit_paid)} TND</td></tr>
+           <tr><td><b>Reste à payer</b></td><td class="r"><b>${money(s.balance_due)} TND</b></td></tr>`;
+
+      $("invModalBody").innerHTML = `
+        <div class="inv-head">
+          <div>
+            <h2>${isCN ? "AVOIR" : "FACTURE"}</h2>
+            <div><b>N° ${esc(inv.number)}</b></div>
+            <div class="small">Émise le ${fmt(inv.issued_at)}</div>
+          </div>
+          <div style="text-align:center">
+            <canvas id="adminInvQr" width="92" height="92"></canvas>
+            <div class="small" style="font-size:10px">QR Vérification</div>
+          </div>
+          <div style="text-align:right">
+            <b>${esc(c.name || "AMINE RENT A CAR")}</b>
+            <div class="small">${esc(c.address || "")}<br>MF : ${esc(
+        c.tax_id || ""
+      )}<br>${esc(c.phone || "")} ${esc(c.email || "")}</div>
+          </div>
+        </div>
+        <div class="inv-two">
+          <div class="inv-box">
+            <div class="small" style="font-weight:700">CLIENT</div>
+            <b>${esc(cu.name || "")}</b>
+            <div class="small">${esc(cu.address || "")}${
+        cu.tax_id ? `<br>MF : ${esc(cu.tax_id)}` : ""
+      }<br>${esc(cu.phone || "")}</div>
+          </div>
+          <div class="inv-box">
+            <div class="small" style="font-weight:700">${isCN ? "MOTIF" : "PAIEMENT"}</div>
+            ${isCN ? esc(s.reason || "") : `Mode : ${esc(s.payment_method || "")}`}
+          </div>
+        </div>
+        <table class="inv-tbl">
+          <thead><tr><th>Désignation</th><th class="r">Montant</th></tr></thead>
+          <tbody>${lines}</tbody>
+        </table>
+        <table class="inv-tot">${totals}</table>
+        <div class="small" style="margin-top:16px">${esc(s.footer || "")}</div>
+      `;
+
+      const verifyUrl =
+        location.origin +
+        location.pathname.replace(/[^/]*$/, "") +
+        "verify.html?t=" +
+        (inv.verify_token || "");
+      if (window.QRCode && typeof window.QRCode.toCanvas === "function") {
+        try {
+          window.QRCode.toCanvas($("adminInvQr"), verifyUrl, { width: 92, margin: 1 }, function () {});
+        } catch (_) {}
+      }
+    }
+
+    $("invCloseBtn").onclick = () => {
+      $("invModal").hidden = true;
+    };
+    $("invModal").onclick = (e) => {
+      if (e.target === $("invModal")) $("invModal").hidden = true;
+    };
+    $("invPrintBtn").onclick = () => window.print();
 
     async function boot() {
       const { data: { session } } = await sb.auth.getSession();
@@ -509,7 +868,8 @@
         await sb.rpc("expire_holds");
       } catch (e) {}
 
-      await Promise.all([loadB(), loadV(), loadE(), loadP(), loadF(), loadS()]);
+      subscribeAlerts();
+      await Promise.all([loadAlerts(), loadB(), loadV(), loadE(), loadP(), loadF(), loadS()]);
     }
 
     $("go").onclick = async () => {
@@ -534,7 +894,7 @@
 
     $("refreshAll").onclick = async () => {
       notify("Mise à jour en direct...");
-      await Promise.all([loadB(), loadV(), loadE(), loadP(), loadF(), loadS()]);
+      await Promise.all([loadAlerts(), loadB(), loadV(), loadE(), loadP(), loadF(), loadS()]);
       notify("Données synchronisées ✓");
     };
 
@@ -680,7 +1040,7 @@
           if (invErr) return alert(invErr.message);
           await loadF();
           notify("Facture émise ✓");
-          window.open("invoice.html?id=" + invData.id, "_blank");
+          if (invData?.id) await openInvoicePreview(invData.id);
         };
       });
     }
@@ -1124,7 +1484,7 @@
       </div>`;
 
       $("tf").querySelectorAll("[data-o]").forEach((b) => {
-        b.onclick = () => window.open("invoice.html?id=" + b.dataset.o, "_blank");
+        b.onclick = () => openInvoicePreview(b.dataset.o);
       });
 
       $("tf").querySelectorAll("[data-cn]").forEach((b) => {
@@ -1138,7 +1498,7 @@
           if (e) return alert(e.message);
           await loadF();
           notify("Avoir créé ✓");
-          window.open("invoice.html?id=" + r.id, "_blank");
+          if (r?.id) await openInvoicePreview(r.id);
         };
       });
 
