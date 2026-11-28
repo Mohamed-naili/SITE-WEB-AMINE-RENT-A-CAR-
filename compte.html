@@ -355,8 +355,14 @@ table{width:100%;border-collapse:collapse;font-size:13.5px}td{padding:6px 0;bord
 </div>
 
 <script>
+(function(){
 "use strict";
-const sb = supabase.createClient("https://tadaqaqvtjcnanspcboj.supabase.co","sb_publishable_fA2Est6rYrP6Sx1xfyhdOA_IA5TQ6MO");
+const SUPA_URL="https://tadaqaqvtjcnanspcboj.supabase.co";
+const SUPA_KEY="sb_publishable_fA2Est6rYrP6Sx1xfyhdOA_IA5TQ6MO";
+const sb = (window.supabase && typeof window.supabase.createClient === "function")
+  ? window.supabase.createClient(SUPA_URL, SUPA_KEY)
+  : null;
+
 const DOCS="client-documents", PROOFS="payment-proofs", ADMIN_WA="21622192727", SESSION_KEY="amine_sql_session_token";
 const RAW_REF = new URLSearchParams(location.search).get("b") || "";
 const $ = id => document.getElementById(id);
@@ -620,18 +626,14 @@ const T={
 };
 
 let LANG="ar";try{LANG=localStorage.getItem("lang")||"ar"}catch(_){}
+if(!T[LANG])LANG="ar";
 let MODE=RAW_REF?"pay":"login",FILTER="active",TOKEN="",PROFILE=null,BOOKINGS=[],BANKS=[],SET={},QP=null,QPPH="",QP_ID="",toastT;
 
-/* ---------- Sécurité : Rate Limit, Auto-Lock & Magic Bytes ---------- */
 let failCount=0,lockUntil=0,idleTimer=null;
 const checkLock=()=>Math.max(0,Math.ceil((lockUntil-Date.now())/1000));
 const recordFail=()=>{failCount++;if(failCount>=5)lockUntil=Date.now()+Math.min(120,failCount*10)*1000};
-function clearToken(){
-  TOKEN="";try{sessionStorage.removeItem(SESSION_KEY)}catch(_){}
-}
-function setToken(tok){
-  TOKEN=tok||"";try{if(TOKEN)sessionStorage.setItem(SESSION_KEY,TOKEN);else sessionStorage.removeItem(SESSION_KEY)}catch(_){}
-}
+function clearToken(){TOKEN="";try{sessionStorage.removeItem(SESSION_KEY)}catch(_){}}
+function setToken(tok){TOKEN=tok||"";try{if(TOKEN)sessionStorage.setItem(SESSION_KEY,TOKEN);else sessionStorage.removeItem(SESSION_KEY)}catch(_){}}
 function resetIdle(){
   clearTimeout(idleTimer);if(!PROFILE)return;
   idleTimer=setTimeout(()=>{clearToken();PROFILE=null;BOOKINGS=[];$("app").hidden=true;$("outBtn").hidden=true;$("authSec").hidden=false;toast(t("idleOut"))},20*60*1000);
@@ -651,36 +653,35 @@ async function validateFileSecure(file,maxMB=5,allowPdf=true){
   return false;
 }
 
-const t=k=>T[LANG]?.[k]??T.fr[k]??k;
+const t=k=>(T[LANG]&&T[LANG][k]!==undefined)?T[LANG][k]:T.fr[k]??k;
 const toast=m=>{const b=$("toast");b.textContent=m;b.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>b.hidden=true,2800)};
 const digits=v=>String(v||"").replace(/\D/g,"").replace(/^0+/,"");
 const cleanPh=v=>String(v||"").replace(/[\s.-]/g,"").replace(/^\+?216/,"").trim();
 const fmtD=d=>new Date(d).toLocaleDateString(LANG==="ar"?"ar-TN":LANG==="it"?"it-IT":LANG==="en"?"en-GB":"fr-FR",{timeZone:"Africa/Tunis"});
 
-/* ---------- Détection automatique du drapeau et de l'indicatif ---------- */
 function detectCountryFromPhone(raw){
   const d=String(raw||"").replace(/\D/g,"").replace(/^00/,"");
-  for(const [code,flag] of PREFIXES){
-    if(d.startsWith(code) && d.length>code.length)return{code:"+"+code,flag};
+  for(let i=0;i<PREFIXES.length;i++){
+    const code=PREFIXES[i][0],flag=PREFIXES[i][1];
+    if(d.startsWith(code) && d.length>code.length)return{code:"+"+code,flag:flag};
   }
   return{code:"+216",flag:"🇹🇳"};
 }
-function syncAutoPhone(anim=true){
+function syncAutoPhone(anim){
   const det=detectCountryFromPhone($("fPhone").value);
   $("flagIcon").textContent=det.flag;
   $("ccLabel").textContent=det.code;
   if(anim){const b=$("autoFlag");b.classList.remove("pop");void b.offsetWidth;b.classList.add("pop")}
-  $("forgotLink").href=`https://wa.me/${ADMIN_WA}?text=${encodeURIComponent(t("waMsg")($("fUser").value.trim()))}`;
+  $("forgotLink").href="https://wa.me/"+ADMIN_WA+"?text="+encodeURIComponent(t("waMsg")($("fUser").value.trim()));
 }
 $("fPhone").oninput=()=>syncAutoPhone(true);
-$("fUser").oninput=()=>{$("forgotLink").href=`https://wa.me/${ADMIN_WA}?text=${encodeURIComponent(t("waMsg")($("fUser").value.trim()))}`};
+$("fUser").oninput=()=>{$("forgotLink").href="https://wa.me/"+ADMIN_WA+"?text="+encodeURIComponent(t("waMsg")($("fUser").value.trim()))};
 
-/* ---------- Langues (AR / FR / EN / IT) ---------- */
 function applyLang(){
   document.documentElement.lang=LANG;
   document.documentElement.dir=LANG==="ar"?"rtl":"ltr";
   document.querySelectorAll("[data-lang]").forEach(b=>b.classList.toggle("on",b.dataset.lang===LANG));
-  document.querySelectorAll("[data-i]").forEach(e=>e.textContent=t(e.dataset.i));
+  document.querySelectorAll("[data-i]").forEach(e=>{e.textContent=t(e.dataset.i)});
   $("outBtn").textContent=t("out");
   const reg=MODE==="register";
   $("authH").textContent=reg?t("regH"):t("loginH");
@@ -709,7 +710,7 @@ $("fPass").oninput=()=>{
 
 function setMode(m){
   MODE=m;
-  [["tLogin","login"],["tReg","register"],["tPay","pay"]].forEach(([id,k])=>$(id).classList.toggle("on",m===k));
+  [["tLogin","login"],["tReg","register"],["tPay","pay"]].forEach(pair=>$(pair[0]).classList.toggle("on",m===pair[1]));
   $("authCard").hidden=m==="pay";$("payCard").hidden=m!=="pay";
   $("regOnly").hidden=m!=="register";$("forgotBox").hidden=m!=="login";
   $("pwMeter").hidden=m!=="register"||!$("fPass").value;
@@ -720,10 +721,10 @@ function setMode(m){
 $("tLogin").onclick=()=>setMode("login");$("tReg").onclick=()=>setMode("register");$("tPay").onclick=()=>setMode("pay");
 if(RAW_REF)$("qpId").value=shortRef(RAW_REF);
 
-/* ---------- Authentification SQL Directe (register_client / login_client) ---------- */
 const slug=v=>String(v||"").trim().toLowerCase();
 
 $("authBtn").onclick=async()=>{
+  if(!sb){$("authErr").textContent=t("eGeneric");return}
   $("authErr").textContent=$("authOk").textContent="";
   const wait=checkLock();if(wait>0){$("authErr").textContent=t("eLock")(wait);return}
   const pw=$("fPass").value,id=slug($("fUser").value);
@@ -738,13 +739,10 @@ $("authBtn").onclick=async()=>{
       if(d.length<6){$("authErr").textContent=t("ePhone");return}
       const det=detectCountryFromPhone($("fPhone").value);
       const {data,error}=await sb.rpc("register_client",{
-        p_full_name:name,
-        p_username:id,
-        p_phone:det.code+d,
-        p_password:pw
+        p_full_name:name,p_username:id,p_phone:det.code+d,p_password:pw
       });
-      if(error||!data?.ok){
-        const code=data?.error||"";
+      if(error||!data||!data.ok){
+        const code=(data&&data.error)||"";
         $("authErr").textContent=code==="username_taken"?t("eTaken"):code==="invalid_username"?t("eUser"):code==="invalid_phone"?t("ePhone"):t("eGeneric");
         return;
       }
@@ -752,7 +750,7 @@ $("authBtn").onclick=async()=>{
     }else{
       if(!id){recordFail();$("authErr").textContent=t("eCreds");return}
       const {data,error}=await sb.rpc("login_client",{p_identifier:id,p_password:pw});
-      if(error||!data?.ok){recordFail();$("authErr").textContent=t("eCreds");return}
+      if(error||!data||!data.ok){recordFail();$("authErr").textContent=t("eCreds");return}
       setToken(data.token);
     }
     failCount=0;lockUntil=0;$("fPass").value="";await loadPortal();
@@ -764,7 +762,6 @@ $("outBtn").onclick=()=>{
   $("app").hidden=true;$("outBtn").hidden=true;$("authSec").hidden=false;
 };
 
-/* ---------- Paiement & Voucher Rapide ---------- */
 function ribRows(list,cls){
   return list.length?list.map(a=>`<div class="row" style="padding:8px 0;border-top:1px solid #ECEEE9"><div><b>${esc(a.bank)}</b> · <span class="sub">${esc(a.holder)}</span><br><span class="rib">${esc(a.rib)}</span></div><button type="button" class="dark sm" data-${cls}="${esc(a.rib)}">${t("copy")}</button></div>`).join(""):`<p class="sub">${t("ribE")}</p>`;
 }
@@ -776,6 +773,7 @@ function bindCopy(root,cls){
 }
 
 $("qpBtn").onclick=async()=>{
+  if(!sb){$("qpErr").textContent=t("eGeneric");return}
   $("qpErr").textContent="";
   const wait=checkLock();if(wait>0){$("qpErr").textContent=t("eLock")(wait);return}
   const refIn=$("qpId").value.trim().replace(/^#/,""),ph=cleanPh($("qpPh").value);
@@ -793,11 +791,13 @@ function renderQp(){
   $("qpBanks").innerHTML=ribRows(Array.isArray(QP.accounts)?QP.accounts:[],"qc");bindCopy($("qpBanks"),"qc");
 }
 $("qpBSave").onclick=async()=>{
+  if(!sb)return;
   $("qpBErr").textContent=$("qpBOk").textContent="";
   const {data,error}=await sb.rpc("set_billing",{p_booking:QP_ID,p_phone:QPPH,p_name:$("qpBName").value.trim(),p_address:$("qpBAddr").value.trim(),p_tax:$("qpBTax").value.trim()});
   if(error||!data||!data.ok)$("qpBErr").textContent=t("billErr");else{$("qpBOk").textContent=t("billOk");toast(t("saved"))}
 };
 $("qpSend").onclick=async()=>{
+  if(!sb)return;
   $("qpUpErr").textContent=$("qpUpOk").textContent="";
   const f=$("qpFile").files[0];
   if(!(await validateFileSecure(f,5,true))){$("qpUpErr").textContent=t("badFile");return}
@@ -810,28 +810,29 @@ $("qpSend").onclick=async()=>{
   if(ok){$("qpUpOk").textContent=t("sentOk");$("qpFile").value="";toast(t("saved"))}else $("qpUpErr").textContent=t("proofErr");
 };
 
-/* ---------- تحميل لوحة الحريف عبر get_client_portal ---------- */
 async function loadPortal(){
+  if(!sb){$("authSec").hidden=false;$("app").hidden=true;return}
   if(!TOKEN){try{TOKEN=sessionStorage.getItem(SESSION_KEY)||""}catch(_){}}
   if(!TOKEN){$("authSec").hidden=false;$("app").hidden=true;return}
-  const {data,error}=await sb.rpc("get_client_portal",{p_token:TOKEN});
-  if(error||!data?.ok){clearToken();$("authSec").hidden=false;$("app").hidden=true;return}
-  PROFILE=data.profile||{};
-  BOOKINGS=Array.isArray(data.bookings)?data.bookings:[];
-  BANKS=Array.isArray(data.banks)?data.banks:[];
-  SET=data.settings||{};
-  $("authSec").hidden=true;$("app").hidden=false;$("outBtn").hidden=false;
-  resetIdle();renderHero();renderSteps();renderBookings();
+  try{
+    const {data,error}=await sb.rpc("get_client_portal",{p_token:TOKEN});
+    if(error||!data||!data.ok){clearToken();$("authSec").hidden=false;$("app").hidden=true;return}
+    PROFILE=data.profile||{};
+    BOOKINGS=Array.isArray(data.bookings)?data.bookings:[];
+    BANKS=Array.isArray(data.banks)?data.banks:[];
+    SET=data.settings||{};
+    $("authSec").hidden=true;$("app").hidden=false;$("outBtn").hidden=false;
+    resetIdle();renderHero();renderSteps();renderBookings();
+  }catch(_){$("authSec").hidden=false;$("app").hidden=true}
 }
 
-/* ---------- Identité & Étapes (save_client_profile) ---------- */
 const STEPS=[
   {k:"s1",req:true,done:p=>!!(p.full_name&&p.phone)},
   {k:"s2",req:true,done:p=>!!(p.id_doc_number&&p.id_doc_path)},
   {k:"s3",req:true,done:p=>!!(p.license_number&&p.license_date&&p.birth_date&&p.license_path)},
   {k:"s4",req:false,done:p=>!!p.flight_ticket}
 ];
-async function signed(path,secs=300){if(!path)return null;const {data}=await sb.storage.from(DOCS).createSignedUrl(path,secs);return data?.signedUrl||null}
+async function signed(path,secs=300){if(!path||!sb)return null;const {data}=await sb.storage.from(DOCS).createSignedUrl(path,secs);return data?.signedUrl||null}
 async function renderHero(){
   const n=(PROFILE.full_name||PROFILE.username||"").trim();
   $("hello").textContent=`${t("hello")}${n?" "+n:""}`;
@@ -840,7 +841,7 @@ async function renderHero(){
 }
 async function patchProfile(patch){
   const {data,error}=await sb.rpc("save_client_profile",{p_token:TOKEN,p_patch:patch});
-  if(error||!data?.ok)throw new Error(t("eGeneric"));
+  if(error||!data||!data.ok)throw new Error(t("eGeneric"));
   Object.assign(PROFILE,patch);
 }
 $("avatarFile").onchange=async()=>{
@@ -900,9 +901,101 @@ async function saveStep(btn){
   }catch(e){er.textContent=e.message;btn.disabled=false;btn.textContent=old}
 }
 
-/* ---------- الحجوزات ووصل الحجز (Bon + QR) ---------- */
 document.querySelectorAll(".pills [data-f]").forEach(b=>b.onclick=()=>{FILTER=b.dataset.f;document.querySelectorAll(".pills [data-f]").forEach(x=>x.classList.toggle("on",x===b));renderBookings()});
 const isHist=b=>["completed","cancelled","expired"].includes(b.status)||(b.end_at&&new Date(b.end_at)<Date.now()&&b.status!=="pending");
 function fin(b,pays){
   const q=b.quote||{},days=+q.days||1,sub=+q.subtotal_htva||0,vr=+(SET.vat_rate??q.vat_rate??19);
-  const levy=+(q.levy_total??((+(SET.levy_per_day??q.levy_per_day??0))*
+  const levy=+(q.levy_total??((+(SET.levy_per_day??q.levy_per_day??0))*days));
+  const stamp=SET.fiscal_stamp_enabled==="true"?+(SET.fiscal_stamp_amount??1):+(q.fiscal_stamp??0);
+  const vat=+(q.vat_amount??sub*vr/100),ttc=+(q.total_ttc??sub+vat+levy+stamp);
+  const dp=+(SET.deposit_pct??q.deposit_pct??30),dep=+(q.deposit??ttc*dp/100);
+  const rec=pays.filter(p=>p.status==="verified").reduce((a,p)=>a+(+p.amount||0),0);
+  return{days,sub,vr,vat,levy,stamp,ttc,dp,dep,rec,rem:Math.max(0,ttc-rec)};
+}
+function renderBookings(){
+  const list=BOOKINGS.filter(b=>FILTER==="all"||(FILTER==="history")===isHist(b));
+  if(!list.length){$("bkList").innerHTML=`<p class="sub" style="padding:10px 0">${t("empty")}</p>`;return}
+  $("bkList").innerHTML=list.map(b=>{
+    const ref=shortRef(b.id);
+    const pays=[...(b.payments||[])].sort((a,z)=>new Date(z.created_at)-new Date(a.created_at));
+    const proof=pays.find(p=>p.proof_path),dead=["cancelled","expired"].includes(b.status);
+    const verified=!dead&&pays.some(p=>p.status==="verified"),pend=!dead&&!verified&&pays.some(p=>p.status==="proof_uploaded");
+    const hist=isHist(b),f=fin(b,pays),live=!hist&&["pending","confirmed"].includes(b.status);
+    const conf=b.status==="confirmed"||verified;
+    const c=["d",conf||proof?"d":b.status==="pending"?"c":"d",verified?"d":proof?"c":"",conf?"d":""];
+    const st=(hist&&b.status==="confirmed")?t("status").completed:(t("status")[b.status]||b.status);
+    return `<article class="bk">
+      <div class="row">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><div class="car">${esc(b.vehicles?.name||"")}</div><span class="ref-tag">#${esc(ref)}</span></div>
+        <span class="badge ${esc(b.status)}">${esc(st)}</span>
+      </div>
+      <div class="sub" style="margin-top:4px">${t("from")} <b>${fmtD(b.start_at)}</b> ${t("to")} <b>${fmtD(b.end_at)}</b> · ${f.days} ${t("days")}${b.pickup_text?" · "+esc(b.pickup_text):""}</div>
+      <div class="flow">${["st1","st2","st3","st4"].map((k,i)=>`<span class="${c[i]}">${t(k)}</span>`).join("")}</div>
+      ${verified?`<div class="ok">✓ ${t("paid")}</div>`:""}
+      ${pend?`<div class="warn" style="margin:6px 0">⏳ ${t("wait")}</div>`:""}
+      ${f.sub>0?`<div class="box"><b>${t("finT")}</b><table><tr><td>${t("htva")}</td><td>${money(f.sub)}</td></tr><tr><td>${t("vat")} (${f.vr} %)</td><td>${money(f.vat)}</td></tr>${f.levy>0?`<tr><td>${t("levy")}</td><td>${money(f.levy)}</td></tr>`:""}${f.stamp>0?`<tr><td>${t("stamp")}</td><td>${money(f.stamp)}</td></tr>`:""}<tr><td><b>${t("ttc")}</b></td><td><b>${money(f.ttc)}</b></td></tr><tr><td>${t("rec")}</td><td>${money(f.rec)}</td></tr><tr><td>${t("rem")}</td><td>${money(f.rem)}</td></tr></table><div class="dep"><span>${t("dep")} (${f.dp} %)</span><span style="font-family:var(--font-mono);color:var(--red-dark)">${money(f.dep)}</span></div></div>`:""}
+      ${live?`<div class="rib-panel"><b>${t("ribT")}</b>${ribRows(BANKS,"bc")}</div>
+      <details class="box" data-bill="${esc(b.id)}"><summary style="cursor:pointer;font-weight:700;font-size:13.5px">${t("billOptS")}</summary>
+        <input class="bn" maxlength="120" placeholder="${esc(t("lName"))}" value="${esc(b.billing_name||PROFILE.full_name||"")}" style="margin-top:8px">
+        <input class="ba" maxlength="200" placeholder="${esc(t("lAddr"))}" value="${esc(b.billing_address||PROFILE.billing_address||"")}" style="margin-top:8px">
+        <input class="bt" maxlength="50" placeholder="${esc(t("lTax"))}" value="${esc(b.billing_tax_id||PROFILE.tax_id||"")}" style="margin-top:8px">
+        <div class="acts"><button type="button" class="dark sm bs">${t("billSave")}</button></div><div class="err be"></div><div class="ok bo"></div>
+      </details>
+      ${!verified?`<div class="box" data-proof="${esc(b.id)}"><b>${t("proofL")}</b><div class="warn">${t("warn")}</div><div class="acts" style="margin-top:4px"><input type="file" class="pf" accept="image/jpeg,image/png,image/webp,application/pdf" style="max-width:270px"><input type="number" class="pa" min="0" max="99999" step="0.5" placeholder="${esc(t("amtPh"))}" style="max-width:200px"><button type="button" class="green sm ps">${t("send")}</button></div><div class="err pe"></div><div class="ok po"></div></div>`:""}`:""}
+      <div class="acts">
+        ${conf?`<button type="button" class="green sm" data-bon="${esc(b.id)}">${t("bonBtn")}</button>`:""}
+        ${proof?`<button type="button" class="dark sm" data-vp="${esc(proof.proof_path)}">${t("viewProof")}</button>`:""}
+        ${(b.invoices||[]).map(i=>`<a class="btn dark sm" target="_blank" rel="noopener noreferrer" href="invoice.html?id=${esc(i.id)}">${i.kind==="credit_note"?t("cn"):t("inv")} ${esc(i.number)}</a>`).join("")}
+        ${live?`<button type="button" class="ghost sm" data-cx="${esc(b.id)}">${t("cancel")}</button>`:""}
+      </div>
+    </article>`;
+  }).join("");
+
+  const R=$("bkList");bindCopy(R,"bc");
+  R.querySelectorAll("[data-bill]").forEach(bx=>bx.querySelector(".bs").onclick=async()=>{
+    bx.querySelector(".be").textContent=bx.querySelector(".bo").textContent="";
+    const {data,error}=await sb.rpc("set_billing",{p_booking:bx.dataset.bill,p_phone:cleanPh(PROFILE.phone),p_name:bx.querySelector(".bn").value.trim(),p_address:bx.querySelector(".ba").value.trim(),p_tax:bx.querySelector(".bt").value.trim()});
+    if(error||!data||!data.ok)bx.querySelector(".be").textContent=t("billErr");else{bx.querySelector(".bo").textContent=t("billOk");toast(t("saved"))}
+  });
+  R.querySelectorAll("[data-proof]").forEach(bx=>bx.querySelector(".ps").onclick=async()=>{
+    const er=bx.querySelector(".pe"),ok=bx.querySelector(".po"),btn=bx.querySelector(".ps"),f=bx.querySelector(".pf").files[0];
+    er.textContent=ok.textContent="";
+    if(!(await validateFileSecure(f,5,true))){er.textContent=t("badFile");return}
+    btn.disabled=true;const old=btn.textContent;btn.textContent=t("sending");
+    const path=`${PROFILE.id}/${bx.dataset.proof}_${Date.now()}.${EXT[f.type]}`;
+    const up=await sb.storage.from(PROOFS).upload(path,f,{contentType:f.type,upsert:false});
+    let e2=up.error;
+    if(!e2){const r=await sb.from("payments").insert({booking_id:bx.dataset.proof,user_id:PROFILE.id,amount:Math.max(0,+bx.querySelector(".pa").value||0),proof_path:path,status:"proof_uploaded"});e2=r.error}
+    btn.disabled=false;btn.textContent=old;
+    if(e2){er.textContent=t("proofErr");return}
+    toast(t("sentOk"));await loadPortal();
+  });
+  R.querySelectorAll("[data-vp]").forEach(b=>b.onclick=async()=>{const {data,error}=await sb.storage.from(PROOFS).createSignedUrl(b.dataset.vp,300);if(error||!data?.signedUrl)return toast(t("proofErr"));window.open(data.signedUrl,"_blank","noopener,noreferrer")});
+  R.querySelectorAll("[data-bon]").forEach(b=>b.onclick=()=>openBon(b.dataset.bon));
+  R.querySelectorAll("[data-cx]").forEach(b=>b.onclick=async()=>{
+    const reason=prompt(t("cancelQ"));if(reason===null)return;
+    const {data,error}=await sb.rpc("request_cancellation",{p_booking:b.dataset.cx,p_reason:reason.slice(0,300)});
+    if(error||!data||!data.ok)toast(t("cancelErr"));else{toast(t("cancelOk"));await loadPortal()}
+  });
+}
+
+function openBon(id){
+  const b=BOOKINGS.find(x=>String(x.id)===String(id));if(!b)return;
+  const ref=shortRef(b.id);
+  $("bonRef").textContent=`${t("ref")}: #${ref}`;
+  $("bonRows").innerHTML=`<div><b>${t("cl")}:</b> ${esc(b.guest_name||PROFILE.full_name||"")}</div><div><b>${t("ph")}:</b> <span dir="ltr">${esc(b.guest_phone||PROFILE.phone||"")}</span></div><div><b>${t("car")}:</b> ${esc(b.vehicles?.name||"")}</div><div><b>${t("per")}:</b> ${t("from")} ${fmtD(b.start_at)} ${t("to")} ${fmtD(b.end_at)} (${esc(b.quote?.days??"")} ${t("days")})</div>${b.pickup_text?`<div><b>${t("pick")}:</b> ${esc(b.pickup_text)}</div>`:""}`;
+  if(window.QRCode && typeof window.QRCode.toCanvas==="function"){
+    try{window.QRCode.toCanvas($("qr"),JSON.stringify({brand:"AMINE_RENT_A_CAR",ref,status:b.status}),{width:152,margin:1},function(){})}catch(_){}
+  }
+  $("bon").hidden=false;
+}
+$("bonX").onclick=()=>$("bon").hidden=true;
+$("bon").onclick=e=>{if(e.target===$("bon"))$("bon").hidden=true};
+$("bonPrint").onclick=()=>window.print();
+
+setMode(MODE);
+loadPortal();
+})();
+</script>
+</body>
+</html>
