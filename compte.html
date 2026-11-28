@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://*.supabase.co; connect-src 'self' https://*.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self';">
 <title>Amine Rent A Car | Espace Client</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,7 +22,9 @@
   --r-sm:8px;--r-md:12px;--r-lg:16px;--r-xl:22px;
   --shadow-sm:0 4px 14px rgba(18,22,27,.05);--shadow-md:0 10px 28px rgba(18,22,27,.08);--shadow-lg:0 22px 54px rgba(18,22,27,.18);
   --ease-out:cubic-bezier(.22,1,.36,1);--ease-spring:cubic-bezier(.34,1.4,.64,1);
-  --font-display:"Barlow Condensed","Cairo",sans-serif;--font-body:"Cairo",system-ui,-apple-system,sans-serif;--font-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  --font-display:"Barlow Condensed","Cairo",system-ui,-apple-system,sans-serif;
+  --font-body:"Cairo",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--font-body);font-size:15px;line-height:1.58;background:var(--paper);color:var(--text);min-height:100vh;overflow-x:hidden;position:relative;-webkit-font-smoothing:antialiased}
@@ -676,11 +677,6 @@ const digits=v=>String(v||"").replace(/\D/g,"").replace(/^0+/,"");
 const cleanPh=v=>String(v||"").replace(/[\s.-]/g,"").replace(/^\+?216/,"").trim();
 const fmtD=d=>new Date(d).toLocaleDateString(LANG==="ar"?"ar-TN":LANG==="it"?"it-IT":LANG==="en"?"en-GB":"fr-FR",{timeZone:"Africa/Tunis"});
 
-const PREFIXES = [
-  ["216","🇹🇳"],["33","🇫🇷"],["39","🇮🇹"],["49","🇩🇪"],["44","🇬🇧"],["34","🇪🇸"],
-  ["32","🇧🇪"],["41","🇨🇭"],["1","🇺🇸"],["971","🇦🇪"],["966","🇸🇦"],["974","🇶🇦"],
-  ["213","🇩🇿"],["212","🇲🇦"],["218","🇱🇾"]
-];
 function detectCountryFromPhone(raw){
   const d=String(raw||"").replace(/\D/g,"").replace(/^00/,"");
   for(let i=0;i<PREFIXES.length;i++){
