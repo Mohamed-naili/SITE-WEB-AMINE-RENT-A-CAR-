@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Bon de Réservation | Amine Rent A Car</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{--ink:#1C1F22;--red:#D62828;--green:#1B9952;--gold:#C9A227;--line:#d9dad6;--muted:#63676b}
+*{box-sizing:border-box}
+body{margin:0;background:#e9eae7;font:14px/1.5 system-ui,'Segoe UI',Arial,sans-serif;color:#202225}
+.bar{background:var(--ink);color:#fff;padding:10px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.bar button,.bar a{background:var(--red);color:#fff;border:0;border-radius:8px;padding:9px 14px;font:700 14px inherit;cursor:pointer;text-decoration:none}
+.bar button.okbtn{background:var(--green)}
+.notice{background:#fff6dc;border-bottom:3px solid var(--gold);padding:10px 16px;font-size:13px;color:#3d3110}
+.page{width:210mm;min-height:297mm;margin:16px auto;background:#fff;padding:16mm;box-shadow:0 2px 12px rgba(0,0,0,.15);position:relative}
+.top{display:flex;justify-content:space-between;gap:20px;border-bottom:3px solid var(--red);padding-bottom:12px;align-items:flex-start}
+h1{margin:0;font-size:25px;letter-spacing:.02em;color:var(--ink)}
+.small{font-size:12px;color:var(--muted)}
+.badge{display:inline-block;margin-top:6px;padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:700;background:#fff3cd;color:#6e5207;border:1px solid #e5c35a}
+.badge.ok{background:#e7f7ee;color:#126c38;border-color:#8ed4ad}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:18px 0}
+.box{border:1px solid var(--line);border-radius:8px;padding:12px;background:#fcfdfb}
+.box h4{margin:0 0 6px;font-size:12px;text-transform:uppercase;color:var(--muted)}
+table{width:100%;border-collapse:collapse;margin-top:8px}
+th{background:#F1F2F0;text-align:left;font-size:12px}
+th,td{padding:9px 8px;border-bottom:1px solid var(--line)}
+.bon-note{margin-top:16px;border:1.5px dashed var(--line);border-radius:8px;padding:12px;background:#fafbf9;font-size:13px}
+.foot{margin-top:26px;border-top:1px solid var(--line);padding-top:10px}
+.qrw{text-align:center;font-size:10.5px;color:var(--muted)}
+#qr{width:96px;height:96px}
+@media print{
+  body{background:#fff}
+  .bar,.notice{display:none!important}
+  .page{margin:0;box-shadow:none;width:auto;min-height:auto;padding:0}
+  @page{size:A4;margin:14mm}
+}
+</style>
+</head>
+<body>
+<div class="bar">
+  <button id="pr" class="okbtn" type="button">Imprimer / Enregistrer en PDF</button>
+  <a href="compte.html">← Retour compte</a>
+  <span id="st"></span>
+</div>
+<div class="notice" id="notice">
+  ⏳ Ce bon de réservation accompagne votre dossier : l'administration confirme la réservation, puis le RIB et les modalités de règlement ou de retrait en agence s'appliquent.
+</div>
+<div id="out"></div>
+
+<script>
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+}[c]));
+
+$("pr").onclick = () => window.print();
+function $(id){ return document.getElementById(id); }
+
+(function(){
+  const p = new URLSearchParams(location.search);
+  const ref = (p.get("ref") || "BON-TN").toUpperCase();
+  const client = p.get("client") || "Client";
+  const phone = p.get("phone") || "";
+  const car = p.get("car") || "Véhicule à confirmer";
+  const period = p.get("period") || "Selon demande";
+  const pickup = p.get("pickup") || "Agence la plus proche en Tunisie";
+  const status = p.get("status") || "pending";
+  const issued = new Date().toLocaleDateString("fr-FR", { timeZone: "Africa/Tunis" });
+  const isConfirmed = status === "confirmed";
+
+  $("st").textContent = "Réf #" + ref;
+
+  $("out").innerHTML = `
+    <div class="page">
+      <div class="top">
+        <div>
+          <h1>BON DE RÉSERVATION</h1>
+          <div><b>Réf : #${esc(ref)}</b></div>
+          <div class="small">Émis le ${esc(issued)} · Document de réservation (hors facture)</div>
+          <span class="badge ${isConfirmed ? "ok" : ""}">${isConfirmed ? "Confirmé par l'administration" : "En attente de validation admin"}</span>
+        </div>
+        <div class="qrw">
+          <div id="qr" style="margin:0 auto"></div>
+          <div style="margin-top:4px">Scanner à l'agence</div>
+        </div>
+        <div style="text-align:right">
+          <b>AMINE RENT A CAR</b>
+          <div class="small">Tunisie · Service Réservation<br>WhatsApp : +216 22 192 727</div>
+        </div>
+      </div>
+
+      <div class="two">
+        <div class="box">
+          <h4>Client</h4>
+          <b>${esc(client)}</b>
+          <div class="small">${phone ? "Tél : " + esc(phone) : ""}</div>
+        </div>
+        <div class="box">
+          <h4>Agence & Retrait</h4>
+          <b>${esc(pickup)}</b>
+          <div class="small">Présentation de ce bon + pièce d'identité / permis</div>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Véhicule demandé</th>
+            <th>Période souhaitée</th>
+            <th>État du dossier</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>${esc(car)}</b></td>
+            <td>${esc(period)}</td>
+            <td>${isConfirmed ? "Validé" : "En cours d'étude"}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="bon-note">
+        <b>Comment ça se passe après validation de l'administration ?</b><br>
+        Dès que l'administration accepte votre demande, les coordonnées bancaires (<b>RIB</b>) et les options de versement ou de retrait rapide du véhicule à l'agence la plus proche en Tunisie vous sont proposées. Ce bon sert de justificatif de réservation et ne remplace pas une facture.
+      </div>
+
+      <div class="foot small">
+        Amine Rent A Car — Bon de réservation officiel · Conservez ce document (impression ou PDF) pour votre suivi en agence.
+      </div>
+    </div>
+  `;
+
+  const qrPayload = JSON.stringify({
+    doc: "BON_DE_RESERVATION",
+    brand: "AMINE_RENT_A_CAR",
+    ref,
+    status
+  });
+
+  if (window.QRCode) {
+    try {
+      new QRCode($("qr"), {
+        text: qrPayload,
+        width: 96,
+        height: 96,
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    } catch (_) {
+      $("qr").textContent = "QR";
+    }
+  }
+})();
+</script>
+</body>
+</html>
