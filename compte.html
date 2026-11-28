@@ -32,7 +32,6 @@ body::before{content:"";position:fixed;inset:-20%;z-index:-1;pointer-events:none
 :focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 h1,h2,h3{font-family:var(--font-display);font-weight:800;line-height:1.15;color:var(--ink)}
 
-/* Header & 4-Lang Switcher */
 header{position:sticky;top:0;z-index:40;background:linear-gradient(95deg,var(--ink) 0%,var(--ink-2) 65%,#27191C 100%);color:#fff;padding:12px 18px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;border-bottom:3px solid var(--red);box-shadow:0 6px 22px rgba(0,0,0,.16)}
 .brand-link{text-decoration:none;color:#fff;font-family:var(--font-display);font-size:23px;font-weight:800;letter-spacing:.03em}
 .hx{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
@@ -40,7 +39,6 @@ header{position:sticky;top:0;z-index:40;background:linear-gradient(95deg,var(--i
 .lang-bar button{background:transparent;color:#d8dde3;padding:4px 9px;font-size:12px;border-radius:7px;box-shadow:none!important}
 .lang-bar button.on{background:var(--gold);color:var(--ink);font-weight:800}
 
-/* Layout & Cards */
 main{max-width:920px;margin:0 auto;padding:22px 16px 96px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px;margin-bottom:18px;box-shadow:var(--shadow-sm);animation:cardEnter .38s var(--ease-out) both}
 .card:hover{border-color:var(--line-strong);box-shadow:var(--shadow-md)}
@@ -48,14 +46,12 @@ main{max-width:920px;margin:0 auto;padding:22px 16px 96px}
 .row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 .sub{color:var(--muted);font-size:13.5px}
 
-/* Visual Guide Strip */
 .visual-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
 .v-tile{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-md);padding:12px;display:flex;align-items:center;gap:10px}
 .v-icon{width:42px;height:42px;border-radius:10px;background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .v-tile b{display:block;font-size:13px;color:var(--ink)}
 .v-tile span{display:block;font-size:11.5px;color:var(--muted);line-height:1.35}
 
-/* Inputs & Auto-Flag Phone Input */
 label{display:block;font-size:13px;font-weight:700;color:var(--ink-2);margin:12px 0 5px}
 input,select{width:100%;padding:10px 13px;border:1.5px solid var(--line);border-radius:var(--r-sm);font-family:var(--font-body);font-size:14.5px;color:var(--text);background:#fff;transition:border-color .2s,box-shadow .2s}
 input:focus,select:focus{border-color:var(--ink);box-shadow:0 0 0 3px rgba(201,162,39,.22);outline:none}
@@ -71,7 +67,6 @@ input[type=file]{padding:7px 10px;background:var(--surface-2);cursor:pointer}
 .pw-meter{height:5px;border-radius:99px;background:#e2e5df;margin-top:6px;overflow:hidden}
 .pw-meter i{display:block;height:100%;width:0;transition:width .3s,background .3s}
 
-/* Buttons & Tabs */
 button,.btn{border:0;border-radius:var(--r-sm);padding:10px 16px;font-family:var(--font-body);font-size:13.5px;font-weight:700;color:#fff;background:var(--red);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:7px;text-decoration:none;transition:transform .18s var(--ease-spring),background-color .2s,box-shadow .2s}
 button:hover:not(:disabled),.btn:hover{transform:translateY(-1.5px);box-shadow:0 6px 16px rgba(18,22,27,.14)}
 button:active:not(:disabled),.btn:active{transform:scale(.98)}
@@ -87,7 +82,6 @@ button:disabled{opacity:.55;cursor:not-allowed}
 .pills button{background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line);padding:6px 12px;font-size:12.5px}
 .pills button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
 
-/* Alerts & Trust Box */
 .err{color:var(--red);font-weight:700;font-size:13px;margin-top:10px;background:var(--red-soft);padding:8px 12px;border-radius:8px;border-inline-start:3px solid var(--red)}
 .ok{color:var(--green-dark);font-weight:700;font-size:13px;margin-top:10px;background:var(--green-soft);padding:8px 12px;border-radius:8px;border-inline-start:3px solid var(--green)}
 .err:empty,.ok:empty{display:none}
@@ -96,7 +90,6 @@ button:disabled{opacity:.55;cursor:not-allowed}
 .trust-title{font-weight:800;font-size:14px;color:var(--green-dark);display:flex;align-items:center;gap:6px;margin-bottom:3px}
 .trust-copy{font-size:13px;color:#25332B}
 
-/* Hero & Progress */
 .avatar{width:68px;height:68px;border-radius:50%;border:2.5px solid var(--gold);background:linear-gradient(135deg,var(--ink),var(--ink-2));color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:28px;font-weight:800;overflow:hidden;flex-shrink:0}
 .avatar img{width:100%;height:100%;object-fit:cover}
 .vip-tag{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:800;color:var(--green-dark);background:var(--green-soft);padding:2px 10px;border-radius:999px}
@@ -106,7 +99,6 @@ button:disabled{opacity:.55;cursor:not-allowed}
 .dots{display:flex;gap:6px;margin-top:9px}
 .dots b{flex:1;height:5px;border-radius:99px;background:#DFE3DC}.dots b.d{background:var(--green)}.dots b.c{background:var(--gold)}
 
-/* Steps & Bookings */
 .step{border:1.5px solid var(--line);border-radius:var(--r-md);margin-top:11px;background:#fff}
 .step[open]{border-color:var(--ink)}
 .step summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:13px 15px;user-select:none}
@@ -134,16 +126,24 @@ table{width:100%;border-collapse:collapse;font-size:13.5px}td{padding:6px 0;bord
 .rib{font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--red-dark);background:var(--surface-3);padding:4px 9px;border-radius:6px;border:1px solid var(--line);margin-top:4px;display:inline-block;direction:ltr}
 .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
 
-/* Floating WA, Toast & Modal */
+/* Floating WA, Toast & Modals */
 .wa{position:fixed;bottom:18px;inset-inline-start:18px;z-index:45;background:var(--wa);color:#fff;border-radius:999px;padding:10px 16px;font-weight:700;font-size:13px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;box-shadow:0 12px 26px rgba(18,140,126,.34)}
 .toast{position:fixed;bottom:18px;inset-inline-end:18px;z-index:80;background:var(--ink);color:#fff;border-inline-start:4px solid var(--green);border-radius:var(--r-md);padding:11px 16px;font-size:13.5px;font-weight:700;box-shadow:var(--shadow-lg)}
 .modal{position:fixed;inset:0;background:rgba(12,15,19,.68);backdrop-filter:blur(3px);z-index:70;display:flex;align-items:center;justify-content:center;padding:16px}
 .sheet{background:#fff;border-radius:var(--r-xl);max-width:580px;width:100%;max-height:90vh;overflow:auto;padding:22px;box-shadow:var(--shadow-lg)}
+.sheet.a4{max-width:780px}
 .bonb{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;margin-top:16px;font-size:14px}.bonb>div:first-child{display:grid;gap:7px}
 .qr-card{text-align:center;border:1.5px solid var(--line);border-radius:var(--r-md);padding:12px;background:var(--surface-2)}
 
-@media(max-width:680px){.visual-strip,.g2,.bonb{grid-template-columns:1fr}.flow{grid-template-columns:1fr 1fr}.tabs{grid-template-columns:1fr}}
-@media print{header,.wa,.toast,.np{display:none!important}.modal{position:static;background:none;backdrop-filter:none}.sheet{box-shadow:none;padding:0}}
+/* Invoice / Avoir inside Modal */
+.inv-head{display:flex;justify-content:space-between;gap:16px;border-bottom:3px solid var(--red);padding-bottom:12px}
+.inv-two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
+.inv-tbl{width:100%;border-collapse:collapse;margin-top:8px}.inv-tbl th{background:var(--surface-3);text-align:start;font-size:12px;padding:8px;border-bottom:1px solid var(--line)}.inv-tbl td{padding:8px;border-bottom:1px solid var(--line);font-family:inherit;font-weight:400}.inv-tbl td.r,.inv-tbl th.r{text-align:end;white-space:nowrap;font-family:var(--font-mono)}
+.inv-tot{width:65%;margin-inline-start:auto;margin-top:8px}.inv-tot td{border:0;padding:4px 8px}.inv-tot .g td{font-size:16px;font-weight:800;border-top:2px solid var(--ink);padding-top:8px}
+.ph-mark{background:#fff3cd;padding:0 4px;border-radius:3px}
+
+@media(max-width:680px){.visual-strip,.g2,.bonb,.inv-head,.inv-two{grid-template-columns:1fr}.flow{grid-template-columns:1fr 1fr}.tabs{grid-template-columns:1fr}.inv-tot{width:100%}}
+@media print{header,.wa,.toast,.np{display:none!important}.modal{position:static;background:none;backdrop-filter:none;padding:0}.sheet,.sheet.a4{box-shadow:none;max-width:none;max-height:none;padding:0}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -178,7 +178,6 @@ table{width:100%;border-collapse:collapse;font-size:13.5px}td{padding:6px 0;bord
       </div>
       <p class="sub" data-i="authSub"></p>
 
-      <!-- Visual 3-Step Guide -->
       <div class="visual-strip">
         <div class="v-tile">
           <div class="v-icon" aria-hidden="true">
@@ -236,7 +235,6 @@ table{width:100%;border-collapse:collapse;font-size:13.5px}td{padding:6px 0;bord
       <div class="ok" id="authOk" role="status"></div>
     </div>
 
-    <!-- Quick Voucher & Deposit Card -->
     <div class="card" id="payCard" hidden>
       <h2 style="font-size:28px" data-i="payH"></h2>
       <p class="sub" data-i="paySub"></p>
@@ -295,13 +293,11 @@ table{width:100%;border-collapse:collapse;font-size:13.5px}td{padding:6px 0;bord
         </div>
       </div>
 
-      <!-- Tunisia Local Pickup & Voucher Notice -->
       <div class="trust-panel">
         <div class="trust-title"><span>📍</span><span data-i="tunisH"></span></div>
         <p class="trust-copy" data-i="tunisBody"></p>
       </div>
 
-      <!-- Progress & Steps -->
       <div class="prog">
         <div class="row" style="font-weight:800"><span id="progTitle"></span><span id="progPct" style="color:var(--green-dark)"></span></div>
         <div class="bar"><i id="progBar"></i></div>
@@ -311,7 +307,6 @@ table{width:100%;border-collapse:collapse;font-size:13.5px}td{padding:6px 0;bord
       <div id="steps"></div>
     </div>
 
-    <!-- Bookings & Voucher -->
     <div class="card">
       <div class="row">
         <div>
@@ -354,6 +349,18 @@ table{width:100%;border-collapse:collapse;font-size:13.5px}td{padding:6px 0;bord
   </div>
 </div>
 
+<!-- Invoice / Avoir Modal (integrated from Facture template) -->
+<div class="modal" id="invModal" hidden>
+  <div class="sheet a4" role="dialog" aria-modal="true">
+    <div class="acts np" style="margin-top:0;margin-bottom:12px;justify-content:space-between">
+      <button type="button" class="green sm" id="invPrint" data-i="print"></button>
+      <button type="button" class="dark sm" id="invX">✕</button>
+    </div>
+    <div class="warn np" id="invWarn" hidden></div>
+    <div id="invBody"></div>
+  </div>
+</div>
+
 <script>
 (function(){
 "use strict";
@@ -368,6 +375,9 @@ const RAW_REF = new URLSearchParams(location.search).get("b") || "";
 const $ = id => document.getElementById(id);
 const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const money = n => Number(n??0).toFixed(3).replace(/\.?0+$/,"") + " TND";
+const fmtInvMoney = n => Number(n??0).toLocaleString("fr-FR",{minimumFractionDigits:3,maximumFractionDigits:3})+" TND";
+const fmtInvDate = x => x?new Date(x).toLocaleDateString("fr-FR",{timeZone:"Africa/Tunis"}):"";
+const invField = v => v?esc(v):'<span class="ph-mark">[à renseigner]</span>';
 const shortRef = id => String(id||"").replace(/[^a-zA-Z0-9]/g,"").slice(0,8).toUpperCase();
 const EXT = {"image/jpeg":"jpg","image/png":"png","image/webp":"webp","application/pdf":"pdf"};
 
@@ -437,8 +447,7 @@ const T={
     bonH:"وصل الحجز (BON DE RÉSERVATION)",bonQr:"يُمسح في الوكالة عند الاستلام",
     bonKeep:"احتفظ بهذا الوصل (Bon + QR) وتوجّه به إلى أقرب وكالة في تونس لاستلام السيارة.",
     print:"طباعة / PDF",ref:"رقم الحجز",cl:"الحريف",ph:"الهاتف",car:"السيارة",per:"الفترة",pick:"الوكالة / الاستلام",
-    waTxt:"مساعدة واتساب: 22192727",
-    waMsg:u=>`سلام، نسيت كلمة السر متاع حسابي${u?` (${u})`:""}.`
+    waTxt:"مساعدة واتساب: 22192727",waMsg:u=>`سلام، نسيت كلمة السر متاع حسابي${u?` (${u})`:""}.`
   },
   fr:{
     out:"Déconnexion",secBadge:"Comptes SQL directs (Username / Tél)",
@@ -621,7 +630,7 @@ const T={
     bonH:"VOUCHER DI PRENOTAZIONE",bonQr:"Da scansionare in agenzia",
     bonKeep:"Conserva questo Voucher (QR) e recati nell'agenzia più vicina in Tunisia per ritirare l'auto.",
     print:"Stampa / PDF",ref:"N° Prenotazione",cl:"Cliente",ph:"Telefono",car:"Veicolo",per:"Periodo",pick:"Agenzia / Ritiro",
-    waTxt:"Assistenza WhatsApp: 22192727",waMsg:u=>`Ciao, ho dimenticato la password${u?` (${u})`:""}.`
+    waTxt:"WhatsApp: 22192727",waMsg:u=>`Ciao, ho dimenticato la password${u?` (${u})`:""}.`
   }
 };
 
@@ -945,7 +954,7 @@ function renderBookings(){
       <div class="acts">
         ${conf?`<button type="button" class="green sm" data-bon="${esc(b.id)}">${t("bonBtn")}</button>`:""}
         ${proof?`<button type="button" class="dark sm" data-vp="${esc(proof.proof_path)}">${t("viewProof")}</button>`:""}
-        ${(b.invoices||[]).map(i=>`<a class="btn dark sm" target="_blank" rel="noopener noreferrer" href="invoice.html?id=${esc(i.id)}">${i.kind==="credit_note"?t("cn"):t("inv")} ${esc(i.number)}</a>`).join("")}
+        ${(b.invoices||[]).map(i=>`<button type="button" class="dark sm" data-inv="${esc(i.id)}">${i.kind==="credit_note"?t("cn"):t("inv")} ${esc(i.number)}</button>`).join("")}
         ${live?`<button type="button" class="ghost sm" data-cx="${esc(b.id)}">${t("cancel")}</button>`:""}
       </div>
     </article>`;
@@ -972,6 +981,7 @@ function renderBookings(){
   });
   R.querySelectorAll("[data-vp]").forEach(b=>b.onclick=async()=>{const {data,error}=await sb.storage.from(PROOFS).createSignedUrl(b.dataset.vp,300);if(error||!data?.signedUrl)return toast(t("proofErr"));window.open(data.signedUrl,"_blank","noopener,noreferrer")});
   R.querySelectorAll("[data-bon]").forEach(b=>b.onclick=()=>openBon(b.dataset.bon));
+  R.querySelectorAll("[data-inv]").forEach(b=>b.onclick=()=>openInvoiceModal(b.dataset.inv));
   R.querySelectorAll("[data-cx]").forEach(b=>b.onclick=async()=>{
     const reason=prompt(t("cancelQ"));if(reason===null)return;
     const {data,error}=await sb.rpc("request_cancellation",{p_booking:b.dataset.cx,p_reason:reason.slice(0,300)});
@@ -992,6 +1002,60 @@ function openBon(id){
 $("bonX").onclick=()=>$("bon").hidden=true;
 $("bon").onclick=e=>{if(e.target===$("bon"))$("bon").hidden=true};
 $("bonPrint").onclick=()=>window.print();
+
+/* ---------- Facture / Avoir Modal ---------- */
+async function openInvoiceModal(invId){
+  if(!sb)return;
+  $("invWarn").hidden=true;
+  $("invBody").innerHTML=`<p class="sub" style="padding:20px;text-align:center">...</p>`;
+  $("invModal").hidden=false;
+  const {data:inv,error}=await sb.from("invoices").select("*").eq("id",invId||"").maybeSingle();
+  if(error||!inv||!inv.snapshot){
+    $("invBody").innerHTML=`<p class="err">${esc(t("eGeneric"))}</p>`;
+    return;
+  }
+  const s=inv.snapshot,c=s.company||{},cu=s.customer||{},isCN=inv.kind==="credit_note";
+  const ov=isCN?(s.original?.vehicle||{}):(s.vehicle||{});
+  if(!isCN&&s.levy_vat_treatment==="to_confirm"){
+    $("invWarn").hidden=false;
+    $("invWarn").textContent="⚠️ Traitement fiscal de la taxe de location et TVA à faire valider par votre comptable avant usage officiel.";
+  }
+  const lines=isCN
+    ?`<tr><td>Avoir annulant la facture ${esc(s.original_number)}</td><td class="r">${fmtInvMoney(s.total_ttc)}</td></tr>`
+    :`<tr><td>Location ${esc(ov.name)}${ov.plate?" ("+esc(ov.plate)+")":""}<div class="sub">du ${fmtInvDate(s.start_date)} au ${fmtInvDate(s.end_date)} : ${esc(s.days)} jour(s) × ${fmtInvMoney(s.daily_htva)} HTVA</div></td><td class="r">${fmtInvMoney(s.subtotal_htva)}</td></tr>
+      <tr><td>Taxe de location (${fmtInvMoney(s.levy_per_day)} × ${esc(s.days)} jour(s))</td><td class="r">${fmtInvMoney(s.levy_total)}</td></tr>`;
+  const totals=isCN
+    ?`<tr class="g"><td>Total TTC de l'avoir</td><td class="r">${fmtInvMoney(s.total_ttc)}</td></tr>`
+    :`<tr><td>Sous-total HTVA</td><td class="r">${fmtInvMoney(s.subtotal_htva)}</td></tr>
+      <tr><td>TVA (${esc(s.vat_rate)} %)</td><td class="r">${fmtInvMoney(s.vat_amount)}</td></tr>
+      <tr><td>Taxe de location</td><td class="r">${fmtInvMoney(s.levy_total)}</td></tr>
+      ${+s.fiscal_stamp>0?`<tr><td>Timbre fiscal</td><td class="r">${fmtInvMoney(s.fiscal_stamp)}</td></tr>`:""}
+      <tr class="g"><td>Total TTC</td><td class="r">${fmtInvMoney(s.total_ttc)}</td></tr>
+      <tr><td>Acompte versé</td><td class="r">${fmtInvMoney(s.deposit_paid)}</td></tr>
+      <tr><td><b>Reste à payer</b></td><td class="r"><b>${fmtInvMoney(s.balance_due)}</b></td></tr>`;
+
+  $("invBody").innerHTML=`
+    <div class="inv-head">
+      <div><h2>${isCN?"AVOIR":"FACTURE"}</h2><div><b>N° ${esc(inv.number)}</b></div><div class="sub">Émise le ${fmtInvDate(inv.issued_at)}</div></div>
+      <div class="qr-card"><canvas id="invQr" width="96" height="96"></canvas><div class="sub" style="font-size:10px;margin-top:4px">QR Vérification</div></div>
+      <div style="text-align:end"><b>${esc(c.name)}</b><div class="sub">${invField(c.address)}<br>MF : ${invField(c.tax_id)}<br>${esc(c.phone)} ${esc(c.email)}</div></div>
+    </div>
+    <div class="inv-two">
+      <div class="box"><div class="sub" style="font-weight:800">Client</div><b>${esc(cu.name)}</b><div class="sub">${esc(cu.address)}${cu.tax_id?"<br>MF : "+esc(cu.tax_id):""}<br>${esc(cu.phone)}</div></div>
+      <div class="box"><div class="sub" style="font-weight:800">${isCN?"Motif":"Paiement"}</div>${isCN?esc(s.reason):"Mode : "+esc(s.payment_method)}</div>
+    </div>
+    <table class="inv-tbl"><thead><tr><th>Désignation</th><th class="r">Montant</th></tr></thead><tbody>${lines}</tbody></table>
+    <table class="inv-tot">${totals}</table>
+    <div class="sub" style="margin-top:18px">${esc(s.footer)}</div>`;
+
+  const verifyUrl=location.origin+location.pathname.replace(/[^/]*$/,"")+"verify.html?t="+(inv.verify_token||"");
+  if(window.QRCode && typeof window.QRCode.toCanvas==="function"){
+    try{window.QRCode.toCanvas($("invQr"),verifyUrl,{width:96,margin:1},function(){})}catch(_){}
+  }
+}
+$("invX").onclick=()=>$("invModal").hidden=true;
+$("invModal").onclick=e=>{if(e.target===$("invModal"))$("invModal").hidden=true};
+$("invPrint").onclick=()=>window.print();
 
 setMode(MODE);
 loadPortal();
