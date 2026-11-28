@@ -2,10 +2,11 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<title>Amine Rent A Car | فضاء الحريف</title>
+<meta name="theme-color" content="#12161B">
+<title>Amine Rent A Car | Espace Client</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -19,104 +20,142 @@
   --gold:#C9A227;--gold-soft:rgba(201,162,39,.16);
   --wa:#128C7E;
   --line:#D7D9D3;--line-strong:#BFC4BA;--text:#1B1F24;--muted:#5A6068;
-  --r-sm:8px;--r-md:12px;--r-lg:16px;--r-xl:22px;
-  --shadow-sm:0 4px 14px rgba(18,22,27,.05);--shadow-md:0 12px 30px rgba(18,22,27,.09);--shadow-lg:0 24px 60px rgba(18,22,27,.2);
-  --ease-out:cubic-bezier(.22,1,.36,1);--ease-spring:cubic-bezier(.34,1.4,.64,1);
+  --r-sm:10px;--r-md:14px;--r-lg:18px;--r-xl:22px;
+  --shadow-sm:0 4px 14px rgba(18,22,27,.06);--shadow-lg:0 24px 60px rgba(18,22,27,.22);
   --font-display:"Barlow Condensed","Cairo",system-ui,-apple-system,sans-serif;
   --font-body:"Cairo",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
   --font-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  --safe-b:env(safe-area-inset-bottom,0px);
 }
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--font-body);font-size:15px;line-height:1.58;background:var(--paper);color:var(--text);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-body);font-size:15px;line-height:1.58;
+  background:var(--paper);color:var(--text);min-height:100dvh;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;
+  padding-bottom:calc(84px + var(--safe-b));
+}
 [hidden]{display:none!important}
 :focus-visible{outline:3px solid var(--gold);outline-offset:2px}
-h1,h2,h3{font-family:var(--font-display);font-weight:800;line-height:1.15;color:var(--ink)}
+h1,h2,h3{font-family:var(--font-display);font-weight:800;line-height:1.18;color:var(--ink)}
 
-header{position:sticky;top:0;z-index:40;background:linear-gradient(95deg,var(--ink) 0%,var(--ink-2) 65%,#27191C 100%);color:#fff;padding:12px 24px;display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:3px solid var(--red);box-shadow:0 6px 22px rgba(0,0,0,.16)}
-.brand-link{text-decoration:none;color:#fff;font-family:var(--font-display);font-size:24px;font-weight:800;letter-spacing:.03em}
-.hx{display:flex;align-items:center;gap:8px}
-.lang-bar{display:inline-flex;background:rgba(255,255,255,.08);padding:3px;border-radius:9px;gap:2px}
-.lang-bar button{background:transparent;color:#d8dde3;padding:4px 10px;font-size:12px;border-radius:7px;box-shadow:none!important}
+header{
+  position:sticky;top:0;z-index:45;
+  background:linear-gradient(95deg,var(--ink) 0%,var(--ink-2) 65%,#27191C 100%);
+  color:#fff;padding:10px 18px;display:flex;justify-content:space-between;align-items:center;gap:10px;
+  border-bottom:3px solid var(--red);box-shadow:0 4px 16px rgba(0,0,0,.18);
+}
+.brand-link{text-decoration:none;color:#fff;font-family:var(--font-display);font-size:21px;font-weight:800;letter-spacing:.03em;white-space:nowrap}
+.hx{display:flex;align-items:center;gap:6px}
+.lang-bar{display:inline-flex;background:rgba(255,255,255,.1);padding:2px;border-radius:9px;gap:2px}
+.lang-bar button{background:transparent;color:#d8dde3;min-height:36px;min-width:34px;padding:4px 8px;font-size:11.5px;border-radius:7px}
 .lang-bar button.on{background:var(--gold);color:var(--ink);font-weight:800}
 
-main{max-width:1240px;margin:0 auto;padding:24px 20px 96px}
-.pc-grid{display:grid;grid-template-columns:1.25fr .95fr;gap:20px;align-items:start}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px;margin-bottom:18px;box-shadow:var(--shadow-sm)}
-.card:hover{border-color:var(--line-strong)}
-.row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.sub{color:var(--muted);font-size:13.5px}
+main{max-width:1180px;margin:0 auto;padding:16px 14px 28px}
+.layout-grid{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:880px){
+  .layout-grid{grid-template-columns:1.25fr .95fr;align-items:start}
+  main{padding:22px 20px 48px}
+}
 
-.visual-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
-.v-tile{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-md);padding:12px;display:flex;align-items:center;gap:10px}
-.v-tile b{display:block;font-size:13px;color:var(--ink)}
-.v-tile span{display:block;font-size:11.5px;color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:18px;box-shadow:var(--shadow-sm)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.sub{color:var(--muted);font-size:13px}
 
 label{display:block;font-size:13px;font-weight:700;color:var(--ink-2);margin:12px 0 5px}
-input,select{width:100%;padding:10px 13px;border:1.5px solid var(--line);border-radius:var(--r-sm);font-family:var(--font-body);font-size:14.5px;color:var(--text);background:#fff}
+input,select{
+  width:100%;min-height:46px;padding:10px 13px;
+  border:1.5px solid var(--line);border-radius:var(--r-sm);
+  font-family:var(--font-body);font-size:16px;color:var(--text);background:#fff;
+}
 input:focus,select:focus{border-color:var(--ink);box-shadow:0 0 0 3px rgba(201,162,39,.22);outline:none}
-input[type=file]{padding:7px 10px;background:var(--surface-2);cursor:pointer}
+input[type=file]{padding:9px 10px;background:var(--surface-2);font-size:14px}
 
 .phone-auto{position:relative;display:flex;align-items:center}
-.phone-auto input{padding-inline-end:86px;font-family:var(--font-mono)}
-.auto-badge{position:absolute;inset-inline-end:8px;background:var(--surface-3);border:1px solid var(--line);border-radius:8px;padding:4px 9px;display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:800;pointer-events:none}
+.phone-auto input{padding-inline-end:88px;font-family:var(--font-mono)}
+.auto-badge{position:absolute;inset-inline-end:8px;background:var(--surface-3);border:1px solid var(--line);border-radius:8px;padding:5px 9px;display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:800;pointer-events:none}
 
 .pw-wrap{position:relative}
-.pw-eye{position:absolute;top:50%;inset-inline-end:8px;transform:translateY(-50%);background:transparent;color:var(--muted);padding:4px 8px;box-shadow:none!important}
+.pw-eye{position:absolute;top:50%;inset-inline-end:4px;transform:translateY(-50%);background:transparent;color:var(--muted);min-width:44px;min-height:44px;padding:4px}
 .pw-meter{height:5px;border-radius:99px;background:#e2e5df;margin-top:6px;overflow:hidden}
 .pw-meter i{display:block;height:100%;width:0;transition:width .3s}
 
-button,.btn{border:0;border-radius:var(--r-sm);padding:10px 16px;font-family:var(--font-body);font-size:13.5px;font-weight:700;color:#fff;background:var(--red);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:7px;text-decoration:none;transition:transform .16s var(--ease-spring),background-color .2s}
-button:hover:not(:disabled),.btn:hover{transform:translateY(-1px)}
+button,.btn{
+  border:0;border-radius:var(--r-sm);min-height:46px;padding:10px 15px;
+  font-family:var(--font-body);font-size:14px;font-weight:700;color:#fff;
+  background:var(--red);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  text-decoration:none;transition:transform .12s,background-color .2s;
+}
+button:active:not(:disabled),.btn:active{transform:scale(.98)}
 button:disabled{opacity:.55;cursor:not-allowed}
 .dark{background:var(--ink)}.green{background:var(--green)}.ghost{background:var(--surface-2);color:var(--ink);border:1.5px solid var(--line)}
-.sm{padding:6px 12px;font-size:12.5px;border-radius:7px}.full{width:100%;margin-top:16px;padding:12px;font-size:14.5px}
+.sm{min-height:40px;padding:8px 13px;font-size:13px;border-radius:9px}
+.full{width:100%;margin-top:16px;font-size:15px}
 
-.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
-.tabs button{background:var(--surface);color:var(--ink);border:1.5px solid var(--line);padding:11px 10px}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px}
+.tabs button{background:var(--surface);color:var(--ink);border:1.5px solid var(--line);min-height:46px;padding:8px 6px;font-size:13px}
 .tabs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
 
-.pills{display:flex;gap:6px;flex-wrap:wrap}
-.pills button{background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line);padding:6px 12px;font-size:12.5px}
+.pills{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;width:100%;margin-top:8px}
+@media(min-width:560px){.pills{width:auto;margin-top:0}}
+.pills button{background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line);min-height:38px;padding:6px 10px;font-size:12.5px}
 .pills button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
 
-.err{color:var(--red);font-weight:700;font-size:13px;margin-top:10px;background:var(--red-soft);padding:8px 12px;border-radius:8px;border-inline-start:3px solid var(--red)}
-.ok{color:var(--green-dark);font-weight:700;font-size:13px;margin-top:10px;background:var(--green-soft);padding:8px 12px;border-radius:8px;border-inline-start:3px solid var(--green)}
+.visual-strip{display:grid;grid-template-columns:1fr;gap:8px;margin-top:12px}
+@media(min-width:600px){.visual-strip{grid-template-columns:repeat(3,1fr)}}
+.v-tile{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-md);padding:10px 12px}
+.v-tile b{display:block;font-size:13px;color:var(--ink)}
+.v-tile span{display:block;font-size:12px;color:var(--muted)}
+
+.err{color:var(--red);font-weight:700;font-size:13px;margin-top:10px;background:var(--red-soft);padding:10px 12px;border-radius:9px;border-inline-start:3px solid var(--red)}
+.ok{color:var(--green-dark);font-weight:700;font-size:13px;margin-top:10px;background:var(--green-soft);padding:10px 12px;border-radius:9px;border-inline-start:3px solid var(--green)}
 .err:empty,.ok:empty{display:none}
-.warn{background:#FFF7E0;border-inline-start:4px solid var(--gold);padding:10px 12px;border-radius:8px;font-size:13px;color:#3D3110;margin:8px 0}
+.warn{background:#FFF7E0;border-inline-start:4px solid var(--gold);padding:10px 12px;border-radius:9px;font-size:13px;color:#3D3110;margin:8px 0}
 
-.timer-banner{background:linear-gradient(120deg,#151A21,#252E3A);color:#fff;border-radius:14px;padding:14px 16px;margin:10px 0;display:flex;justify-content:space-between;align-items:center;gap:12px;border-inline-start:4px solid var(--gold)}
-.timer-clock{font-family:var(--font-mono);font-size:22px;font-weight:700;color:#FCE49C;background:rgba(255,255,255,.08);padding:6px 12px;border-radius:10px;direction:ltr}
+.timer-banner{
+  background:linear-gradient(120deg,#151A21,#252E3A);color:#fff;border-radius:14px;
+  padding:14px;margin:10px 0;display:flex;flex-direction:column;gap:10px;
+  border-inline-start:4px solid var(--gold);
+}
+@media(min-width:540px){.timer-banner{flex-direction:row;justify-content:space-between;align-items:center}}
+.timer-clock{
+  font-family:var(--font-mono);font-size:24px;font-weight:700;color:#FCE49C;
+  background:rgba(255,255,255,.1);padding:6px 14px;border-radius:10px;direction:ltr;text-align:center;
+}
 
-.avatar{width:64px;height:64px;border-radius:50%;border:2.5px solid var(--gold);background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:26px;font-weight:800;overflow:hidden;flex-shrink:0}
+.avatar{width:58px;height:58px;border-radius:50%;border:2.5px solid var(--gold);background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:24px;font-weight:800;overflow:hidden;flex-shrink:0}
 .avatar img{width:100%;height:100%;object-fit:cover}
-.vip-tag{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:800;color:var(--green-dark);background:var(--green-soft);padding:2px 10px;border-radius:999px}
-.prog{margin-top:14px;padding:13px 15px;border-radius:var(--r-md);background:var(--surface-2);border:1px solid var(--line)}
+.vip-tag{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:800;color:var(--green-dark);background:var(--green-soft);padding:2px 9px;border-radius:999px}
+.prog{margin-top:12px;padding:12px 14px;border-radius:var(--r-md);background:var(--surface-2);border:1px solid var(--line)}
 .bar{height:8px;border-radius:99px;background:#DFE3DC;margin-top:8px;overflow:hidden}
-.bar i{display:block;height:100%;width:0;background:var(--green);border-radius:99px;transition:width .4s var(--ease-out)}
+.bar i{display:block;height:100%;width:0;background:var(--green);border-radius:99px;transition:width .4s}
 .dots{display:flex;gap:6px;margin-top:8px}
 .dots b{flex:1;height:5px;border-radius:99px;background:#DFE3DC}.dots b.d{background:var(--green)}.dots b.c{background:var(--gold)}
 
 .step{border:1.5px solid var(--line);border-radius:var(--r-md);margin-top:10px;background:#fff}
 .step[open]{border-color:var(--ink)}
-.step summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:12px 14px;user-select:none}
+.step summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;min-height:54px;padding:10px 13px;user-select:none}
 .step summary::-webkit-details-marker{display:none}
 .num{width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font:800 15px var(--font-display);flex-shrink:0}
 .step.done .num{background:var(--green)}
 .stt{flex:1;font-weight:800;font-size:14px}.stt small{display:block;font-weight:500;color:var(--muted);font-size:12px}
 .chip{font-size:11px;font-weight:800;padding:3px 9px;border-radius:999px;background:var(--gold-soft);color:#785B0A}
 .step.done .chip{background:var(--green-soft);color:var(--green-dark)}.chip.opt{background:var(--surface-3);color:var(--muted)}
-.sbody{padding:4px 14px 14px;border-top:1px solid var(--line)}.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sbody{padding:4px 13px 14px;border-top:1px solid var(--line)}
+.g2{display:grid;grid-template-columns:1fr;gap:8px}
+@media(min-width:560px){.g2{grid-template-columns:1fr 1fr;gap:10px}}
 
-.bk{border:1px solid var(--line);border-radius:var(--r-md);padding:16px;margin-top:14px;background:var(--surface-2)}
-.car{font-family:var(--font-display);font-size:22px;font-weight:800;color:var(--ink)}
+.bk{border:1px solid var(--line);border-radius:var(--r-md);padding:14px;margin-top:12px;background:var(--surface-2)}
+.car{font-family:var(--font-display);font-size:21px;font-weight:800;color:var(--ink)}
 .ref-tag{font-family:var(--font-mono);font-size:12px;font-weight:700;background:#fff;border:1px solid var(--line);padding:3px 8px;border-radius:6px;direction:ltr}
-.badge{font-size:12px;font-weight:800;padding:4px 11px;border-radius:999px;color:#fff;background:#6F767E}
+.badge{font-size:11.5px;font-weight:800;padding:4px 10px;border-radius:999px;color:#fff;background:#6F767E}
 .badge.pending{background:var(--gold);color:var(--ink)}.badge.confirmed{background:var(--green)}.badge.cancellation_requested{background:#E67E22}
 
-.box{background:#fff;border:1px solid var(--line);border-radius:var(--r-md);padding:12px 14px;margin-top:10px}
-.rib-panel{background:#fff;border:1.5px solid var(--line-strong);border-radius:var(--r-md);padding:12px 14px;margin-top:10px}
-.method-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
-.m-badge{border:1px solid var(--line);background:var(--surface-2);border-radius:8px;padding:7px 9px;font-size:12px;font-weight:800;display:flex;align-items:center;gap:6px;color:var(--ink)}
+.box{background:#fff;border:1px solid var(--line);border-radius:var(--r-md);padding:12px;margin-top:10px}
+.rib-panel{background:#fff;border:1.5px solid var(--line-strong);border-radius:var(--r-md);padding:12px;margin-top:10px}
+.method-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:8px}
+@media(min-width:560px){.method-grid{grid-template-columns:repeat(3,1fr)}}
+.m-badge{border:1px solid var(--line);background:var(--surface-2);border-radius:8px;padding:8px;font-size:12px;font-weight:800;display:flex;align-items:center;gap:6px;color:var(--ink)}
 .m-tag{font-family:var(--font-mono);font-size:10.5px;padding:2px 6px;border-radius:5px;background:var(--ink);color:#fff}
 .m-tag.wu{background:#FFCC00;color:#12161B}
 .m-tag.ria{background:#E35205;color:#fff}
@@ -125,25 +164,42 @@ button:disabled{opacity:.55;cursor:not-allowed}
 .m-tag.flc{background:#1B9952;color:#fff}
 
 table{width:100%;border-collapse:collapse;font-size:13.5px}td{padding:6px 0;border-bottom:1px solid #ECEEE9}td:last-child{text-align:end;font-weight:700;font-family:var(--font-mono)}tr:last-child td{border-bottom:0}
-.dep{background:var(--gold-soft);padding:8px 10px;border-radius:8px;margin-top:8px;display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:14px}
-.rib{font-family:var(--font-mono);font-size:12.5px;font-weight:700;color:var(--red-dark);background:var(--surface-3);padding:4px 8px;border-radius:6px;border:1px solid var(--line);margin-top:4px;display:inline-block;direction:ltr}
+.dep{background:var(--gold-soft);padding:9px 10px;border-radius:8px;margin-top:8px;display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:14px}
+.rib{font-family:var(--font-mono);font-size:12.5px;font-weight:700;color:var(--red-dark);background:var(--surface-3);padding:5px 8px;border-radius:6px;border:1px solid var(--line);margin-top:4px;display:inline-block;direction:ltr;word-break:break-all}
 .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
+.acts > button,.acts > a,.acts > label{flex:1 1 auto}
+@media(min-width:560px){.acts > button,.acts > a,.acts > label{flex:0 0 auto}}
 
-.legal-box{margin-top:16px;padding:14px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line)}
+.legal-box{margin-top:14px;padding:13px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line)}
 .legal-box h3{font-size:18px;margin-bottom:6px}
-.legal-list{padding-inline-start:18px;font-size:13px;color:var(--text);display:grid;gap:5px}
+.legal-list{padding-inline-start:18px;font-size:13px;color:var(--text);display:grid;gap:6px}
 
-.wa{position:fixed;bottom:18px;inset-inline-start:18px;z-index:45;background:var(--wa);color:#fff;border-radius:999px;padding:10px 16px;font-weight:700;font-size:13px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;box-shadow:0 12px 26px rgba(18,140,126,.34)}
-.toast{position:fixed;bottom:18px;inset-inline-end:18px;z-index:80;background:var(--ink);color:#fff;border-inline-start:4px solid var(--green);border-radius:var(--r-md);padding:11px 16px;font-size:13.5px;font-weight:700;box-shadow:var(--shadow-lg)}
-.modal{position:fixed;inset:0;background:rgba(12,15,19,.68);backdrop-filter:blur(3px);z-index:70;display:flex;align-items:center;justify-content:center;padding:16px}
-.sheet{background:#fff;border-radius:var(--r-xl);max-width:640px;width:100%;max-height:90vh;overflow:auto;padding:24px;box-shadow:var(--shadow-lg)}
-.bon-head{display:flex;justify-content:space-between;gap:14px;border-bottom:3px solid var(--red);padding-bottom:12px;align-items:flex-start}
-.bon-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
-.qr-box{text-align:center;border:1.5px solid var(--line);border-radius:10px;padding:10px;background:var(--surface-2)}
+.bottom-nav{
+  position:fixed;bottom:0;inset-inline:0;z-index:50;
+  background:var(--ink);border-top:2px solid var(--red);
+  display:grid;grid-template-columns:repeat(4,1fr);
+  padding:4px 6px calc(4px + var(--safe-b));
+  box-shadow:0 -6px 20px rgba(0,0,0,.22);
+}
+.bottom-nav a{
+  background:transparent;color:#d6dde6;min-height:48px;padding:4px;
+  font-size:11.5px;font-weight:700;border-radius:8px;text-decoration:none;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+}
+.bottom-nav a.wa-btn{color:#7ef2bd}
+@media(min-width:880px){.bottom-nav{display:none}}
 
-@media(max-width:980px){.pc-grid{grid-template-columns:1fr}}
-@media(max-width:680px){.visual-strip,.g2,.bon-grid,.method-grid{grid-template-columns:1fr}.tabs{grid-template-columns:1fr}}
-@media print{header,.wa,.toast,.np{display:none!important}.modal{position:static;background:none;padding:0}.sheet{box-shadow:none;max-width:none;max-height:none;padding:0}}
+.toast{position:fixed;top:66px;inset-inline:14px;z-index:80;background:var(--ink);color:#fff;border-inline-start:4px solid var(--green);border-radius:var(--r-md);padding:12px 15px;font-size:13.5px;font-weight:700;box-shadow:var(--shadow-lg);max-width:460px;margin:0 auto}
+.modal{position:fixed;inset:0;background:rgba(12,15,19,.72);backdrop-filter:blur(3px);z-index:70;display:flex;align-items:flex-end;justify-content:center;padding:0}
+@media(min-width:640px){.modal{align-items:center;padding:16px}}
+.sheet{background:#fff;border-radius:20px 20px 0 0;max-width:640px;width:100%;max-height:92dvh;overflow:auto;padding:18px 16px calc(22px + var(--safe-b));box-shadow:var(--shadow-lg)}
+@media(min-width:640px){.sheet{border-radius:var(--r-xl);padding:22px}}
+.bon-head{display:flex;justify-content:space-between;gap:10px;border-bottom:3px solid var(--red);padding-bottom:12px;align-items:flex-start;flex-wrap:wrap}
+.bon-grid{display:grid;grid-template-columns:1fr;gap:10px;margin:12px 0}
+@media(min-width:560px){.bon-grid{grid-template-columns:1fr 1fr}}
+.qr-box{text-align:center;border:1.5px solid var(--line);border-radius:10px;padding:8px;background:var(--surface-2)}
+
+@media print{header,.bottom-nav,.toast,.np{display:none!important}.modal{position:static;background:none;padding:0}.sheet{box-shadow:none;max-width:none;max-height:none;padding:0}}
 </style>
 </head>
 <body>
@@ -157,40 +213,34 @@ table{width:100%;border-collapse:collapse;font-size:13.5px}td{padding:6px 0;bord
       <button type="button" data-lang="en">EN</button>
       <button type="button" data-lang="it">IT</button>
     </div>
-    <button type="button" class="dark sm" id="outBtn" hidden>خروج</button>
+    <button type="button" class="dark sm" id="outBtn" hidden data-i="logout">خروج</button>
   </div>
 </header>
 
 <main>
   <section id="authSec">
-    <div style="max-width:680px;margin:0 auto">
+    <div style="max-width:640px;margin:0 auto">
       <div class="tabs">
-        <button type="button" class="on" id="tLogin">دخول</button>
-        <button type="button" id="tReg">إنشاء حساب</button>
-        <button type="button" id="tPay">متابعة وصل الحجز</button>
+        <button type="button" class="on" id="tLogin" data-i="tabLogin">دخول</button>
+        <button type="button" id="tReg" data-i="tabReg">حساب جديد</button>
+        <button type="button" id="tPay" data-i="tabPay">وصل الحجز</button>
       </div>
 
       <div class="card" id="authCard">
         <div class="row">
-          <h2 id="authH" style="font-size:28px">فضاء الحريف</h2>
-          <span class="vip-tag">حسابات مباشرة · Username / الهاتف</span>
+          <h2 id="authH" style="font-size:24px">فضاء الحريف</h2>
+          <span class="vip-tag" data-i="authBadge">Username / الهاتف</span>
         </div>
-        <p class="sub">ادخل باسم المستخدم أو رقم الهاتف لاستعراض ملفك، متابعة عدّاد الـ 60 دقيقة، واستخراج وصل الحجز مع رمز QR.</p>
+        <p class="sub" style="margin-top:4px" data-i="authSub">ادخل باسم المستخدم أو رقم الهاتف لمتابعة عدّاد الـ 60 دقيقة واستخراج وصل الحجز مع رمز QR.</p>
 
         <div class="visual-strip">
-          <div class="v-tile">
-            <div><b>1. إرسال الطلب</b><span>عدّاد 60 دقيقة بانتظار الإدارة</span></div>
-          </div>
-          <div class="v-tile">
-            <div><b>2. قبول الإدارة</b><span>إظهار RIB ووسائل الدفع</span></div>
-          </div>
-          <div class="v-tile">
-            <div><b>3. وصل + QR</b><span>استلام السيارة من الوكالة</span></div>
-          </div>
+          <div class="v-tile"><b data-i="step1Title">1. إرسال الطلب</b><span data-i="step1Sub">عدّاد 60 دقيقة بانتظار الإدارة</span></div>
+          <div class="v-tile"><b data-i="step2Title">2. قبول الإدارة</b><span data-i="step2Sub">إظهار RIB ووسائل الدفع</span></div>
+          <div class="v-tile"><b data-i="step3Title">3. وصل + QR</b><span data-i="step3Sub">استلام السيارة من الوكالة</span></div>
         </div>
 
         <div id="regOnly" hidden>
-          <label for="fName">الاسم واللقب</label>
+          <label for="fName" data-i="lblFullName">الاسم واللقب</label>
           <input id="fName" maxlength="90" autocomplete="name">
         </div>
 
@@ -198,24 +248,24 @@ table{width:100%;border-collapse:collapse;font-size:13.5px}td{padding:6px 0;bord
         <input id="fUser" maxlength="40" dir="ltr" autocomplete="username" autocapitalize="none" spellcheck="false">
 
         <div id="phoneBox">
-          <label for="fPhone">رقم الهاتف</label>
+          <label for="fPhone" data-i="lblPhone">رقم الهاتف</label>
           <div class="phone-auto">
             <input id="fPhone" type="tel" inputmode="tel" dir="ltr" autocomplete="tel">
             <span class="auto-badge" id="autoFlag"><span id="flagIcon">🇹🇳</span><span id="ccLabel">+216</span></span>
           </div>
         </div>
 
-        <label for="fPass">كلمة السر (8 أحرف على الأقل)</label>
+        <label for="fPass" data-i="lblPass">كلمة السر (8 أحرف على الأقل)</label>
         <div class="pw-wrap">
           <input id="fPass" type="password" maxlength="128" autocomplete="current-password">
-          <button type="button" class="pw-eye" id="togglePw" aria-label="إظهار كلمة السر">👁️</button>
+          <button type="button" class="pw-eye" id="togglePw" aria-label="Password">👁️</button>
         </div>
         <div class="pw-meter" id="pwMeter" hidden><i id="pwBar"></i></div>
 
         <button type="button" class="full" id="authBtn">دخول</button>
 
         <div id="forgotBox" style="margin-top:12px;font-size:13px">
-          <span>نسيت كلمة السر؟ تواصل مع الإدارة عبر واتساب:</span>
+          <span data-i="forgotTxt">نسيت كلمة السر؟ واتساب الإدارة:</span>
           <a href="https://wa.me/21622192727" id="forgotLink" target="_blank" rel="noopener noreferrer" style="color:var(--wa);font-weight:800">22192727</a>
         </div>
 
@@ -224,15 +274,15 @@ table{width:100%;border-collapse:collapse;font-size:13.5px}td{padding:6px 0;bord
       </div>
 
       <div class="card" id="payCard" hidden>
-        <h2 style="font-size:28px">متابعة وصل الحجز</h2>
-        <p class="sub">أدخل رقم الحجز ورقم الهاتف المستعمل في الطلب للاطلاع على الحالة والبيانات المتاحة.</p>
+        <h2 style="font-size:24px" data-i="qpTitle">متابعة وصل الحجز</h2>
+        <p class="sub" data-i="qpSub">أدخل رقم الحجز ورقم الهاتف المستعمل في الطلب للاطلاع على الحالة والبيانات المتاحة.</p>
 
         <div id="qpGate">
-          <label for="qpId">رقم الحجز</label>
+          <label for="qpId" data-i="lblQpId">رقم الحجز</label>
           <input id="qpId" dir="ltr" maxlength="40" placeholder="Ex: A8F92C1B" style="text-transform:uppercase">
-          <label for="qpPh">رقم الهاتف المستعمل في الحجز</label>
+          <label for="qpPh" data-i="lblQpPh">رقم الهاتف المستعمل في الحجز</label>
           <input id="qpPh" type="tel" inputmode="tel" dir="ltr" maxlength="25">
-          <button type="button" class="green full" id="qpBtn">عرض حالة الحجز</button>
+          <button type="button" class="green full" id="qpBtn" data-i="btnQpCheck">عرض حالة الحجز</button>
           <div class="err" id="qpErr" role="alert"></div>
         </div>
 
@@ -240,13 +290,13 @@ table{width:100%;border-collapse:collapse;font-size:13.5px}td{padding:6px 0;bord
           <div id="qpStatusBox"></div>
           <div class="box"><table id="qpTable"></table></div>
           <div id="qpPaySection" hidden>
-            <div class="rib-panel"><b>بيانات الدفع ووسائل التحويل (بعد القبول)</b><div id="qpBanks"></div></div>
+            <div class="rib-panel"><b data-i="payMethodsTitle">بيانات الدفع ووسائل التحويل (بعد القبول)</b><div id="qpBanks"></div></div>
             <div class="box">
-              <b>إرسال إثبات التحويل (JPG, PNG, WebP أو PDF — 5 م.ب)</b>
-              <div class="warn">صورة التحويل تخضع للتحقق الإداري قبل اعتماد الدفعة.</div>
-              <div class="acts" style="margin-top:4px">
-                <input id="qpFile" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" style="max-width:300px">
-                <button type="button" class="green sm" id="qpSend">إرسال الإثبات</button>
+              <b data-i="proofUploadTitle">إرسال إثبات التحويل (JPG, PNG, WebP أو PDF — 5 م.ب)</b>
+              <div class="warn" data-i="proofWarn">صورة التحويل تخضع للتحقق الإداري قبل اعتماد الدفعة.</div>
+              <div class="acts" style="margin-top:6px">
+                <input id="qpFile" type="file" accept="image/jpeg,image/png,image/webp,application/pdf">
+                <button type="button" class="green sm" id="qpSend" data-i="btnSendProof">إرسال الإثبات</button>
               </div>
               <div class="err" id="qpUpErr" role="alert"></div>
               <div class="ok" id="qpUpOk" role="status"></div>
@@ -258,37 +308,37 @@ table{width:100%;border-collapse:collapse;font-size:13.5px}td{padding:6px 0;bord
   </section>
 
   <section id="app" hidden>
-    <div class="pc-grid">
-      <div>
+    <div class="layout-grid">
+      <div id="secBookings">
         <div class="card">
           <div class="row">
             <div>
-              <h2 style="font-size:26px">حجوزاتي ووصل الحجز</h2>
-              <p class="sub">عدّاد الـ 60 دقيقة يبدأ من وقت إرسال الطلب. بيانات الدفع تظهر فقط بعد قبول الإدارة.</p>
+              <h2 style="font-size:23px" data-i="bkTitle">حجوزاتي ووصل الحجز</h2>
+              <p class="sub" data-i="bkSub">عدّاد الـ 60 دقيقة يبدأ عند إرسال الطلب. بيانات الدفع تظهر بعد قبول الإدارة فقط.</p>
             </div>
             <div class="pills">
-              <button type="button" class="on" data-f="active">الحالية</button>
-              <button type="button" data-f="history">السابقة</button>
-              <button type="button" data-f="all">الكل</button>
+              <button type="button" class="on" data-f="active" data-i="fActive">الحالية</button>
+              <button type="button" data-f="history" data-i="fHistory">السابقة</button>
+              <button type="button" data-f="all" data-i="fAll">الكل</button>
             </div>
           </div>
           <div id="bkList"></div>
         </div>
       </div>
 
-      <div>
+      <div id="secProfile">
         <div class="card">
           <div class="row">
-            <div style="display:flex;align-items:center;gap:12px">
+            <div style="display:flex;align-items:center;gap:10px">
               <div class="avatar" id="avatar">A</div>
               <div>
-                <span class="vip-tag">حريف · AMINE RENT A CAR</span>
-                <h1 id="hello" style="font-size:26px;margin-top:4px">مرحباً</h1>
+                <span class="vip-tag">AMINE RENT A CAR</span>
+                <h1 id="hello" style="font-size:23px;margin-top:3px">مرحباً</h1>
               </div>
             </div>
-            <div class="acts" style="margin-top:0">
-              <label class="btn dark sm" style="margin:0">تغيير الصورة<input type="file" id="avatarFile" accept="image/jpeg,image/png,image/webp" hidden></label>
-              <a class="btn green sm" href="index.html#flotte">+ حجز جديد</a>
+            <div class="acts" style="margin-top:6px;width:100%">
+              <label class="btn dark sm" style="margin:0"><span data-i="btnPhoto">تغيير الصورة</span><input type="file" id="avatarFile" accept="image/jpeg,image/png,image/webp" hidden></label>
+              <a class="btn green sm" href="index.html#flotte" data-i="btnNewBooking">+ حجز جديد</a>
             </div>
           </div>
 
@@ -301,17 +351,10 @@ table{width:100%;border-collapse:collapse;font-size:13.5px}td{padding:6px 0;bord
 
           <div id="steps"></div>
 
-          <div class="legal-box" id="profileLocationAndTerms">
-            <h3>الموقع الجغرافي وشروط الكراء</h3>
-            <p class="sub" style="margin-bottom:8px">
-              <b>الموقع الجغرافي:</b> تونس العاصمة (سيتي الزهور 4 / باردو) وياسمين الحمامات — تسليم واستلام السيارات في الوكالة أو المطار حسب الاتفاق.
-            </p>
-            <ul class="legal-list">
-              <li><b>السن ورخصة السياقة:</b> التزام بالسن القانونية المحددة في العقد مع رخصة سياقة سارية المفعول وبطاقة تعريف أو جواز سفر.</li>
-              <li><b>مراحل الحجز والدفع:</b> يبدأ عدّاد 60 دقيقة عند إرسال الطلب بانتظار رد الإدارة. لا يُحوّل أي مبلغ قبل قبول الطلب، وبعد القبول تظهر بيانات الحساب والوسائل المعتمدة.</li>
-              <li><b>وصل الحجز (QR):</b> يُبرز وصل الحجز مع رمز QR عند استلام المركبة من الوكالة ومطابقة الوثائق الأصلية.</li>
-              <li><b>الصيانة والمخالفات:</b> يُعاد المركب بنفس حالة الاستلام والوقود، وتتحمل مسؤولية المخالفات المرورية أثناء فترة الكراء.</li>
-            </ul>
+          <div class="legal-box" id="secLegal">
+            <h3 data-i="legalTitle">الموقع الجغرافي وشروط الكراء</h3>
+            <p class="sub" id="legalLoc" style="margin-bottom:8px"></p>
+            <ul class="legal-list" id="legalList"></ul>
           </div>
         </div>
       </div>
@@ -319,32 +362,36 @@ table{width:100%;border-collapse:collapse;font-size:13.5px}td{padding:6px 0;bord
   </section>
 </main>
 
-<a class="wa" href="https://wa.me/21622192727" target="_blank" rel="noopener noreferrer">واتساب الإدارة: 22192727</a>
+<nav class="bottom-nav np" aria-label="Navigation">
+  <a href="#secBookings" id="navBk" data-i="navBk">حجوزاتي</a>
+  <a href="#secProfile" id="navPr" data-i="navPr">ملفي</a>
+  <a href="#secLegal" id="navLg" data-i="navLg">الشروط</a>
+  <a class="wa-btn" href="https://wa.me/21622192727" target="_blank" rel="noopener noreferrer" data-i="navWa">واتساب</a>
+</nav>
+
 <div class="toast" id="toast" role="status" hidden></div>
 
 <div class="modal" id="bon" hidden>
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="bonTitle">
     <div class="bon-head">
       <div>
-        <h2 id="bonTitle" style="font-size:26px">BON DE RÉSERVATION · وصل حجز</h2>
+        <h2 id="bonTitle" style="font-size:22px" data-i="bonHeading">BON DE RÉSERVATION · وصل حجز</h2>
         <div class="ref-tag" id="bonRef" style="margin-top:4px"></div>
         <div class="sub" id="bonIssued" style="margin-top:4px"></div>
       </div>
       <div class="qr-box">
         <div id="bonQrCanvas"></div>
-        <div class="sub" style="font-size:11px;margin-top:4px">رمز تحقق QR</div>
+        <div class="sub" style="font-size:11px;margin-top:4px" data-i="bonQrCaption">رمز تحقق QR</div>
       </div>
       <button type="button" class="dark sm np" id="bonX">✕</button>
     </div>
 
     <div id="bonStatusNote" class="warn" style="margin-top:12px"></div>
     <div class="bon-grid" id="bonDetails"></div>
-    <div class="box" style="font-size:13px">
-      <b>ملاحظة الاستلام:</b> هذا الوصل يوثّق طلب الحجز ويُستعمل عند مراجعة الوكالة في تونس مرفقاً بالوثائق القانونية. لا يغني عن الفاتورة الرسمية عند طلبها.
-    </div>
+    <div class="box" style="font-size:13px" id="bonPickupNote"></div>
 
     <div class="acts np" style="justify-content:flex-end">
-      <button type="button" class="green" id="bonPrint">طباعة / حفظ PDF</button>
+      <button type="button" class="green" id="bonPrint" data-i="btnPrint">طباعة / حفظ PDF</button>
     </div>
   </div>
 </div>
@@ -377,9 +424,166 @@ const PREFIXES = [
   ["213","🇩🇿"],["212","🇲🇦"],["218","🇱🇾"]
 ];
 
+const I18N = {
+  ar:{
+    logout:"خروج",tabLogin:"دخول",tabReg:"حساب جديد",tabPay:"وصل الحجز",
+    loginH:"فضاء الحريف",regH:"إنشاء حساب جديد",authBadge:"Username / الهاتف",
+    authSub:"ادخل باسم المستخدم أو رقم الهاتف لمتابعة عدّاد الـ 60 دقيقة واستخراج وصل الحجز مع رمز QR.",
+    step1Title:"1. إرسال الطلب",step1Sub:"عدّاد 60 دقيقة بانتظار الإدارة",
+    step2Title:"2. قبول الإدارة",step2Sub:"إظهار RIB ووسائل الدفع",
+    step3Title:"3. وصل + QR",step3Sub:"استلام السيارة من الوكالة",
+    lblFullName:"الاسم واللقب",lblUserLogin:"اسم المستخدم أو رقم الهاتف",lblUserReg:"اسم المستخدم",
+    lblPhone:"رقم الهاتف",lblPass:"كلمة السر (8 أحرف على الأقل)",btnLogin:"دخول",btnReg:"إنشاء الحساب",
+    forgotTxt:"نسيت كلمة السر؟ واتساب الإدارة:",
+    qpTitle:"متابعة وصل الحجز",qpSub:"أدخل رقم الحجز ورقم الهاتف المستعمل في الطلب للاطلاع على الحالة والبيانات المتاحة.",
+    lblQpId:"رقم الحجز",lblQpPh:"رقم الهاتف المستعمل في الحجز",btnQpCheck:"عرض حالة الحجز",
+    payMethodsTitle:"بيانات الدفع ووسائل التحويل (بعد القبول)",
+    proofUploadTitle:"إرسال إثبات التحويل (JPG, PNG, WebP أو PDF — 5 م.ب)",
+    proofWarn:"صورة التحويل تخضع للتحقق الإداري قبل اعتماد الدفعة.",btnSendProof:"إرسال الإثبات",
+    bkTitle:"حجوزاتي ووصل الحجز",bkSub:"عدّاد الـ 60 دقيقة يبدأ عند إرسال الطلب. بيانات الدفع تظهر بعد قبول الإدارة فقط.",
+    fActive:"الحالية",fHistory:"السابقة",fAll:"الكل",
+    hello:"مرحباً",btnPhoto:"تغيير الصورة",btnNewBooking:"+ حجز جديد",
+    legalTitle:"الموقع الجغرافي وشروط الكراء",
+    legalLoc:"الموقع الجغرافي: تونس العاصمة (سيتي الزهور 4 / باردو) وياسمين الحمامات — تسليم واستلام السيارات في الوكالة أو المطار حسب الاتفاق.",
+    legalItems:[
+      "السن ورخصة السياقة: التزام بالسن القانونية المحددة في العقد مع رخصة سياقة سارية المفعول وبطاقة تعريف أو جواز سفر.",
+      "مراحل الحجز والدفع: يبدأ عدّاد 60 دقيقة عند إرسال الطلب بانتظار رد الإدارة. لا يُحوّل أي مبلغ قبل قبول الطلب، وبعد القبول تظهر بيانات الحساب والوسائل المعتمدة.",
+      "وصل الحجز (QR): يُبرز وصل الحجز مع رمز QR عند استلام المركبة من الوكالة ومطابقة الوثائق الأصلية.",
+      "الصيانة والمخالفات: يُعاد المركب بنفس حالة الاستلام والوقود، وتتحمل مسؤولية المخالفات المرورية أثناء فترة الكراء."
+    ],
+    navBk:"حجوزاتي",navPr:"ملفي",navLg:"الشروط",navWa:"واتساب",
+    bonHeading:"BON DE RÉSERVATION · وصل حجز",bonQrCaption:"رمز تحقق QR",btnPrint:"طباعة / حفظ PDF",
+    bonPickupNote:"ملاحظة الاستلام: هذا الوصل يوثّق طلب الحجز ويُستعمل عند مراجعة الوكالة في تونس مرفقاً بالوثائق القانونية. لا يغني عن الفاتورة الرسمية عند طلبها.",
+    bonPending:"الحجز في انتظار قبول الإدارة — بيانات الدفع تظهر بعد القبول.",
+    bonConfirmed:"الحجز مقبول من الإدارة — يمكنك استكمال الإجراءات واستلام السيارة في الوكالة.",
+    timerTitle:"عدّاد الانتظار (60 دقيقة من إرسال الطلب)",
+    timerDesc:"الطلب قيد مراجعة الإدارة. بيانات الدفع والـ RIB تظهر بعد القبول فقط.",
+    finTitle:"ملخص التكلفة التقديرية",htva:"المجموع دون أداء",vat:"الأداء على القيمة المضافة",
+    ttc:"المجموع التقديري",deposit:"العربون المطلوب",copyRib:"نسخ RIB",copied:"تم النسخ ✓",
+    voucherBtn:"وصل الحجز + QR",viewProofBtn:"عرض الإثبات",cancelBtn:"طلب إلغاء",
+    status:{pending:"في انتظار قبول الإدارة",confirmed:"مقبول — بيانات الدفع متاحة",completed:"مكتمل",cancelled:"ملغى",expired:"منتهي",cancellation_requested:"طلب إلغاء"}
+  },
+  fr:{
+    logout:"Déconnexion",tabLogin:"Connexion",tabReg:"Créer un compte",tabPay:"Bon & Suivi",
+    loginH:"Espace Client",regH:"Créer un compte",authBadge:"Username / Téléphone",
+    authSub:"Connectez-vous avec votre username ou téléphone pour suivre le minuteur de 60 min et imprimer votre Bon QR.",
+    step1Title:"1. Demande envoyée",step1Sub:"Minuteur 60 min en attente admin",
+    step2Title:"2. Validation admin",step2Sub:"RIB et moyens de paiement débloqués",
+    step3Title:"3. Bon + QR",step3Sub:"Retrait en agence en Tunisie",
+    lblFullName:"Nom et prénom",lblUserLogin:"Nom d'utilisateur ou téléphone",lblUserReg:"Nom d'utilisateur",
+    lblPhone:"Numéro de téléphone",lblPass:"Mot de passe (8 caractères min.)",btnLogin:"Se connecter",btnReg:"Créer mon compte",
+    forgotTxt:"Mot de passe oublié ? WhatsApp admin :",
+    qpTitle:"Suivi du Bon de Réservation",qpSub:"Saisissez le numéro de réservation et le téléphone utilisé pour voir l'état du dossier.",
+    lblQpId:"Numéro de réservation",lblQpPh:"Téléphone utilisé",btnQpCheck:"Vérifier la réservation",
+    payMethodsTitle:"Coordonnées et moyens de paiement (après validation)",
+    proofUploadTitle:"Envoyer la preuve de paiement (JPG, PNG, WebP ou PDF — 5 Mo)",
+    proofWarn:"La preuve est vérifiée par l'administration avant validation du règlement.",btnSendProof:"Envoyer la preuve",
+    bkTitle:"Mes réservations & Bon QR",bkSub:"Le minuteur de 60 min démarre à l'envoi. Les moyens de paiement s'affichent après acceptation.",
+    fActive:"En cours",fHistory:"Passées",fAll:"Tout",
+    hello:"Bonjour",btnPhoto:"Photo",btnNewBooking:"+ Nouvelle location",
+    legalTitle:"Localisation & Conditions de location",
+    legalLoc:"Localisation : Tunis (Cité Ezzouhour 4 / Le Bardo) et Yasmine Hammamet — livraison et reprise en agence ou à l'aéroport selon accord.",
+    legalItems:[
+      "Âge et permis : respect de l'âge requis au contrat, permis de conduire valide et CIN ou passeport.",
+      "Étapes et paiement : le minuteur de 60 minutes démarre dès l'envoi de la demande. N'envoyez aucun paiement avant validation ; après acceptation, RIB et moyens de paiement s'affichent.",
+      "Bon de réservation (QR) : présentez votre Bon avec QR code lors du retrait en agence avec vos documents originaux.",
+      "Restitution et infractions : véhicule à restituer dans l'état et le niveau de carburant initiaux ; infractions routières à la charge du locataire."
+    ],
+    navBk:"Réservations",navPr:"Profil",navLg:"Conditions",navWa:"WhatsApp",
+    bonHeading:"BON DE RÉSERVATION",bonQrCaption:"QR de vérification",btnPrint:"Imprimer / PDF",
+    bonPickupNote:"Note de retrait : ce bon justifie votre demande de réservation et se présente à l'agence en Tunisie avec vos pièces justificatives. Il ne remplace pas une facture.",
+    bonPending:"En attente de validation par l'administration — coordonnées de paiement affichées après acceptation.",
+    bonConfirmed:"Réservation acceptée par l'administration — vous pouvez finaliser le règlement et retirer le véhicule.",
+    timerTitle:"Minuteur d'attente (60 min après envoi)",
+    timerDesc:"Demande en cours d'examen. Le RIB et les moyens de paiement apparaissent après acceptation.",
+    finTitle:"Récapitulatif estimatif",htva:"Total HTVA",vat:"TVA",
+    ttc:"Total estimé",deposit:"Acompte requis",copyRib:"Copier RIB",copied:"Copié ✓",
+    voucherBtn:"Bon de réservation + QR",viewProofBtn:"Voir preuve",cancelBtn:"Demander annulation",
+    status:{pending:"En attente validation",confirmed:"Acceptée — Paiement disponible",completed:"Terminée",cancelled:"Annulée",expired:"Expirée",cancellation_requested:"Annulation demandée"}
+  },
+  en:{
+    logout:"Log out",tabLogin:"Log in",tabReg:"Create account",tabPay:"Booking Voucher",
+    loginH:"Client Portal",regH:"Create account",authBadge:"Username / Phone",
+    authSub:"Sign in with username or phone to track the 60-min timer and print your QR Booking Voucher.",
+    step1Title:"1. Request sent",step1Sub:"60-min timer awaiting admin",
+    step2Title:"2. Admin approval",step2Sub:"RIB & payment methods unlocked",
+    step3Title:"3. Voucher + QR",step3Sub:"Pickup at agency in Tunisia",
+    lblFullName:"Full name",lblUserLogin:"Username or phone",lblUserReg:"Username",
+    lblPhone:"Phone number",lblPass:"Password (min 8 chars)",btnLogin:"Log in",btnReg:"Create account",
+    forgotTxt:"Forgot password? Admin WhatsApp:",
+    qpTitle:"Booking Voucher Lookup",qpSub:"Enter booking reference and phone number to check status.",
+    lblQpId:"Booking reference",lblQpPh:"Phone number",btnQpCheck:"Check status",
+    payMethodsTitle:"Payment details & methods (after approval)",
+    proofUploadTitle:"Upload payment proof (JPG, PNG, WebP or PDF — 5 MB)",
+    proofWarn:"Proof is verified by administration before payment is marked confirmed.",btnSendProof:"Send proof",
+    bkTitle:"My bookings & QR Voucher",bkSub:"60-min timer starts on submission. Payment details appear only after admin approval.",
+    fActive:"Active",fHistory:"Past",fAll:"All",
+    hello:"Hello",btnPhoto:"Photo",btnNewBooking:"+ New booking",
+    legalTitle:"Location & Rental Terms",
+    legalLoc:"Location: Tunis (Cité Ezzouhour 4 / Le Bardo) and Yasmine Hammamet — agency or airport handover by arrangement.",
+    legalItems:[
+      "Age and license: valid driver's license, ID or passport, and compliance with minimum rental age.",
+      "Booking & payment flow: a 60-minute timer runs while awaiting review. Do not transfer before approval; RIB and payment options appear once accepted.",
+      "Booking Voucher (QR): present your QR voucher at the agency in Tunisia along with original documents.",
+      "Return & traffic fines: return in initial fuel/condition state; traffic fines remain renter responsibility."
+    ],
+    navBk:"Bookings",navPr:"Profile",navLg:"Terms",navWa:"WhatsApp",
+    bonHeading:"BOOKING VOUCHER",bonQrCaption:"Verification QR",btnPrint:"Print / PDF",
+    bonPickupNote:"Pickup note: this voucher confirms your booking request for agency pickup in Tunisia with required documents. Not a tax invoice.",
+    bonPending:"Awaiting administration approval — payment details appear after acceptance.",
+    bonConfirmed:"Approved by administration — you can proceed with payment and agency pickup.",
+    timerTitle:"Waiting timer (60 min from request)",
+    timerDesc:"Request under admin review. RIB and payment methods show only after approval.",
+    finTitle:"Estimated summary",htva:"Subtotal (HTVA)",vat:"VAT",
+    ttc:"Estimated total",deposit:"Required deposit",copyRib:"Copy RIB",copied:"Copied ✓",
+    voucherBtn:"Booking Voucher + QR",viewProofBtn:"View proof",cancelBtn:"Request cancellation",
+    status:{pending:"Pending approval",confirmed:"Approved — Payment open",completed:"Completed",cancelled:"Cancelled",expired:"Expired",cancellation_requested:"Cancellation requested"}
+  },
+  it:{
+    logout:"Esci",tabLogin:"Accedi",tabReg:"Crea account",tabPay:"Voucher",
+    loginH:"Area Cliente",regH:"Crea account",authBadge:"Username / Telefono",
+    authSub:"Accedi con username o telefono per seguire il timer di 60 min e stampare il Voucher QR.",
+    step1Title:"1. Richiesta inviata",step1Sub:"Timer 60 min in attesa admin",
+    step2Title:"2. Approvazione admin",step2Sub:"RIB e metodi pagamento visibili",
+    step3Title:"3. Voucher + QR",step3Sub:"Ritiro in agenzia in Tunisia",
+    lblFullName:"Nome e cognome",lblUserLogin:"Username o telefono",lblUserReg:"Username",
+    lblPhone:"Numero di telefono",lblPass:"Password (min 8 caratteri)",btnLogin:"Accedi",btnReg:"Crea account",
+    forgotTxt:"Password dimenticata? WhatsApp admin:",
+    qpTitle:"Stato Voucher Prenotazione",qpSub:"Inserisci codice prenotazione e telefono per verificare lo stato.",
+    lblQpId:"Codice prenotazione",lblQpPh:"Telefono",btnQpCheck:"Verifica stato",
+    payMethodsTitle:"Coordinate e metodi di pagamento (dopo approvazione)",
+    proofUploadTitle:"Invia prova pagamento (JPG, PNG, WebP o PDF — 5 MB)",
+    proofWarn:"La prova viene verificata dall'amministrazione prima della conferma.",btnSendProof:"Invia prova",
+    bkTitle:"Le mie prenotazioni e Voucher QR",bkSub:"Il timer di 60 min parte all'invio. I dati di pagamento appaiono dopo l'accettazione.",
+    fActive:"In corso",fHistory:"Passate",fAll:"Tutte",
+    hello:"Ciao",btnPhoto:"Foto",btnNewBooking:"+ Nuova prenotazione",
+    legalTitle:"Posizione e Condizioni di noleggio",
+    legalLoc:"Posizione: Tunisi (Cité Ezzouhour 4 / Le Bardo) e Yasmine Hammamet — consegna in agenzia o aeroporto previo accordo.",
+    legalItems:[
+      "Età e patente: patente valida, documento d'identità o passaporto e rispetto dell'età minima richiesta.",
+      "Fasi e pagamento: il timer di 60 minuti parte all'invio della richiesta. Non inviare pagamenti prima dell'approvazione; dopo l'accettazione appaiono RIB e metodi.",
+      "Voucher (QR): presenta il Voucher con QR code in agenzia in Tunisia insieme ai documenti originali.",
+      "Riconsegna e multe: restituzione nelle stesse condizioni e carburante; multe a carico del cliente."
+    ],
+    navBk:"Prenotazioni",navPr:"Profilo",navLg:"Condizioni",navWa:"WhatsApp",
+    bonHeading:"VOUCHER DI PRENOTAZIONE",bonQrCaption:"QR verifica",btnPrint:"Stampa / PDF",
+    bonPickupNote:"Nota ritiro: questo voucher attesta la richiesta di prenotazione per il ritiro in agenzia in Tunisia con documenti originali. Non sostituisce la fattura.",
+    bonPending:"In attesa di approvazione admin — dati di pagamento visibili dopo accettazione.",
+    bonConfirmed:"Approvata dall'amministrazione — puoi procedere con pagamento e ritiro.",
+    timerTitle:"Timer attesa (60 min dall'invio)",
+    timerDesc:"Richiesta in revisione. RIB e metodi di pagamento appaiono dopo accettazione.",
+    finTitle:"Riepilogo stimato",htva:"Imponibile (HTVA)",vat:"IVA",
+    ttc:"Totale stimato",deposit:"Acconto richiesto",copyRib:"Copia RIB",copied:"Copiato ✓",
+    voucherBtn:"Voucher + QR",viewProofBtn:"Vedi prova",cancelBtn:"Richiedi annullamento",
+    status:{pending:"In attesa approvazione",confirmed:"Approvata — Pagamento aperto",completed:"Completata",cancelled:"Annullata",expired:"Scaduta",cancellation_requested:"Annullamento richiesto"}
+  }
+};
+
 let LANG = "ar";
 try { LANG = localStorage.getItem("lang") || "ar"; } catch (_) {}
-if (!["ar","fr","en","it"].includes(LANG)) LANG = "ar";
+if (!I18N[LANG]) LANG = "ar";
+
+const tr = k => (I18N[LANG] && I18N[LANG][k] !== undefined) ? I18N[LANG][k] : I18N.fr[k] ?? k;
 
 let MODE = RAW_REF ? "pay" : "login";
 let FILTER = "active";
@@ -389,9 +593,7 @@ let BOOKINGS = [];
 let BANKS = [];
 let SET = {};
 let QP = null, QPPH = "", QP_ID = "";
-let toastT = null;
-let timerInterval = null;
-let pollInterval = null;
+let toastT = null, timerInterval = null, pollInterval = null;
 
 function toast(msg){
   const el = $("toast");
@@ -403,7 +605,11 @@ function toast(msg){
 
 const digits = v => String(v || "").replace(/\D/g, "").replace(/^0+/, "");
 const cleanPh = v => String(v || "").replace(/[\s.-]/g, "").replace(/^\+?216/, "").trim();
-const fmtD = d => d ? new Date(d).toLocaleDateString("ar-TN", { timeZone: "Africa/Tunis" }) : "—";
+const fmtD = d => {
+  if (!d) return "—";
+  const loc = LANG === "fr" ? "fr-FR" : LANG === "it" ? "it-IT" : LANG === "en" ? "en-GB" : "ar-TN";
+  return new Date(d).toLocaleDateString(loc, { timeZone: "Africa/Tunis" });
+};
 
 function detectCountryFromPhone(raw){
   const d = String(raw || "").replace(/\D/g, "").replace(/^00/, "");
@@ -419,20 +625,31 @@ function syncAutoPhone(){
   $("flagIcon").textContent = det.flag;
   $("ccLabel").textContent = det.code;
   const u = $("fUser").value.trim();
-  $("forgotLink").href = "https://wa.me/" + ADMIN_WA + "?text=" + encodeURIComponent("سلام، نسيت كلمة السر" + (u ? " (" + u + ")" : ""));
+  $("forgotLink").href = "https://wa.me/" + ADMIN_WA + "?text=" + encodeURIComponent("Bonjour / سلام" + (u ? " (" + u + ")" : ""));
 }
 $("fPhone").oninput = syncAutoPhone;
 $("fUser").oninput = syncAutoPhone;
 
-function applyLangDir(){
+function applyAllTranslations(){
   document.documentElement.lang = LANG;
   document.documentElement.dir = LANG === "ar" ? "rtl" : "ltr";
   document.querySelectorAll("[data-lang]").forEach(b => b.classList.toggle("on", b.dataset.lang === LANG));
+  document.querySelectorAll("[data-i]").forEach(el => {
+    const val = tr(el.dataset.i);
+    if (typeof val === "string") el.textContent = val;
+  });
+  $("authH").textContent = MODE === "register" ? tr("regH") : tr("loginH");
+  $("lUser").textContent = MODE === "register" ? tr("lblUserReg") : tr("lblUserLogin");
+  $("authBtn").textContent = MODE === "register" ? tr("btnReg") : tr("btnLogin");
+  $("legalList").innerHTML = (tr("legalItems") || []).map(item => `<li>${esc(item)}</li>`).join("");
+  if (PROFILE) { renderHero(); renderSteps(); renderBookings(); }
+  if (QP) renderQp();
 }
+
 document.querySelectorAll("[data-lang]").forEach(b => b.onclick = () => {
   LANG = b.dataset.lang;
   try { localStorage.setItem("lang", LANG); } catch (_) {}
-  applyLangDir();
+  applyAllTranslations();
 });
 
 $("togglePw").onclick = () => {
@@ -458,10 +675,8 @@ function setMode(m){
   $("payCard").hidden = m !== "pay";
   $("regOnly").hidden = m !== "register";
   $("forgotBox").hidden = m !== "login";
-  $("authH").textContent = m === "register" ? "إنشاء حساب جديد" : "فضاء الحريف";
-  $("lUser").textContent = m === "register" ? "اسم المستخدم" : "اسم المستخدم أو رقم الهاتف";
-  $("authBtn").textContent = m === "register" ? "إنشاء الحساب" : "دخول";
   $("authErr").textContent = $("authOk").textContent = "";
+  applyAllTranslations();
 }
 $("tLogin").onclick = () => setMode("login");
 $("tReg").onclick = () => setMode("register");
@@ -490,77 +705,58 @@ function setToken(tok){
 }
 
 $("authBtn").onclick = async () => {
-  if (!sb) { $("authErr").textContent = "تعذّر الاتصال بالخدمة."; return; }
+  if (!sb) return;
   $("authErr").textContent = $("authOk").textContent = "";
   const id = String($("fUser").value || "").trim().toLowerCase();
   const pw = $("fPass").value;
-  if (pw.length < 8) { $("authErr").textContent = "كلمة السر يجب أن تتكون من 8 أحرف على الأقل."; return; }
-
+  if (pw.length < 8) { $("authErr").textContent = "8+"; return; }
   $("authBtn").disabled = true;
   try {
     if (MODE === "register") {
-      const name = $("fName").value.trim();
-      const d = digits($("fPhone").value);
-      if (name.length < 2) { $("authErr").textContent = "أدخل الاسم واللقب."; return; }
-      if (!/^[a-z0-9_]{3,40}$/.test(id)) { $("authErr").textContent = "اسم المستخدم: 3 أحرف لاتينية أو أرقام أو _ على الأقل."; return; }
-      if (d.length < 6) { $("authErr").textContent = "أدخل رقم هاتف صحيح."; return; }
+      const name = $("fName").value.trim(), d = digits($("fPhone").value);
+      if (name.length < 2 || !/^[a-z0-9_]{3,40}$/.test(id) || d.length < 6) { $("authErr").textContent = "!"; return; }
       const det = detectCountryFromPhone($("fPhone").value);
-      const { data, error } = await sb.rpc("register_client", {
-        p_full_name: name, p_username: id, p_phone: det.code + d, p_password: pw
-      });
-      if (error || !data || !data.ok) {
-        $("authErr").textContent = data?.error === "username_taken" ? "اسم المستخدم مستعمل مسبقاً." : "تعذّر إنشاء الحساب.";
-        return;
-      }
+      const { data, error } = await sb.rpc("register_client", { p_full_name: name, p_username: id, p_phone: det.code + d, p_password: pw });
+      if (error || !data || !data.ok) { $("authErr").textContent = "!"; return; }
       setToken(data.token);
     } else {
-      if (!id) { $("authErr").textContent = "أدخل اسم المستخدم أو رقم الهاتف."; return; }
+      if (!id) { $("authErr").textContent = "!"; return; }
       const { data, error } = await sb.rpc("login_client", { p_identifier: id, p_password: pw });
-      if (error || !data || !data.ok) { $("authErr").textContent = "بيانات الدخول غير صحيحة."; return; }
+      if (error || !data || !data.ok) { $("authErr").textContent = "!"; return; }
       setToken(data.token);
     }
     $("fPass").value = "";
     await loadPortal();
-  } catch (_) {
-    $("authErr").textContent = "حدث خطأ غير متوقع.";
   } finally {
     $("authBtn").disabled = false;
   }
 };
 
 $("outBtn").onclick = () => {
-  clearInterval(timerInterval);
-  clearInterval(pollInterval);
-  setToken("");
-  PROFILE = null;
-  BOOKINGS = [];
-  $("app").hidden = true;
-  $("outBtn").hidden = true;
-  $("authSec").hidden = false;
+  clearInterval(timerInterval); clearInterval(pollInterval);
+  setToken(""); PROFILE = null; BOOKINGS = [];
+  $("app").hidden = true; $("outBtn").hidden = true; $("authSec").hidden = false;
 };
 
 function renderPaymentMethods(banksList){
   const methodsHtml = `
     <div class="method-grid">
-      <div class="m-badge"><span class="m-tag d17">D17</span><span>محفظة D17</span></div>
-      <div class="m-badge"><span class="m-tag flc">FLOUCI</span><span>تطبيق Flouci</span></div>
+      <div class="m-badge"><span class="m-tag d17">D17</span><span>D17</span></div>
+      <div class="m-badge"><span class="m-tag flc">FLOUCI</span><span>Flouci</span></div>
       <div class="m-badge"><span class="m-tag wu">WU</span><span>Western Union</span></div>
       <div class="m-badge"><span class="m-tag ria">RIA</span><span>Ria Money</span></div>
       <div class="m-badge"><span class="m-tag mg">MG</span><span>MoneyGram</span></div>
-      <div class="m-badge"><span class="m-tag">POSTE</span><span>البريد / Mandat</span></div>
+      <div class="m-badge"><span class="m-tag">POSTE</span><span>Mandat / Poste</span></div>
     </div>
   `;
   const ribHtml = Array.isArray(banksList) && banksList.length
     ? banksList.map(a => `
-        <div class="row" style="padding:8px 0;border-top:1px solid #ECEEE9">
-          <div>
-            <b>${esc(a.bank)}</b> · <span class="sub">${esc(a.holder)}</span><br>
-            <span class="rib">${esc(a.rib)}</span>
-          </div>
-          <button type="button" class="dark sm" data-copy-rib="${esc(a.rib)}">نسخ RIB</button>
+        <div class="row" style="padding:10px 0;border-top:1px solid #ECEEE9">
+          <div><b>${esc(a.bank)}</b> · <span class="sub">${esc(a.holder)}</span><br><span class="rib">${esc(a.rib)}</span></div>
+          <button type="button" class="dark sm" data-copy-rib="${esc(a.rib)}">${esc(tr("copyRib"))}</button>
         </div>
       `).join("")
-    : `<p class="sub" style="margin-top:8px">سيتم تزويدك بالحساب البنكي المعتمد عند تأكيد الطلب.</p>`;
+    : "";
   return methodsHtml + ribHtml;
 }
 
@@ -569,8 +765,8 @@ function bindCopyButtons(root){
     btn.onclick = async () => {
       try { await navigator.clipboard.writeText(btn.dataset.copyRib); } catch (_) {}
       const prev = btn.textContent;
-      btn.textContent = "تم النسخ ✓";
-      toast("تم نسخ رقم RIB");
+      btn.textContent = tr("copied");
+      toast(tr("copied"));
       setTimeout(() => { btn.textContent = prev; }, 1400);
     };
   });
@@ -579,53 +775,42 @@ function bindCopyButtons(root){
 function computeRemaining60Min(createdAtIso){
   const startMs = createdAtIso ? new Date(createdAtIso).getTime() : Date.now();
   const safeStart = Number.isFinite(startMs) ? startMs : Date.now();
-  const elapsedSec = Math.floor((Date.now() - safeStart) / 1000);
-  return Math.max(0, 3600 - elapsedSec);
+  return Math.max(0, 3600 - Math.floor((Date.now() - safeStart) / 1000));
 }
 
 function formatMMSS(sec){
-  const m = String(Math.floor(sec / 60)).padStart(2, "0");
-  const s = String(sec % 60).padStart(2, "0");
-  return `${m}:${s}`;
+  return `${String(Math.floor(sec / 60)).padStart(2, "0")}:${String(sec % 60).padStart(2, "0")}`;
 }
 
 function updateLiveTimers(){
   document.querySelectorAll("[data-created-at]").forEach(el => {
-    const rem = computeRemaining60Min(el.dataset.createdAt);
-    el.textContent = formatMMSS(rem);
+    el.textContent = formatMMSS(computeRemaining60Min(el.dataset.createdAt));
   });
 }
 
 $("qpBtn").onclick = async () => {
   if (!sb) return;
   $("qpErr").textContent = "";
-  const refIn = $("qpId").value.trim().replace(/^#/, "");
-  const ph = cleanPh($("qpPh").value);
-  if (refIn.length < 4 || ph.length < 6) { $("qpErr").textContent = "رقم الحجز أو الهاتف غير صحيح."; return; }
+  const refIn = $("qpId").value.trim().replace(/^#/, ""), ph = cleanPh($("qpPh").value);
+  if (refIn.length < 4 || ph.length < 6) { $("qpErr").textContent = "!"; return; }
   $("qpBtn").disabled = true;
   const { data, error } = await sb.rpc("get_payment_info", { p_booking: refIn, p_phone: ph });
   $("qpBtn").disabled = false;
-  if (error || !data || !data.ok) { $("qpErr").textContent = "لم يتم العثور على حجز مطابق."; return; }
+  if (error || !data || !data.ok) { $("qpErr").textContent = "!"; return; }
   QP = data; QPPH = ph; QP_ID = data.booking_id || refIn;
-  $("qpGate").hidden = true;
-  $("qpRes").hidden = false;
-  renderQp();
+  $("qpGate").hidden = true; $("qpRes").hidden = false; renderQp();
 };
 
 function renderQp(){
   const isAccepted = QP.status === "confirmed";
   $("qpStatusBox").innerHTML = isAccepted
-    ? `<div class="ok">تم قبول الحجز من الإدارة. يمكنك الاطلاع على بيانات الدفع ورفع الإثبات.</div>`
-    : `<div class="warn">الطلب في انتظار قبول الإدارة. بيانات الدفع والـ RIB لا تظهر إلا بعد القبول.</div>`;
+    ? `<div class="ok">${esc(tr("bonConfirmed"))}</div>`
+    : `<div class="warn">${esc(tr("bonPending"))}</div>`;
   $("qpPaySection").hidden = !isAccepted;
   const rows = [
-    ["رقم المرجع", "#" + shortRef(QP_ID)],
-    ["الحالة", isAccepted ? "مؤكّد" : "في الانتظار"],
-    ["عدد الأيام", QP.days],
-    ["المجموع التقديري", money(QP.total_estimate)],
-    [`العربون (${QP.deposit_pct ?? 20}%)`, money(QP.deposit)],
-    ["المتحقّق منه", money(QP.received)],
-    ["المتبقي", money(QP.remaining)]
+    ["#", "#" + shortRef(QP_ID)],
+    [tr("ttc"), money(QP.total_estimate)],
+    [`${tr("deposit")} (${QP.deposit_pct ?? 20}%)`, money(QP.deposit)]
   ];
   $("qpTable").innerHTML = rows.map(r => `<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join("");
   if (isAccepted) {
@@ -636,9 +821,8 @@ function renderQp(){
 
 $("qpSend").onclick = async () => {
   if (!sb || QP.status !== "confirmed") return;
-  $("qpUpErr").textContent = $("qpUpOk").textContent = "";
   const f = $("qpFile").files[0];
-  if (!(await validateFileSecure(f, 5, true))) { $("qpUpErr").textContent = "ملف غير صالح (JPG, PNG, WebP أو PDF — 5 م.ب كحد أقصى)."; return; }
+  if (!(await validateFileSecure(f, 5, true))) { $("qpUpErr").textContent = "5 MB max"; return; }
   $("qpSend").disabled = true;
   const path = `${QP_ID}/${Date.now()}.${EXT[f.type]}`;
   const up = await sb.storage.from(PROOFS).upload(path, f, { contentType: f.type });
@@ -648,63 +832,44 @@ $("qpSend").onclick = async () => {
     ok = !r.error && r.data && r.data.ok;
   }
   $("qpSend").disabled = false;
-  if (ok) { $("qpUpOk").textContent = "تم إرسال إثبات التحويل بنجاح."; $("qpFile").value = ""; }
-  else { $("qpUpErr").textContent = "تعذّر إرسال الإثبات."; }
+  if (ok) { $("qpUpOk").textContent = "✓"; $("qpFile").value = ""; }
 };
 
 async function loadPortal(){
   if (!sb) return;
   if (!TOKEN) { try { TOKEN = sessionStorage.getItem(SESSION_KEY) || ""; } catch (_) {} }
   if (!TOKEN) { $("authSec").hidden = false; $("app").hidden = true; return; }
-
   const { data, error } = await sb.rpc("get_client_portal", { p_token: TOKEN });
-  if (error || !data || !data.ok) {
-    setToken("");
-    $("authSec").hidden = false;
-    $("app").hidden = true;
-    return;
-  }
+  if (error || !data || !data.ok) { setToken(""); $("authSec").hidden = false; $("app").hidden = true; return; }
   PROFILE = data.profile || {};
   BOOKINGS = Array.isArray(data.bookings) ? data.bookings : [];
   BANKS = Array.isArray(data.banks) ? data.banks : [];
   SET = data.settings || {};
-
-  $("authSec").hidden = true;
-  $("app").hidden = false;
-  $("outBtn").hidden = false;
-
-  renderHero();
-  renderSteps();
-  renderBookings();
+  $("authSec").hidden = true; $("app").hidden = false; $("outBtn").hidden = false;
+  applyAllTranslations();
   updateLiveTimers();
-
   clearInterval(timerInterval);
   timerInterval = setInterval(updateLiveTimers, 1000);
-
   clearInterval(pollInterval);
   pollInterval = setInterval(async () => {
     if (!TOKEN || document.hidden) return;
     try {
       const { data: fresh } = await sb.rpc("get_client_portal", { p_token: TOKEN });
       if (fresh && fresh.ok) {
-        const prevStatuses = BOOKINGS.map(x => `${x.id}:${x.status}`).join("|");
+        const prev = BOOKINGS.map(x => `${x.id}:${x.status}`).join("|");
         BOOKINGS = Array.isArray(fresh.bookings) ? fresh.bookings : BOOKINGS;
         BANKS = Array.isArray(fresh.banks) ? fresh.banks : BANKS;
-        const nextStatuses = BOOKINGS.map(x => `${x.id}:${x.status}`).join("|");
-        if (prevStatuses !== nextStatuses) {
-          renderBookings();
-          toast("تم تحديث حالة الحجز من الإدارة");
-        }
+        if (prev !== BOOKINGS.map(x => `${x.id}:${x.status}`).join("|")) renderBookings();
       }
     } catch (_) {}
   }, 15000);
 }
 
 const STEPS = [
-  { k:"s1", title:"المعلومات الشخصية", sub:"الاسم، الهاتف والعنوان", req:true, done:p => !!(p.full_name && p.phone) },
-  { k:"s2", title:"بطاقة التعريف أو الجواز", sub:"النوع، الرقم وملف الوثيقة", req:true, done:p => !!(p.id_doc_number && p.id_doc_path) },
-  { k:"s3", title:"رخصة السياقة", sub:"الرقم، التواريخ وملف الرخصة", req:true, done:p => !!(p.license_number && p.license_date && p.birth_date && p.license_path) },
-  { k:"s4", title:"تذكرة السفر", sub:"اختياري للقادمين من الخارج", req:false, done:p => !!p.flight_ticket }
+  { k:"s1", req:true, done:p => !!(p.full_name && p.phone) },
+  { k:"s2", req:true, done:p => !!(p.id_doc_number && p.id_doc_path) },
+  { k:"s3", req:true, done:p => !!(p.license_number && p.license_date && p.birth_date && p.license_path) },
+  { k:"s4", req:false, done:p => !!p.flight_ticket }
 ];
 
 async function signedUrl(path, secs = 300){
@@ -715,7 +880,7 @@ async function signedUrl(path, secs = 300){
 
 async function renderHero(){
   const n = (PROFILE.full_name || PROFILE.username || "").trim();
-  $("hello").textContent = "مرحباً" + (n ? " " + n : "");
+  $("hello").textContent = `${tr("hello")}${n ? " " + n : ""}`;
   const av = $("avatar");
   av.textContent = (n || "C").split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join("").toUpperCase() || "C";
   const u = await signedUrl(PROFILE.avatar_path, 3600);
@@ -724,23 +889,20 @@ async function renderHero(){
 
 $("avatarFile").onchange = async () => {
   const f = $("avatarFile").files[0];
-  if (!(await validateFileSecure(f, 3, false))) { toast("صورة غير صالحة (JPG, PNG, WebP — 3 م.ب)."); return; }
+  if (!(await validateFileSecure(f, 3, false))) { toast("3 MB max"); return; }
   const path = `avatars/${PROFILE.id}_${Date.now()}.${EXT[f.type]}`;
   const up = await sb.storage.from(DOCS).upload(path, f, { contentType: f.type });
-  if (up.error) { toast("تعذّر رفع الصورة."); return; }
+  if (up.error) return;
   const { data, error } = await sb.rpc("save_client_profile", { p_token: TOKEN, p_patch: { avatar_path: path } });
-  if (error || !data || !data.ok) { toast("تعذّر حفظ الصورة."); return; }
-  PROFILE.avatar_path = path;
-  renderHero();
-  toast("تم تحديث الصورة");
+  if (!error && data && data.ok) { PROFILE.avatar_path = path; renderHero(); toast("✓"); }
 };
 
 function stepFieldsHtml(k){
   const P = PROFILE, today = new Date().toISOString().slice(0, 10);
-  if (k === "s1") return `<div class="g2"><div><label>الاسم واللقب</label><input data-f="full_name" maxlength="120" value="${esc(P.full_name)}"></div><div><label>رقم الهاتف</label><input data-f="phone" type="tel" dir="ltr" maxlength="32" value="${esc(P.phone)}"></div><div><label>العنوان في تونس</label><input data-f="billing_address" maxlength="200" value="${esc(P.billing_address)}"></div><div><label>المعرّف الجبائي (اختياري)</label><input data-f="tax_id" maxlength="50" value="${esc(P.tax_id)}"></div></div>`;
-  if (k === "s2") return `<div class="g2"><div><label>نوع الوثيقة</label><select data-f="id_doc_type"><option value="cin"${P.id_doc_type !== "passport" ? " selected" : ""}>CIN</option><option value="passport"${P.id_doc_type === "passport" ? " selected" : ""}>Passeport</option></select></div><div><label>رقم الوثيقة</label><input data-f="id_doc_number" dir="ltr" maxlength="45" value="${esc(P.id_doc_number)}"></div></div><label>ملف الهوية</label><input type="file" data-file="id_doc_path" data-dir="id_docs" accept="image/jpeg,image/png,image/webp,application/pdf"><div data-lnk="id_doc_path" style="margin-top:6px"></div>`;
-  if (k === "s3") return `<div class="g2"><div><label>رقم الرخصة</label><input data-f="license_number" dir="ltr" maxlength="40" value="${esc(P.license_number)}"></div><div><label>تاريخ الحصول</label><input data-f="license_date" type="date" dir="ltr" max="${today}" value="${esc(P.license_date)}"></div><div><label>تاريخ الميلاد</label><input data-f="birth_date" type="date" dir="ltr" max="${today}" value="${esc(P.birth_date)}"></div></div><label>ملف الرخصة</label><input type="file" data-file="license_path" data-dir="licenses" accept="image/jpeg,image/png,image/webp,application/pdf"><div data-lnk="license_path" style="margin-top:6px"></div>`;
-  return `<label>رقم التذكرة أو الرحلة</label><input data-f="flight_ticket" dir="ltr" maxlength="70" value="${esc(P.flight_ticket)}">`;
+  if (k === "s1") return `<div class="g2"><div><label>${esc(tr("lblFullName"))}</label><input data-f="full_name" maxlength="120" value="${esc(P.full_name)}"></div><div><label>${esc(tr("lblPhone"))}</label><input data-f="phone" type="tel" dir="ltr" maxlength="32" value="${esc(P.phone)}"></div><div><label>Adresse</label><input data-f="billing_address" maxlength="200" value="${esc(P.billing_address)}"></div><div><label>MF</label><input data-f="tax_id" maxlength="50" value="${esc(P.tax_id)}"></div></div>`;
+  if (k === "s2") return `<div class="g2"><div><label>CIN / Passeport</label><select data-f="id_doc_type"><option value="cin"${P.id_doc_type !== "passport" ? " selected" : ""}>CIN</option><option value="passport"${P.id_doc_type === "passport" ? " selected" : ""}>Passeport</option></select></div><div><label>N°</label><input data-f="id_doc_number" dir="ltr" maxlength="45" value="${esc(P.id_doc_number)}"></div></div><input type="file" data-file="id_doc_path" data-dir="id_docs" accept="image/jpeg,image/png,image/webp,application/pdf" style="margin-top:8px"><div data-lnk="id_doc_path" style="margin-top:6px"></div>`;
+  if (k === "s3") return `<div class="g2"><div><label>Permis N°</label><input data-f="license_number" dir="ltr" maxlength="40" value="${esc(P.license_number)}"></div><div><label>Date</label><input data-f="license_date" type="date" dir="ltr" max="${today}" value="${esc(P.license_date)}"></div><div><label>Naissance</label><input data-f="birth_date" type="date" dir="ltr" max="${today}" value="${esc(P.birth_date)}"></div></div><input type="file" data-file="license_path" data-dir="licenses" accept="image/jpeg,image/png,image/webp,application/pdf" style="margin-top:8px"><div data-lnk="license_path" style="margin-top:6px"></div>`;
+  return `<input data-f="flight_ticket" dir="ltr" maxlength="70" value="${esc(P.flight_ticket)}">`;
 }
 
 async function renderSteps(){
@@ -748,81 +910,43 @@ async function renderSteps(){
   const doneCount = req.filter(s => s.done(PROFILE)).length;
   const pct = Math.round(doneCount / req.length * 100);
   const openIdx = STEPS.findIndex(s => s.req && !s.done(PROFILE));
-
-  $("progTitle").textContent = `ملفك · ${doneCount} من ${req.length} مراحل مكتملة`;
+  $("progTitle").textContent = `${doneCount}/${req.length}`;
   $("progPct").textContent = pct + "%";
   $("progBar").style.width = pct + "%";
   $("dots").innerHTML = req.map((s, i) => `<b class="${s.done(PROFILE) ? "d" : i === openIdx ? "c" : ""}"></b>`).join("");
-  $("progNext").textContent = (req.length - doneCount) ? `متبقي ${req.length - doneCount} مراحل لاستكمال الملف الأساسي.` : "ملفك الأساسي مكتمل.";
-
   $("steps").innerHTML = STEPS.map((s, i) => {
     const d = s.done(PROFILE);
-    const chip = d ? "مكتملة" : s.req ? "مطلوبة" : "اختيارية";
-    return `
-      <details class="step ${d ? "done" : ""}" data-k="${s.k}"${i === openIdx ? " open" : ""}>
-        <summary>
-          <span class="num">${d ? "✓" : i + 1}</span>
-          <span class="stt">${esc(s.title)}<small>${esc(s.sub)}</small></span>
-          <span class="chip ${!d && !s.req ? "opt" : ""}">${esc(chip)}</span>
-        </summary>
-        <div class="sbody">
-          ${stepFieldsHtml(s.k)}
-          <div class="acts"><button type="button" class="green sm" data-save="${s.k}">حفظ المرحلة</button></div>
-          <div class="err"></div>
-          <div class="ok"></div>
-        </div>
-      </details>
-    `;
+    return `<details class="step ${d ? "done" : ""}" data-k="${s.k}"${i === openIdx ? " open" : ""}><summary><span class="num">${d ? "✓" : i + 1}</span><span class="stt">${esc(s.k.toUpperCase())}</span><span class="chip">${d ? "✓" : "•"}</span></summary><div class="sbody">${stepFieldsHtml(s.k)}<div class="acts"><button type="button" class="green sm" data-save="${s.k}">OK</button></div><div class="err"></div><div class="ok"></div></div></details>`;
   }).join("");
-
   document.querySelectorAll("[data-lnk]").forEach(async el => {
     const u = await signedUrl(PROFILE[el.dataset.lnk], 300);
-    if (u) el.innerHTML = `<a href="${esc(u)}" target="_blank" rel="noopener noreferrer" style="color:var(--red);font-weight:700;font-size:13px">عرض الملف المحفوظ</a>`;
+    if (u) el.innerHTML = `<a href="${esc(u)}" target="_blank" rel="noopener noreferrer" style="color:var(--red);font-weight:700;font-size:13px">Fichier</a>`;
   });
   document.querySelectorAll("[data-save]").forEach(btn => { btn.onclick = () => saveStep(btn); });
 }
 
 async function saveStep(btn){
-  const k = btn.dataset.save;
-  const box = btn.closest(".sbody");
-  const er = box.querySelector(".err");
-  const ok = box.querySelector(".ok");
+  const k = btn.dataset.save, box = btn.closest(".sbody"), er = box.querySelector(".err"), ok = box.querySelector(".ok");
   er.textContent = ok.textContent = "";
-
   const payload = {};
-  box.querySelectorAll("[data-f]").forEach(i => {
-    payload[i.dataset.f] = i.type === "date" ? (i.value || null) : i.value.trim();
-  });
-
+  box.querySelectorAll("[data-f]").forEach(i => { payload[i.dataset.f] = i.type === "date" ? (i.value || null) : i.value.trim(); });
   btn.disabled = true;
   try {
     for (const fi of box.querySelectorAll("[data-file]")) {
       const f = fi.files[0];
       if (!f) continue;
-      if (!(await validateFileSecure(f, 5, true))) throw new Error("ملف غير صالح (JPG, PNG, WebP أو PDF — 5 م.ب).");
+      if (!(await validateFileSecure(f, 5, true))) throw new Error("5 MB max");
       const path = `${fi.dataset.dir}/${PROFILE.id}_${Date.now()}.${EXT[f.type]}`;
       const up = await sb.storage.from(DOCS).upload(path, f, { contentType: f.type });
-      if (up.error) throw new Error("تعذّر رفع الملف.");
+      if (up.error) throw new Error("Upload error");
       payload[fi.dataset.file] = path;
     }
-
-    const m = { ...PROFILE, ...payload };
-    if (k === "s1" && !(m.full_name && m.phone)) throw new Error("الاسم والهاتف مطلوبان.");
-    if (k === "s2" && !(m.id_doc_number && m.id_doc_path)) throw new Error("رقم الهوية وملفها مطلوبان.");
-    if (k === "s3" && !(m.license_number && m.license_date && m.birth_date && m.license_path)) throw new Error("رقم الرخصة وتواريخها وملفها مطلوبون.");
-
     const { data, error } = await sb.rpc("save_client_profile", { p_token: TOKEN, p_patch: payload });
-    if (error || !data || !data.ok) throw new Error("تعذّر حفظ البيانات.");
+    if (error || !data || !data.ok) throw new Error("Save error");
     Object.assign(PROFILE, payload);
-    ok.textContent = "تم الحفظ ✓";
-    toast("تم حفظ المرحلة");
-    await renderSteps();
-    renderHero();
-  } catch (e) {
-    er.textContent = e.message;
-  } finally {
-    btn.disabled = false;
-  }
+    ok.textContent = "✓";
+    await renderSteps(); renderHero();
+  } catch (e) { er.textContent = e.message; } finally { btn.disabled = false; }
 }
 
 document.querySelectorAll(".pills [data-f]").forEach(b => {
@@ -836,64 +960,47 @@ document.querySelectorAll(".pills [data-f]").forEach(b => {
 const isHist = b => ["completed","cancelled","expired"].includes(b.status) || (b.end_at && new Date(b.end_at) < Date.now() && b.status !== "pending");
 
 function fin(b, pays){
-  const q = b.quote || {};
-  const days = +q.days || 1;
-  const sub = +q.subtotal_htva || 0;
+  const q = b.quote || {}, days = +q.days || 1, sub = +q.subtotal_htva || 0;
   const vr = +(SET.vat_rate ?? q.vat_rate ?? 19);
-  const levy = +(q.levy_total ?? ((+(SET.levy_per_day ?? q.levy_per_day ?? 0)) * days));
-  const stamp = SET.fiscal_stamp_enabled === "true" ? +(SET.fiscal_stamp_amount ?? 1) : +(q.fiscal_stamp ?? 0);
   const vat = +(q.vat_amount ?? sub * vr / 100);
-  const ttc = +(q.total_ttc ?? sub + vat + levy + stamp);
+  const ttc = +(q.total_ttc ?? sub + vat);
   const dp = +(SET.deposit_pct ?? q.deposit_pct ?? 20);
   const dep = +(q.deposit ?? ttc * dp / 100);
   const rec = pays.filter(p => p.status === "verified").reduce((a, p) => a + (+p.amount || 0), 0);
-  return { days, sub, vr, vat, levy, stamp, ttc, dp, dep, rec, rem: Math.max(0, ttc - rec) };
+  return { days, sub, vr, vat, ttc, dp, dep, rec };
 }
 
 function renderBookings(){
   const list = BOOKINGS.filter(b => FILTER === "all" || (FILTER === "history") === isHist(b));
-  if (!list.length) { $("bkList").innerHTML = `<p class="sub" style="padding:12px 0">لا توجد حجوزات في هذا القسم.</p>`; return; }
+  if (!list.length) { $("bkList").innerHTML = `<p class="sub" style="padding:12px 0">—</p>`; return; }
 
+  const stMap = tr("status") || {};
   $("bkList").innerHTML = list.map(b => {
     const ref = shortRef(b.id);
     const pays = [...(b.payments || [])].sort((a, z) => new Date(z.created_at) - new Date(a.created_at));
     const proof = pays.find(p => p.proof_path);
-    const dead = ["cancelled","expired"].includes(b.status);
-    const verified = !dead && pays.some(p => p.status === "verified");
-    const hist = isHist(b);
-    const f = fin(b, pays);
-
-    const isPendingApproval = !hist && b.status === "pending";
-    const isAcceptedForPayment = !hist && (b.status === "confirmed" || verified);
-
-    const statusLabel = {
-      pending: "في انتظار قبول الإدارة",
-      confirmed: "مقبول — بيانات الدفع متاحة",
-      completed: "مكتمل",
-      cancelled: "ملغى",
-      expired: "منتهي",
-      cancellation_requested: "طلب إلغاء"
-    }[b.status] || b.status;
+    const verified = !["cancelled","expired"].includes(b.status) && pays.some(p => p.status === "verified");
+    const hist = isHist(b), f = fin(b, pays);
+    const isPending = !hist && b.status === "pending";
+    const isAccepted = !hist && (b.status === "confirmed" || verified);
+    const stLabel = stMap[b.status] || b.status;
 
     return `
       <article class="bk">
         <div class="row">
-          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-            <div class="car">${esc(b.vehicles?.name || "سيارة")}</div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <div class="car">${esc(b.vehicles?.name || "—")}</div>
             <span class="ref-tag">#${esc(ref)}</span>
           </div>
-          <span class="badge ${esc(b.status)}">${esc(statusLabel)}</span>
+          <span class="badge ${esc(b.status)}">${esc(stLabel)}</span>
         </div>
+        <div class="sub" style="margin-top:5px">${fmtD(b.start_at)} → ${fmtD(b.end_at)} · ${f.days}j${b.pickup_text ? " · " + esc(b.pickup_text) : ""}</div>
 
-        <div class="sub" style="margin-top:5px">
-          من <b>${fmtD(b.start_at)}</b> إلى <b>${fmtD(b.end_at)}</b> · ${f.days} أيام${b.pickup_text ? " · " + esc(b.pickup_text) : ""}
-        </div>
-
-        ${isPendingApproval ? `
+        ${isPending ? `
           <div class="timer-banner">
             <div>
-              <div style="font-size:12.5px;color:#FCE49C;font-weight:700">عدّاد الانتظار (60 دقيقة من إرسال الطلب)</div>
-              <div style="font-size:13px;color:#dce2ea;margin-top:2px">الطلب قيد مراجعة الإدارة. لن تظهر بيانات الدفع أو الـ RIB قبل قبول الطلب.</div>
+              <div style="font-size:12.5px;color:#FCE49C;font-weight:700">${esc(tr("timerTitle"))}</div>
+              <div style="font-size:12.5px;color:#dce2ea;margin-top:2px">${esc(tr("timerDesc"))}</div>
             </div>
             <div class="timer-clock" data-created-at="${esc(b.created_at || "")}">${formatMMSS(computeRemaining60Min(b.created_at))}</div>
           </div>
@@ -901,43 +1008,38 @@ function renderBookings(){
 
         ${f.ttc > 0 ? `
           <div class="box">
-            <b>ملخص التكلفة التقديرية</b>
+            <b>${esc(tr("finTitle"))}</b>
             <table>
-              <tr><td>المجموع دون أداء</td><td>${money(f.sub)}</td></tr>
-              <tr><td>الأداء على القيمة المضافة (${f.vr}%)</td><td>${money(f.vat)}</td></tr>
-              <tr><td><b>المجموع التقديري</b></td><td><b>${money(f.ttc)}</b></td></tr>
+              <tr><td>${esc(tr("htva"))}</td><td>${money(f.sub)}</td></tr>
+              <tr><td>${esc(tr("vat"))} (${f.vr}%)</td><td>${money(f.vat)}</td></tr>
+              <tr><td><b>${esc(tr("ttc"))}</b></td><td><b>${money(f.ttc)}</b></td></tr>
             </table>
-            <div class="dep">
-              <span>العربون المطلوب (${f.dp}%)</span>
-              <span style="font-family:var(--font-mono);color:var(--red-dark)">${money(f.dep)}</span>
-            </div>
+            <div class="dep"><span>${esc(tr("deposit"))} (${f.dp}%)</span><span style="font-family:var(--font-mono);color:var(--red-dark)">${money(f.dep)}</span></div>
           </div>
         ` : ""}
 
-        ${isAcceptedForPayment ? `
+        ${isAccepted ? `
           <div class="rib-panel">
-            <b>تم قبول الطلب — وسائل الدفع والـ RIB المعتمد</b>
+            <b>${esc(tr("payMethodsTitle"))}</b>
             ${renderPaymentMethods(BANKS)}
           </div>
           ${!verified ? `
             <div class="box" data-proof="${esc(b.id)}">
-              <b>إرسال إثبات الدفع</b>
-              <div class="warn">يرجى رفع إثبات التحويل بعد إتمام العملية ليتم التحقق منه.</div>
-              <div class="acts" style="margin-top:4px">
-                <input type="file" class="pf" accept="image/jpeg,image/png,image/webp,application/pdf" style="max-width:260px">
-                <input type="number" class="pa" min="0" max="99999" step="0.5" placeholder="المبلغ المحوّل" style="max-width:170px">
-                <button type="button" class="green sm ps">إرسال الإثبات</button>
+              <b>${esc(tr("proofUploadTitle"))}</b>
+              <div class="warn">${esc(tr("proofWarn"))}</div>
+              <div class="acts" style="margin-top:6px">
+                <input type="file" class="pf" accept="image/jpeg,image/png,image/webp,application/pdf">
+                <button type="button" class="green sm ps">${esc(tr("btnSendProof"))}</button>
               </div>
-              <div class="err pe"></div>
-              <div class="ok po"></div>
+              <div class="err pe"></div><div class="ok po"></div>
             </div>
-          ` : `<div class="ok">✓ تم التحقق من الدفعة — وصل الحجز جاهز.</div>`}
+          ` : ""}
         ` : ""}
 
         <div class="acts">
-          <button type="button" class="green sm" data-bon="${esc(b.id)}">وصل الحجز + QR</button>
-          ${proof ? `<button type="button" class="dark sm" data-vp="${esc(proof.proof_path)}">عرض الإثبات</button>` : ""}
-          ${!hist && ["pending","confirmed"].includes(b.status) ? `<button type="button" class="ghost sm" data-cx="${esc(b.id)}">طلب إلغاء</button>` : ""}
+          <button type="button" class="green sm" data-bon="${esc(b.id)}">${esc(tr("voucherBtn"))}</button>
+          ${proof ? `<button type="button" class="dark sm" data-vp="${esc(proof.proof_path)}">${esc(tr("viewProofBtn"))}</button>` : ""}
+          ${!hist && ["pending","confirmed"].includes(b.status) ? `<button type="button" class="ghost sm" data-cx="${esc(b.id)}">${esc(tr("cancelBtn"))}</button>` : ""}
         </div>
       </article>
     `;
@@ -949,34 +1051,23 @@ function renderBookings(){
 
   root.querySelectorAll("[data-proof]").forEach(bx => {
     bx.querySelector(".ps").onclick = async () => {
-      const er = bx.querySelector(".pe"), ok = bx.querySelector(".po"), btn = bx.querySelector(".ps");
-      const f = bx.querySelector(".pf").files[0];
+      const er = bx.querySelector(".pe"), ok = bx.querySelector(".po"), btn = bx.querySelector(".ps"), f = bx.querySelector(".pf").files[0];
       er.textContent = ok.textContent = "";
-      if (!(await validateFileSecure(f, 5, true))) { er.textContent = "ملف غير صالح (JPG, PNG, WebP أو PDF — 5 م.ب)."; return; }
+      if (!(await validateFileSecure(f, 5, true))) { er.textContent = "5 MB max"; return; }
       btn.disabled = true;
       const path = `${PROFILE.id}/${bx.dataset.proof}_${Date.now()}.${EXT[f.type]}`;
       const up = await sb.storage.from(PROOFS).upload(path, f, { contentType: f.type, upsert: false });
-      if (up.error) { er.textContent = "تعذّر رفع الملف."; btn.disabled = false; return; }
-      const ins = await sb.from("payments").insert({
-        booking_id: bx.dataset.proof,
-        user_id: PROFILE.id,
-        amount: Math.max(0, +bx.querySelector(".pa").value || 0),
-        proof_path: path,
-        status: "proof_uploaded"
-      });
+      if (up.error) { er.textContent = "Error"; btn.disabled = false; return; }
+      const ins = await sb.from("payments").insert({ booking_id: bx.dataset.proof, user_id: PROFILE.id, amount: 0, proof_path: path, status: "proof_uploaded" });
       btn.disabled = false;
-      if (ins.error) { er.textContent = "تعذّر تسجيل الإثبات."; return; }
-      ok.textContent = "تم إرسال الإثبات بنجاح.";
-      toast("تم إرسال الإثبات");
-      await loadPortal();
+      if (!ins.error) { ok.textContent = "✓"; await loadPortal(); }
     };
   });
 
   root.querySelectorAll("[data-vp]").forEach(btn => {
     btn.onclick = async () => {
       const { data, error } = await sb.storage.from(PROOFS).createSignedUrl(btn.dataset.vp, 300);
-      if (error || !data?.signedUrl) { toast("تعذّر فتح الإثبات."); return; }
-      window.open(data.signedUrl, "_blank", "noopener,noreferrer");
+      if (!error && data?.signedUrl) window.open(data.signedUrl, "_blank", "noopener,noreferrer");
     };
   });
 
@@ -989,43 +1080,29 @@ function renderBookings(){
 
   root.querySelectorAll("[data-cx]").forEach(btn => {
     btn.onclick = async () => {
-      const reason = prompt("سبب الإلغاء (اختياري):");
+      const reason = prompt("...");
       if (reason === null) return;
       const { data, error } = await sb.rpc("request_cancellation", { p_booking: btn.dataset.cx, p_reason: reason.slice(0, 300) });
-      if (error || !data || !data.ok) toast("تعذّر إرسال طلب الإلغاء.");
-      else { toast("تم إرسال طلب الإلغاء"); await loadPortal(); }
+      if (!error && data && data.ok) { toast("✓"); await loadPortal(); }
     };
   });
 }
 
 function openBonModal(b){
-  const ref = shortRef(b.id);
-  const isConfirmed = b.status === "confirmed";
+  const ref = shortRef(b.id), isConfirmed = b.status === "confirmed";
   $("bonRef").textContent = "#" + ref;
-  $("bonIssued").textContent = "تاريخ الإصدار: " + new Date().toLocaleDateString("ar-TN", { timeZone: "Africa/Tunis" });
-  $("bonStatusNote").textContent = isConfirmed
-    ? "الحجز مقبول من الإدارة — يمكنك استكمال الإجراءات واستلام السيارة في الوكالة."
-    : "الحجز في انتظار قبول الإدارة — بيانات الدفع تظهر بعد القبول.";
-
+  $("bonIssued").textContent = new Date().toLocaleDateString("fr-FR", { timeZone: "Africa/Tunis" });
+  $("bonStatusNote").textContent = isConfirmed ? tr("bonConfirmed") : tr("bonPending");
+  $("bonPickupNote").textContent = tr("bonPickupNote");
   $("bonDetails").innerHTML = `
-    <div class="box"><b>الحريف:</b> ${esc(b.guest_name || PROFILE.full_name || PROFILE.username || "—")}<br><span class="sub">${esc(b.guest_phone || PROFILE.phone || "")}</span></div>
-    <div class="box"><b>السيارة:</b> ${esc(b.vehicles?.name || "—")}<br><span class="sub">الفترة: ${fmtD(b.start_at)} → ${fmtD(b.end_at)}</span></div>
+    <div class="box"><b>${esc(b.guest_name || PROFILE.full_name || PROFILE.username || "—")}</b><br><span class="sub">${esc(b.guest_phone || PROFILE.phone || "")}</span></div>
+    <div class="box"><b>${esc(b.vehicles?.name || "—")}</b><br><span class="sub">${fmtD(b.start_at)} → ${fmtD(b.end_at)}</span></div>
   `;
-
   const qrBox = $("bonQrCanvas");
   qrBox.innerHTML = "";
-  const qrPayload = JSON.stringify({
-    doc: "BON_DE_RESERVATION",
-    brand: "AMINE_RENT_A_CAR",
-    ref,
-    status: b.status || "pending"
-  });
   if (window.QRCode) {
-    try {
-      new QRCode(qrBox, { text: qrPayload, width: 108, height: 108, correctLevel: QRCode.CorrectLevel.M });
-    } catch (_) {
-      qrBox.textContent = ref;
-    }
+    try { new QRCode(qrBox, { text: JSON.stringify({ doc:"BON_DE_RESERVATION", brand:"AMINE_RENT_A_CAR", ref, status:b.status||"pending" }), width:96, height:96, correctLevel:QRCode.CorrectLevel.M }); }
+    catch (_) { qrBox.textContent = ref; }
   }
   $("bon").hidden = false;
 }
@@ -1034,7 +1111,6 @@ $("bonX").onclick = () => { $("bon").hidden = true; };
 $("bon").onclick = e => { if (e.target === $("bon")) $("bon").hidden = true; };
 $("bonPrint").onclick = () => window.print();
 
-applyLangDir();
 syncAutoPhone();
 setMode(MODE);
 loadPortal();
