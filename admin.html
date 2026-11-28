@@ -1,1630 +1,453 @@
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="noindex,nofollow" />
-  <title>Admin | Amine Rent A Car</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Work+Sans:wght@400;500;600;700&family=Cairo:wght@500;700;800&display=swap"
-    rel="stylesheet"
-  />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
-  <style>
-    :root {
-      --ink: #15181c;
-      --ink-2: #22272e;
-      --paper: #f1f2f0;
-      --surface: #ffffff;
-      --sand: #e7e5de;
-      --red: #d62828;
-      --red-dark: #a61c1c;
-      --green: #1f9d57;
-      --green-dark: #167a42;
-      --gold: #c9a227;
-      --line: #d9dad6;
-      --line-strong: #c2c4be;
-      --muted: #5d6268;
-      --text: #1f2226;
-      --radius: 12px;
-      --shadow: 0 8px 24px rgba(21, 24, 28, 0.06);
-      --ease: cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: "Work Sans", "Cairo", system-ui, sans-serif;
-      font-size: 15px;
-      line-height: 1.48;
-      background: var(--paper);
-      color: var(--text);
-    }
-
-    h1,
-    h2,
-    h3 {
-      font-family: "Barlow Condensed", "Cairo", sans-serif;
-      font-weight: 800;
-      line-height: 1.1;
-    }
-
-    [hidden] {
-      display: none !important;
-    }
-
-    :focus-visible {
-      outline: 3px solid var(--gold);
-      outline-offset: 2px;
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      background: linear-gradient(90deg, var(--ink), var(--ink-2));
-      color: #fff;
-      padding: 12px 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      border-bottom: 3px solid var(--red);
-    }
-
-    .brand-title {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-family: "Barlow Condensed", sans-serif;
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: 0.02em;
-    }
-
-    .live-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-family: "Work Sans", sans-serif;
-      font-size: 11.5px;
-      font-weight: 700;
-      background: rgba(31, 157, 87, 0.2);
-      color: #8ef0b8;
-      padding: 3px 9px;
-      border-radius: 999px;
-    }
-
-    .live-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #36d47a;
-    }
-
-    main {
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 18px;
-    }
-
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 16px;
-      margin-bottom: 14px;
-      box-shadow: var(--shadow);
-      transition: transform 0.2s var(--ease), border-color 0.2s ease;
-    }
-
-    .card:hover {
-      border-color: var(--line-strong);
-    }
-
-    input,
-    select {
-      padding: 9px 11px;
-      border: 1.5px solid var(--line);
-      border-radius: 8px;
-      font-size: 14px;
-      background: #fff;
-      color: var(--text);
-      width: 100%;
-      transition: border-color 0.18s ease, box-shadow 0.18s ease;
-    }
-
-    input:focus,
-    select:focus {
-      border-color: var(--ink);
-      box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.2);
-    }
-
-    button {
-      border: 0;
-      border-radius: 8px;
-      padding: 9px 14px;
-      font-size: 13.5px;
-      font-weight: 700;
-      color: #fff;
-      background: var(--ink);
-      cursor: pointer;
-      transition: transform 0.16s var(--ease), background-color 0.18s ease, opacity 0.18s ease;
-    }
-
-    button:hover:not(:disabled) {
-      transform: translateY(-1px);
-      background: var(--ink-2);
-    }
-
-    button:active:not(:disabled) {
-      transform: translateY(0) scale(0.985);
-    }
-
-    button:disabled {
-      opacity: 0.55;
-      cursor: not-allowed;
-    }
-
-    .g {
-      background: var(--green);
-    }
-
-    .g:hover:not(:disabled) {
-      background: var(--green-dark);
-    }
-
-    .r {
-      background: var(--red);
-    }
-
-    .r:hover:not(:disabled) {
-      background: var(--red-dark);
-    }
-
-    .gold-btn {
-      background: var(--gold);
-      color: #14171a;
-    }
-
-    .stats-bar {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    .stat-box {
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 12px 14px;
-      box-shadow: var(--shadow);
-    }
-
-    .stat-box small {
-      display: block;
-      font-size: 12px;
-      color: var(--muted);
-      font-weight: 600;
-    }
-
-    .stat-box strong {
-      font-family: "Barlow Condensed", sans-serif;
-      font-size: 28px;
-      color: var(--ink);
-    }
-
-    .alert-item {
-      border: 1px solid var(--line);
-      border-inline-start: 4px solid var(--red);
-      border-radius: 10px;
-      padding: 11px 13px;
-      background: #fafbf9;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .alert-badge {
-      background: var(--red);
-      color: #fff;
-      font-size: 12px;
-      font-weight: 800;
-      padding: 2px 9px;
-      border-radius: 999px;
-    }
-
-    .tabs {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 14px;
-    }
-
-    .tabs button {
-      background: var(--surface);
-      color: var(--ink);
-      border: 1px solid var(--line);
-    }
-
-    .tabs button.on {
-      background: var(--ink);
-      color: #fff;
-      border-color: var(--ink);
-    }
-
-    .row {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .st {
-      font-size: 12px;
-      font-weight: 700;
-      padding: 3px 10px;
-      border-radius: 999px;
-      color: #fff;
-    }
-
-    .pending {
-      background: var(--gold);
-      color: #14171a;
-    }
-
-    .confirmed {
-      background: var(--green);
-    }
-
-    .cancelled,
-    .expired {
-      background: #7c8288;
-    }
-
-    .cancellation_requested {
-      background: #e67e22;
-    }
-
-    .blocked {
-      background: #4b5056;
-    }
-
-    .msg {
-      color: var(--red);
-      font-weight: 700;
-      margin: 8px 0;
-    }
-
-    .ok-msg {
-      color: var(--green-dark);
-      font-weight: 700;
-      font-size: 13px;
-    }
-
-    .small {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .ph-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 8px;
-    }
-
-    .ph {
-      display: inline-block;
-      position: relative;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 2px;
-      background: var(--paper);
-    }
-
-    .ph img {
-      height: 62px;
-      width: 92px;
-      object-fit: cover;
-      border-radius: 6px;
-      display: block;
-    }
-
-    .ph button {
-      position: absolute;
-      top: -6px;
-      inset-inline-end: -6px;
-      padding: 0 6px;
-      height: 20px;
-      line-height: 20px;
-      border-radius: 50%;
-      background: var(--red);
-      font-size: 12px;
-    }
-
-    .vrow {
-      display: grid;
-      grid-template-columns: 1.4fr 115px 130px auto;
-      gap: 10px;
-      align-items: center;
-      padding: 12px 0;
-      border-top: 1px solid var(--line);
-    }
-
-    .ev-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr) auto;
-      gap: 8px;
-      align-items: end;
-      margin-top: 10px;
-    }
-
-    .toast {
-      position: fixed;
-      bottom: 18px;
-      inset-inline-end: 18px;
-      z-index: 90;
-      background: var(--ink);
-      color: #fff;
-      border-inline-start: 4px solid var(--green);
-      border-radius: 10px;
-      padding: 11px 16px;
-      font-size: 13.5px;
-      font-weight: 600;
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
-    }
-
-    .modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 18, 22, 0.68);
-      z-index: 80;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-    }
-
-    .sheet {
-      background: #fff;
-      border-radius: 14px;
-      max-width: 780px;
-      width: 100%;
-      max-height: 90vh;
-      overflow: auto;
-      padding: 20px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
-    }
-
-    .inv-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      border-bottom: 3px solid var(--red);
-      padding-bottom: 12px;
-    }
-
-    .inv-two {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin: 14px 0;
-    }
-
-    .inv-box {
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 10px 12px;
-    }
-
-    .inv-tbl {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 8px;
-    }
-
-    .inv-tbl th {
-      background: var(--paper);
-      text-align: left;
-      font-size: 12px;
-      padding: 8px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .inv-tbl td {
-      padding: 8px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .inv-tbl td.r,
-    .inv-tbl th.r {
-      text-align: right;
-      white-space: nowrap;
-    }
-
-    .inv-tot {
-      width: 65%;
-      margin-left: auto;
-      margin-top: 8px;
-    }
-
-    .inv-tot td {
-      padding: 4px 8px;
-    }
-
-    .inv-tot .g td {
-      font-size: 16px;
-      font-weight: 800;
-      border-top: 2px solid var(--ink);
-      padding-top: 8px;
-    }
-
-    @media (max-width: 900px) {
-      .stats-bar {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .ev-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    @media (max-width: 700px) {
-      .vrow,
-      .inv-head,
-      .inv-two {
-        grid-template-columns: 1fr;
-      }
-      .stats-bar,
-      .ev-grid {
-        grid-template-columns: 1fr;
-      }
-      .inv-tot {
-        width: 100%;
-      }
-    }
-
-    @media print {
-      header,
-      main,
-      .toast,
-      .np {
-        display: none !important;
-      }
-      .modal {
-        position: static;
-        background: none;
-        padding: 0;
-      }
-      .sheet {
-        box-shadow: none;
-        max-width: none;
-        max-height: none;
-        padding: 0;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://*.supabase.co; connect-src 'self' https://*.supabase.co wss://*.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self';">
+<title>Admin & Comptabilité | Amine Rent A Car</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Work+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js" crossorigin="anonymous"></script>
+<style>
+:root{--ink:#11161d;--ink2:#1c2430;--paper:#eef0ec;--surface:#fff;--s2:#f8f9f7;--red:#d62828;--red2:#a61c1c;--green:#1b9952;--green2:#13743d;--gold:#c9a227;--blue:#1d5fd6;--line:#d7d9d3;--muted:#5a6068;--text:#1b2026;--r:14px;--mono:"JetBrains Mono",ui-monospace,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Work Sans",system-ui,sans-serif;font-size:15px;line-height:1.5;background:var(--paper);color:var(--text);min-height:100vh}
+h1,h2,h3{font-family:"Barlow Condensed",sans-serif;font-weight:800;line-height:1.12;color:var(--ink)}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+header{position:sticky;top:0;z-index:40;background:linear-gradient(95deg,var(--ink),var(--ink2) 62%,#2a171a);color:#fff;padding:12px 18px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;border-bottom:3px solid var(--red)}
+.brand{font:800 22px "Barlow Condensed",sans-serif;letter-spacing:.03em}
+main{max-width:1140px;margin:0 auto;padding:18px 14px 90px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:14px;box-shadow:0 8px 22px rgba(17,22,29,.06)}
+input,select{padding:9px 12px;border:1.5px solid var(--line);border-radius:9px;font:inherit;font-size:14px;background:#fff;color:var(--text);width:100%}
+input:focus,select:focus{border-color:var(--ink);outline:none}
+button,.btn{border:0;border-radius:9px;padding:9px 14px;font:700 13.5px inherit;font-family:inherit;color:#fff;background:var(--ink);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;text-decoration:none}
+button:hover:not(:disabled){background:var(--ink2)}button:disabled{opacity:.55;cursor:not-allowed}
+.g{background:var(--green)}.g:hover:not(:disabled){background:var(--green2)}.r{background:var(--red)}.r:hover:not(:disabled){background:var(--red2)}.bl{background:var(--blue)}.wa{background:#128c7e}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
+.k{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;border-inline-start:4px solid var(--ink)}
+.k.green{border-inline-start-color:var(--green)}.k.gold{border-inline-start-color:var(--gold)}.k.blue{border-inline-start-color:var(--blue)}.k.red{border-inline-start-color:var(--red)}
+.k small{display:block;font-size:12px;color:var(--muted);font-weight:700}.k b{display:block;font:800 20px var(--mono);margin-top:4px}.k span{font-size:12px;color:var(--muted)}
+.cg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+.cb{background:var(--s2);border:1px solid var(--line);border-radius:var(--r);padding:13px}.cb small{display:block;font-size:12px;color:var(--muted);font-weight:700}.cb b{display:block;font:700 18px var(--mono);margin-top:4px}
+.alert{border:1px solid var(--line);border-inline-start:4px solid var(--red);border-radius:11px;padding:11px 14px;background:var(--s2);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.pill{background:var(--red);color:#fff;font:800 12px var(--mono);padding:2px 10px;border-radius:99px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.tabs button{background:#fff;color:var(--ink);border:1.5px solid var(--line)}.tabs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.row{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+.st{font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px;color:#fff;background:#7c8288}
+.st.pending{background:var(--gold);color:#14171a}.st.confirmed{background:var(--green)}.st.cancellation_requested{background:#e67e22}.st.blocked{background:#4b5056}
+.msg{color:var(--red);font-weight:700;margin:8px 0}.small{color:var(--muted);font-size:13px}.mono{font-family:var(--mono)}
+.tag{font:700 12px var(--mono);background:var(--paper);border:1px solid var(--line);padding:2px 8px;border-radius:6px}
+.ph-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}.ph{position:relative;border:1px solid var(--line);border-radius:8px;padding:2px;background:var(--paper)}.ph img{height:62px;width:92px;object-fit:cover;border-radius:6px;display:block}
+.ph button{position:absolute;top:-6px;inset-inline-end:-6px;padding:0 6px;height:20px;border-radius:50%;background:var(--red);font-size:12px}
+.vrow{display:grid;grid-template-columns:1.4fr 115px 130px auto;gap:10px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.evg{display:grid;grid-template-columns:repeat(4,1fr) auto;gap:8px;align-items:end;margin-top:10px}
+.bar2{display:grid;grid-template-columns:1fr 200px;gap:10px;margin-bottom:12px}
+.toast{position:fixed;bottom:16px;inset-inline-end:16px;z-index:90;background:var(--ink);color:#fff;border-inline-start:4px solid var(--green);border-radius:10px;padding:10px 16px;font-weight:600}
+.toast.bad{border-inline-start-color:var(--red)}
+.modal{position:fixed;inset:0;background:rgba(15,18,22,.68);z-index:80;display:flex;align-items:center;justify-content:center;padding:16px}
+.sheet{background:#fff;border-radius:16px;max-width:780px;width:100%;max-height:90vh;overflow:auto;padding:22px}
+.ih{display:flex;justify-content:space-between;gap:16px;border-bottom:3px solid var(--red);padding-bottom:12px}
+.i2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}.ib{border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.it{width:100%;border-collapse:collapse;margin-top:8px}.it th{background:var(--paper);text-align:left;font-size:12px;padding:8px;border-bottom:1px solid var(--line)}.it td{padding:8px;border-bottom:1px solid var(--line)}.it .am,.itot .am{text-align:right;white-space:nowrap}
+.itot{width:65%;margin-left:auto;margin-top:8px}.itot td{padding:4px 8px}.itot .gt td{font-size:16px;font-weight:800;border-top:2px solid var(--ink);padding-top:8px}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:6px 12px;font-size:14px;margin-top:10px}.kv b{color:var(--muted);font-weight:600}
+@media(max-width:960px){.kpi{grid-template-columns:1fr 1fr}.cg{grid-template-columns:1fr 1fr}.evg{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.vrow,.ih,.i2,.kpi,.cg,.evg,.bar2{grid-template-columns:1fr}.itot{width:100%}.kv{grid-template-columns:1fr}}
+@media print{header,main,.toast,.np{display:none!important}.modal{position:static;background:none;padding:0}.sheet{max-width:none;max-height:none;padding:0}}
+</style>
 </head>
 <body>
-  <header>
-    <div class="brand-title">
-      <span>AMINE RENT A CAR : ADMIN</span>
-      <span class="live-pill"><span class="live-dot"></span>DIRECT SYNC</span>
-    </div>
-    <div style="display: flex; gap: 8px; align-items: center">
-      <button type="button" id="refreshAll" class="g" hidden>Actualiser</button>
-      <button type="button" id="out" hidden>Déconnexion</button>
-    </div>
-  </header>
+<header>
+  <div class="brand">AMINE RENT A CAR · ADMIN</div>
+  <div style="display:flex;gap:8px"><button class="g" id="refreshAll" hidden>Actualiser</button><button id="out" hidden>Déconnexion</button></div>
+</header>
+<main>
+<div class="card" id="login" style="max-width:410px;margin:40px auto">
+  <h2 style="margin-bottom:12px;font-size:28px">Connexion Admin</h2>
+  <p style="margin-bottom:10px"><input id="em" type="email" placeholder="E-mail" autocomplete="username"></p>
+  <p style="margin-bottom:12px"><input id="pw" type="password" placeholder="Mot de passe" autocomplete="current-password"></p>
+  <button id="go" style="width:100%">Se connecter</button><div class="msg" id="lm"></div>
+</div>
 
-  <main>
-    <div class="card" id="login" style="max-width: 400px; margin: 40px auto">
-      <h2 style="margin-bottom: 12px; font-size: 28px">Connexion Admin</h2>
-      <p style="margin-bottom: 10px">
-        <input id="em" type="email" placeholder="E-mail" autocomplete="username" />
-      </p>
-      <p style="margin-bottom: 12px">
-        <input id="pw" type="password" placeholder="Mot de passe" autocomplete="current-password" />
-      </p>
-      <button type="button" id="go" style="width: 100%">Se connecter</button>
-      <div class="msg" id="lm"></div>
-    </div>
-
-    <div id="app" hidden>
-      <div class="stats-bar" id="statsBar">
-        <div class="stat-box"><small>Alertes non lues</small><strong id="stAlerts">0</strong></div>
-        <div class="stat-box"><small>Réservations</small><strong id="stBookings">0</strong></div>
-        <div class="stat-box"><small>En attente</small><strong id="stPending">0</strong></div>
-        <div class="stat-box"><small>Véhicules</small><strong id="stVehicles">0</strong></div>
-        <div class="stat-box"><small>Factures</small><strong id="stInvoices">0</strong></div>
-      </div>
-
-      <div class="card" id="alertsCard">
-        <div class="row" style="margin-bottom: 10px">
-          <div style="display: flex; align-items: center; gap: 8px">
-            <h3 style="font-size: 22px">Notifications Clients (Nouvelles réservations & dossiers)</h3>
-            <span class="alert-badge" id="alertsBadge">0</span>
-          </div>
-          <button type="button" id="refreshAlertsBtn">Actualiser alertes</button>
-        </div>
-        <div id="alertsList" style="display: grid; gap: 8px">
-          <p class="small">Chargement des notifications...</p>
-        </div>
-      </div>
-
-      <div class="tabs">
-        <button class="on" data-t="b">Réservations</button>
-        <button data-t="v">Véhicules & prix</button>
-        <button data-t="e">Fêtes & vacances</button>
-        <button data-t="p">Paiements & banque</button>
-        <button data-t="f">Factures</button>
-        <button data-t="s">Paramètres</button>
-      </div>
-
-      <div id="tb"></div>
-      <div id="tv" hidden></div>
-      <div id="te" hidden></div>
-      <div id="tp" hidden></div>
-      <div id="tf" hidden></div>
-      <div id="ts" hidden></div>
-    </div>
-  </main>
-
-  <div class="toast" id="toast" hidden></div>
-
-  <div class="modal" id="invModal" hidden>
-    <div class="sheet" role="dialog" aria-modal="true">
-      <div class="row np" style="margin-bottom: 12px">
-        <button type="button" class="g" id="invPrintBtn">Imprimer / PDF</button>
-        <button type="button" id="invCloseBtn">Fermer</button>
-      </div>
-      <div id="invModalBody"></div>
-    </div>
+<div id="app" hidden>
+  <div class="kpi">
+    <div class="k green"><small>Encaissé (vérifié)</small><b id="stCash">0</b><span id="stCashSub"></span></div>
+    <div class="k gold"><small>Reste à encaisser</small><b id="stRest">0</b><span id="stPending"></span></div>
+    <div class="k blue"><small>Réservations</small><b id="stBookings">0</b><span>Alertes : <b id="stAlerts" class="mono" style="display:inline;font-size:inherit">0</b></span></div>
+    <div class="k red"><small>Factures</small><b id="stInvoices">0</b><span>Véhicules : <b id="stVehicles" class="mono" style="display:inline;font-size:inherit">0</b></span></div>
   </div>
 
-  <script>
-    const SUPABASE_URL = "https://tadaqaqvtjcnanspcboj.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_fA2Est6rYrP6Sx1xfyhdOA_IA5TQ6MO";
-    const IMG_PUBLIC_BASE = `${SUPABASE_URL}/storage/v1/object/public/vehicle-images/`;
+  <div class="card">
+    <div class="row" style="margin-bottom:10px">
+      <div style="display:flex;align-items:center;gap:8px"><h3 style="font-size:22px">Notifications clients</h3><span class="pill" id="alertsBadge">0</span></div>
+      <div style="display:flex;gap:8px"><button id="readAll">Tout marquer lu</button></div>
+    </div>
+    <div id="alertsList" style="display:grid;gap:8px"></div>
+  </div>
 
-    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    window.SB = sb;
+  <div class="tabs">
+    <button class="on" data-t="b">Réservations</button><button data-t="c">Comptabilité</button><button data-t="v">Véhicules & prix</button><button data-t="e">Fêtes</button><button data-t="p">Paiements & banque</button><button data-t="f">Factures</button><button data-t="s">Paramètres</button>
+  </div>
+  <div id="tb"></div><div id="tc" hidden></div><div id="tv" hidden></div><div id="te" hidden></div><div id="tp" hidden></div><div id="tf" hidden></div><div id="ts" hidden></div>
+</div>
+</main>
+<div class="toast" id="toast" hidden></div>
+<div class="modal" id="modal" hidden><div class="sheet" role="dialog" aria-modal="true">
+  <div class="row np" style="margin-bottom:12px"><button class="g" id="mPrint">Imprimer / PDF</button><button id="mClose">Fermer</button></div>
+  <div id="mBody"></div>
+</div></div>
 
-    const $ = (id) => document.getElementById(id);
-    const esc = (s) =>
-      String(s ?? "").replace(/[&<>"']/g, (c) =>
-        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
-      );
-    const fmt = (d) => new Date(d).toLocaleDateString("fr-FR", { timeZone: "Africa/Tunis" });
-    const money = (n) =>
-      Number(n ?? 0).toLocaleString("fr-FR", { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+<script>
+"use strict";
+const URL_=("https://tadaqaqvtjcnanspcboj.supabase.co"),KEY="sb_publishable_fA2Est6rYrP6Sx1xfyhdOA_IA5TQ6MO";
+const IMG=`${URL_}/storage/v1/object/public/vehicle-images/`;
+const sb=supabase.createClient(URL_,KEY);
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmt=d=>d?new Date(d).toLocaleDateString("fr-FR",{timeZone:"Africa/Tunis"}):"";
+const money=n=>Number(n??0).toLocaleString("fr-FR",{minimumFractionDigits:3,maximumFractionDigits:3});
+const ref=id=>String(id||"").replace(/[^a-zA-Z0-9]/g,"").slice(0,8).toUpperCase();
+const LAB={pending:"En attente",confirmed:"Confirmée",cancelled:"Annulée",expired:"Expirée",cancellation_requested:"Annulation demandée",blocked:"Bloquée"};
+const STS=Object.keys(LAB);
+let BK=[],PAY=[],INV=[],SET={},PERIOD="all",chan=null,toastT,idleT;
 
-    const LAB = {
-      pending: "En attente",
-      confirmed: "Confirmée",
-      cancelled: "Annulée",
-      expired: "Expirée",
-      cancellation_requested: "Annulation demandée",
-      blocked: "Bloquée"
-    };
+function notify(m,bad){const t=$("toast");t.textContent=m;t.className="toast"+(bad?" bad":"");t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>t.hidden=true,bad?4000:2400)}
+const fail=e=>notify(e&&e.message?e.message:String(e||"Erreur"),true);
+const openModal=h=>{$("mBody").innerHTML=h;$("modal").hidden=false};
+$("mClose").onclick=()=>$("modal").hidden=true;
+$("modal").onclick=e=>{if(e.target===$("modal"))$("modal").hidden=true};
+$("mPrint").onclick=()=>window.print();
+function download(name,rows){
+  const q=v=>'"'+String(v??"").replace(/"/g,'""')+'"';
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\ufeff"+rows.map(r=>r.map(q).join(";")).join("\n")],{type:"text/csv;charset=utf-8"}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+}
+function waLink(phone,text){let d=String(phone||"").replace(/\D/g,"");if(!d)return"";if(String(phone).trim().startsWith("+")||d.startsWith("00"))d=d.replace(/^00/,"");else if(d.length===8)d="216"+d;return`https://wa.me/${d}${text?"?text="+encodeURIComponent(text):""}`}
 
-    let toastTimer = null;
-    function notify(text) {
-      const t = $("toast");
-      if (!t) return;
-      t.textContent = text;
-      t.hidden = false;
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => {
-        t.hidden = true;
-      }, 2400);
-    }
+/* ---------- Calculs ---------- */
+function calc(b){
+  const q=b.quote||{},vr=+(SET.vat_rate??19),lpd=+(SET.levy_per_day??0),days=+q.days||1;
+  const stampOn=String(SET.fiscal_stamp_enabled||"").toLowerCase()==="true",stampAmt=stampOn?+(SET.fiscal_stamp_amount??1):0;
+  const sub=+q.subtotal_htva||0,levy=+(q.levy_total??lpd*days)||0,stamp=+(q.fiscal_stamp??(sub>0?stampAmt:0))||0;
+  const vat=+(q.vat_amount??sub*vr/100)||0,ttc=+(q.total_ttc??sub+vat+levy+stamp)||0;
+  const pct=+(SET.deposit_pct??q.deposit_pct??20),dep=+(q.deposit??ttc*pct/100)||0;
+  return{sub,levy,stamp,vat,ttc,dep,vr};
+}
+const verifiedOf=id=>PAY.filter(p=>p.booking_id===id&&p.status==="verified").reduce((s,p)=>s+(+p.amount||0),0);
+function inPeriod(d){
+  if(PERIOD==="all"||!d)return true;
+  const x=new Date(d),n=new Date(),m0=new Date(n.getFullYear(),n.getMonth(),1),m1=new Date(n.getFullYear(),n.getMonth()-1,1);
+  return PERIOD==="month"?x>=m0:(x>=m1&&x<m0);
+}
+function computeAccounting(){
+  const vp=PAY.filter(p=>p.status==="verified"&&inPeriod(p.verified_at||p.created_at));
+  const cash=vp.reduce((s,p)=>s+(+p.amount||0),0);
+  const act=BK.filter(b=>["pending","confirmed","cancellation_requested"].includes(b.status)&&inPeriod(b.start_at));
+  let h=0,v=0,lv=0,ttc=0,rest=0;
+  act.forEach(b=>{const c=calc(b);h+=c.sub;v+=c.vat;lv+=c.levy+c.stamp;ttc+=c.ttc;rest+=Math.max(0,c.ttc-verifiedOf(b.id))});
+  $("stCash").textContent=money(cash)+" TND";$("stCashSub").textContent=`${vp.length} paiement(s) vérifié(s)`;
+  $("stRest").textContent=money(rest)+" TND";
+  $("stPending").textContent=`${BK.filter(x=>x.status==="pending").length} demande(s) en attente`;
+  $("tc").innerHTML=`<div class="card">
+    <div class="row" style="margin-bottom:8px"><h3 style="font-size:26px">Comptabilité</h3>
+      <div class="np" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <select id="period" style="width:auto"><option value="all"${PERIOD==="all"?" selected":""}>Tout</option><option value="month"${PERIOD==="month"?" selected":""}>Ce mois</option><option value="prev"${PERIOD==="prev"?" selected":""}>Mois dernier</option></select>
+        <button class="bl" id="cCsv">CSV</button><button class="g" id="cPrint">Imprimer / PDF</button></div></div>
+    <div class="cg">
+      <div class="cb"><small>Encaissé (vérifié)</small><b style="color:var(--green2)">${money(cash)} TND</b></div>
+      <div class="cb"><small>Reste à encaisser (dossiers actifs)</small><b style="color:var(--red2)">${money(rest)} TND</b></div>
+      <div class="cb"><small>Volume TTC (dossiers actifs)</small><b>${money(ttc)} TND</b></div>
+      <div class="cb"><small>Total HTVA</small><b>${money(h)} TND</b></div>
+      <div class="cb"><small>TVA estimée</small><b>${money(v)} TND</b></div>
+      <div class="cb"><small>Taxe location + timbre</small><b>${money(lv)} TND</b></div>
+    </div>
+    <h3 style="font-size:20px;margin:16px 0 8px">Paiements vérifiés</h3>
+    ${vp.length?vp.map(p=>`<div class="row" style="border-top:1px solid var(--line);padding:9px 0"><div><b>${esc(p.bookings?.guest_name||"Client")}</b> <span class="small">· ${esc(p.bookings?.vehicles?.name||"")}</span><div class="small">${fmt(p.verified_at||p.created_at)}</div></div><b class="mono" style="color:var(--green2)">+${money(p.amount)} TND</b></div>`).join(""):`<p class="small">Aucun paiement vérifié.</p>`}
+  </div>`;
+  $("period").onchange=e=>{PERIOD=e.target.value;computeAccounting()};
+  $("cPrint").onclick=()=>{const c=$("tc").cloneNode(true);c.querySelectorAll(".np").forEach(x=>x.remove());openModal(c.innerHTML)};
+  $("cCsv").onclick=()=>download("comptabilite.csv",[["Indicateur","TND"],["Encaisse verifie",cash.toFixed(3)],["Reste a encaisser",rest.toFixed(3)],["Volume TTC actifs",ttc.toFixed(3)],["HTVA",h.toFixed(3)],["TVA",v.toFixed(3)],["Taxe location + timbre",lv.toFixed(3)]]);
+}
 
-    let alertsChannel = null;
-    function subscribeAlerts() {
-      if (alertsChannel || typeof sb.channel !== "function") return;
-      alertsChannel = sb
-        .channel("admin_notifications_realtime")
-        .on(
-          "postgres_changes",
-          { event: "INSERT", schema: "public", table: "admin_notifications" },
-          async (payload) => {
-            await loadAlerts();
-            await loadB();
-            const title = payload?.new?.title || "Nouvelle notification client";
-            notify("🔔 " + title);
-          }
-        )
-        .subscribe();
-    }
+/* ---------- Alertes ---------- */
+function subscribe(){
+  if(chan||typeof sb.channel!=="function")return;
+  chan=sb.channel("admin_notifications_rt").on("postgres_changes",{event:"INSERT",schema:"public",table:"admin_notifications"},async p=>{
+    await Promise.all([loadAlerts(),loadP()]);await loadB();computeAccounting();notify("🔔 "+(p?.new?.title||"Nouvelle notification"));
+  }).subscribe();
+}
+async function loadAlerts(){
+  const {data,error}=await sb.from("admin_notifications").select("*").eq("is_read",false).order("created_at",{ascending:false}).limit(50);
+  if(error){$("alertsList").innerHTML=`<p class="small">${esc(error.message)}</p>`;return}
+  const items=data||[];$("stAlerts").textContent=items.length;$("alertsBadge").textContent=items.length;
+  if(!items.length){$("alertsList").innerHTML=`<p class="small">Aucune alerte non lue.</p>`;return}
+  $("alertsList").innerHTML=items.map(n=>{
+    const p=n.payload||{},when=n.created_at?new Date(n.created_at).toLocaleString("fr-FR",{timeZone:"Africa/Tunis"}):"";
+    const meta=[n.client_phone&&`Tél : ${esc(n.client_phone)}`,p.pickup_text&&`Agence : ${esc(p.pickup_text)}`,p.license_number&&`Permis : ${esc(p.license_number)}`,when].filter(Boolean).join(" · ");
+    return `<div class="alert"><div><b>${esc(n.title)}</b> — ${esc(n.client_name||"Client")}<div class="small">${meta}</div></div><button class="g" data-read="${esc(n.id)}">Marquer lu</button></div>`}).join("");
+  $("alertsList").querySelectorAll("[data-read]").forEach(b=>b.onclick=async()=>{
+    b.disabled=true;const {error:e}=await sb.from("admin_notifications").update({is_read:true}).eq("id",b.dataset.read);
+    if(e){b.disabled=false;return fail(e)}await loadAlerts();
+  });
+}
+$("readAll").onclick=async()=>{const {error}=await sb.from("admin_notifications").update({is_read:true}).eq("is_read",false);if(error)return fail(error);await loadAlerts();notify("Tout est lu ✓")};
 
-    async function loadAlerts() {
-      const { data, error } = await sb
-        .from("admin_notifications")
-        .select("*")
-        .eq("is_read", false)
-        .order("created_at", { ascending: false })
-        .limit(50);
+/* ---------- Facture (aperçu) ---------- */
+async function openInvoice(id){
+  openModal(`<p class="small">Chargement...</p>`);
+  const {data:inv,error}=await sb.from("invoices").select("*").eq("id",id).maybeSingle();
+  if(error||!inv||!inv.snapshot){$("mBody").innerHTML=`<div class="msg">Facture introuvable : ${esc(error?.message||"")}</div>`;return}
+  const s=inv.snapshot,c=s.company||{},cu=s.customer||{},cn=inv.kind==="credit_note",ov=cn?s.original?.vehicle||{}:s.vehicle||{};
+  const lines=cn?`<tr><td>Avoir annulant la facture ${esc(s.original_number)}</td><td class="am">${money(s.total_ttc)} TND</td></tr>`
+   :`<tr><td>Location ${esc(ov.name)}${ov.plate?` (${esc(ov.plate)})`:""}<div class="small">du ${fmt(s.start_date)} au ${fmt(s.end_date)} : ${esc(s.days)} jour(s) × ${money(s.daily_htva)} TND HTVA</div></td><td class="am">${money(s.subtotal_htva)} TND</td></tr><tr><td>Taxe de location (${money(s.levy_per_day)} × ${esc(s.days)} jour(s))</td><td class="am">${money(s.levy_total)} TND</td></tr>`;
+  const tot=cn?`<tr class="gt"><td>Total TTC de l'avoir</td><td class="am">${money(s.total_ttc)} TND</td></tr>`
+   :`<tr><td>Sous-total HTVA</td><td class="am">${money(s.subtotal_htva)} TND</td></tr><tr><td>TVA (${esc(s.vat_rate)} %)</td><td class="am">${money(s.vat_amount)} TND</td></tr><tr><td>Taxe de location</td><td class="am">${money(s.levy_total)} TND</td></tr>${+s.fiscal_stamp>0?`<tr><td>Timbre fiscal</td><td class="am">${money(s.fiscal_stamp)} TND</td></tr>`:""}<tr class="gt"><td>Total TTC</td><td class="am">${money(s.total_ttc)} TND</td></tr><tr><td>Acompte versé</td><td class="am">${money(s.deposit_paid)} TND</td></tr><tr><td><b>Reste à payer</b></td><td class="am"><b>${money(s.balance_due)} TND</b></td></tr>`;
+  $("mBody").innerHTML=`<div class="ih"><div><h2>${cn?"AVOIR":"FACTURE"}</h2><div><b>N° ${esc(inv.number)}</b></div><div class="small">Émise le ${fmt(inv.issued_at)}</div></div><div style="text-align:center"><canvas id="invQr" width="92" height="92"></canvas><div class="small" style="font-size:10px">QR vérification</div></div><div style="text-align:right"><b>${esc(c.name||"AMINE RENT A CAR")}</b><div class="small">${esc(c.address||"")}<br>MF : ${esc(c.tax_id||"")}<br>${esc(c.phone||"")} ${esc(c.email||"")}</div></div></div>
+  <div class="i2"><div class="ib"><div class="small" style="font-weight:700">CLIENT</div><b>${esc(cu.name||"")}</b><div class="small">${esc(cu.address||"")}${cu.tax_id?`<br>MF : ${esc(cu.tax_id)}`:""}<br>${esc(cu.phone||"")}</div></div><div class="ib"><div class="small" style="font-weight:700">${cn?"MOTIF":"PAIEMENT"}</div>${cn?esc(s.reason||""):`Mode : ${esc(s.payment_method||"")}`}</div></div>
+  <table class="it"><thead><tr><th>Désignation</th><th class="am">Montant</th></tr></thead><tbody>${lines}</tbody></table><table class="itot">${tot}</table><div class="small" style="margin-top:16px">${esc(s.footer||"")}</div>`;
+  const u=location.origin+location.pathname.replace(/[^/]*$/,"")+"verify.html?t="+encodeURIComponent(inv.verify_token||"");
+  if(window.QRCode&&window.QRCode.toCanvas){try{window.QRCode.toCanvas($("invQr"),u,{width:92,margin:1},()=>{})}catch(_){}}
+}
 
-      if (error) {
-        $("alertsList").innerHTML = `<p class="small">Notifications : ${esc(error.message)}</p>`;
-        return;
-      }
+/* ---------- Dossier client (documents pour le contrat) ---------- */
+async function openDossier(b){
+  openModal(`<p class="small">Chargement...</p>`);
+  if(!b.user_id){$("mBody").innerHTML=`<h3>Dossier client</h3><p class="small" style="margin-top:8px">Cette réservation n'est pas liée à un compte client.</p><div class="kv"><b>Client</b><span>${esc(b.guest_name)}</span><b>Téléphone</b><span>${esc(b.guest_phone)}</span></div>`;return}
+  const {data:p,error}=await sb.from("profiles").select("*").eq("id",b.user_id).maybeSingle();
+  if(error||!p){$("mBody").innerHTML=`<div class="msg">Dossier introuvable ${esc(error?.message||"")}</div>`;return}
+  const link=async(path,label)=>{if(!path)return`<span class="msg" style="margin:0">Manquant</span>`;const {data}=await sb.storage.from("client-documents").createSignedUrl(path,300);return data?.signedUrl?`<a href="${esc(data.signedUrl)}" target="_blank" rel="noopener noreferrer" style="color:var(--red);font-weight:700">📎 ${label}</a>`:`<span class="msg" style="margin:0">Illisible</span>`};
+  const [idL,licL]=await Promise.all([link(p.id_doc_path,"Voir la pièce"),link(p.license_path,"Voir le permis")]);
+  const ok=!!(p.id_doc_number&&p.id_doc_path&&p.license_number&&p.license_date&&p.birth_date&&p.license_path);
+  const yrs=p.license_date?((Date.now()-new Date(p.license_date))/31557600000).toFixed(1):"";
+  $("mBody").innerHTML=`<h3 style="font-size:26px">Dossier client · #${ref(b.id)}</h3><p class="${ok?"":"msg"} small" style="margin-top:4px">${ok?"✓ Dossier complet pour le contrat":"⚠ Dossier incomplet"}</p>
+  <div class="kv"><b>Nom</b><span>${esc(p.full_name)}</span><b>Téléphone</b><span dir="ltr">${esc(p.phone)}</span><b>Date de naissance</b><span>${fmt(p.birth_date)||"—"}</span><b>Adresse</b><span>${esc(p.billing_address)||"—"}</span>
+  <b>${p.id_doc_type==="passport"?"Passeport":"CIN"}</b><span class="mono">${esc(p.id_doc_number)||"—"} · ${idL}</span>
+  <b>N° permis</b><span class="mono">${esc(p.license_number)||"—"} · ${licL}</span><b>Permis obtenu le</b><span>${fmt(p.license_date)||"—"}${yrs?` (${yrs} an(s))`:""}</span><b>Billet / vol</b><span>${esc(p.flight_ticket)||"—"}</span></div>`;
+}
 
-      const items = data || [];
-      $("stAlerts").textContent = String(items.length);
-      $("alertsBadge").textContent = String(items.length);
+/* ---------- Connexion ---------- */
+function resetIdle(){clearTimeout(idleT);if(!$("app").hidden)idleT=setTimeout(async()=>{await sb.auth.signOut();boot();notify("Déconnexion automatique")},30*60*1000)}
+["click","keydown"].forEach(e=>document.addEventListener(e,resetIdle,{passive:true}));
+async function boot(){
+  const {data:{session}}=await sb.auth.getSession();
+  const show=ok=>{$("login").hidden=ok;$("app").hidden=!ok;$("out").hidden=$("refreshAll").hidden=!ok};
+  if(!session){show(false);return}
+  const {data:p,error:pe}=await sb.from("profiles").select("role").eq("id",session.user.id).maybeSingle();
+  if(!p||!["admin","staff"].includes(p.role)){
+    const why=pe?"erreur base de données : "+pe.message:!p?"aucun profil pour ce compte":"rôle actuel : "+p.role;
+    await sb.auth.signOut();show(false);$("lm").textContent="Ce compte n'est pas administrateur ("+why+").";return;
+  }
+  show(true);try{await sb.rpc("expire_holds")}catch(_){}
+  subscribe();await loadAll();resetIdle();
+}
+async function loadAll(){
+  await loadS();await loadP();
+  await Promise.all([loadAlerts(),loadB(),loadV(),loadE(),loadF()]);
+  computeAccounting();
+}
+async function doLogin(){
+  $("lm").textContent="";$("go").disabled=true;
+  const {error}=await sb.auth.signInWithPassword({email:$("em").value.trim(),password:$("pw").value});
+  $("go").disabled=false;
+  if(error){$("lm").textContent="Connexion refusée : "+error.message;return}
+  $("pw").value="";boot();
+}
+$("go").onclick=doLogin;$("pw").onkeydown=e=>{if(e.key==="Enter")doLogin()};
+$("out").onclick=async()=>{if(chan){try{await sb.removeChannel(chan)}catch(_){}chan=null}await sb.auth.signOut();BK=[];PAY=[];INV=[];boot()};
+$("refreshAll").onclick=async()=>{notify("Mise à jour...");await loadAll();notify("Données synchronisées ✓")};
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".tabs button").forEach(x=>x.classList.toggle("on",x===b));
+  ["b","c","v","e","p","f","s"].forEach(k=>$("t"+k).hidden=b.dataset.t!==k);
+  if(b.dataset.t==="c")computeAccounting();
+});
 
-      if (!items.length) {
-        $("alertsList").innerHTML = `<p class="small">Aucune nouvelle alerte non lue.</p>`;
-        return;
-      }
-
-      $("alertsList").innerHTML = items
-        .map((n) => {
-          const p = n.payload || {};
-          const when = n.created_at
-            ? new Date(n.created_at).toLocaleString("fr-FR", { timeZone: "Africa/Tunis" })
-            : "";
-          const meta = [
-            n.client_phone ? `Tél: ${esc(n.client_phone)}` : "",
-            p.pickup_text ? `Agence: ${esc(p.pickup_text)}` : "",
-            p.license_number ? `Permis: ${esc(p.license_number)}` : "",
-            when ? esc(when) : ""
-          ]
-            .filter(Boolean)
-            .join(" · ");
-
-          return `<div class="alert-item">
-            <div>
-              <b>${esc(n.title)}</b> — <span>${esc(n.client_name || "Client")}</span>
-              <div class="small">${meta}</div>
-            </div>
-            <button type="button" class="g" data-mark-read="${esc(n.id)}">Marquer lu</button>
-          </div>`;
-        })
-        .join("");
-
-      $("alertsList").querySelectorAll("[data-mark-read]").forEach((btn) => {
-        btn.onclick = async () => {
-          btn.disabled = true;
-          const { error: uErr } = await sb
-            .from("admin_notifications")
-            .update({ is_read: true })
-            .eq("id", btn.dataset.markRead);
-          if (!uErr) {
-            await loadAlerts();
-            notify("Notification marquée comme lue ✓");
-          } else {
-            btn.disabled = false;
-            alert(uErr.message);
-          }
-        };
-      });
-    }
-
-    $("refreshAlertsBtn").onclick = async () => {
-      await loadAlerts();
-      notify("Notifications actualisées ✓");
-    };
-
-    async function openInvoicePreview(invId) {
-      $("invModalBody").innerHTML = `<p class="small">Chargement de la facture...</p>`;
-      $("invModal").hidden = false;
-      const { data: inv, error } = await sb
-        .from("invoices")
-        .select("*")
-        .eq("id", invId)
-        .maybeSingle();
-
-      if (error || !inv || !inv.snapshot) {
-        $("invModalBody").innerHTML = `<div class="msg">Facture introuvable : ${esc(
-          error?.message || ""
-        )}</div>`;
-        return;
-      }
-
-      const s = inv.snapshot,
-        c = s.company || {},
-        cu = s.customer || {},
-        isCN = inv.kind === "credit_note",
-        ov = isCN ? s.original?.vehicle || {} : s.vehicle || {};
-
-      const lines = isCN
-        ? `<tr><td>Avoir annulant la facture ${esc(s.original_number)}</td><td class="r">${money(
-            s.total_ttc
-          )} TND</td></tr>`
-        : `<tr><td>Location ${esc(ov.name)}${
-            ov.plate ? ` (${esc(ov.plate)})` : ""
-          }<div class="small">du ${fmt(s.start_date)} au ${fmt(s.end_date)} : ${esc(
-            s.days
-          )} jour(s) × ${money(s.daily_htva)} TND HTVA</div></td><td class="r">${money(
-            s.subtotal_htva
-          )} TND</td></tr>
-           <tr><td>Taxe de location (${money(s.levy_per_day)} × ${esc(
-            s.days
-          )} jour(s))</td><td class="r">${money(s.levy_total)} TND</td></tr>`;
-
-      const totals = isCN
-        ? `<tr class="g"><td>Total TTC de l'avoir</td><td class="r">${money(s.total_ttc)} TND</td></tr>`
-        : `<tr><td>Sous-total HTVA</td><td class="r">${money(s.subtotal_htva)} TND</td></tr>
-           <tr><td>TVA (${esc(s.vat_rate)} %)</td><td class="r">${money(s.vat_amount)} TND</td></tr>
-           <tr><td>Taxe de location</td><td class="r">${money(s.levy_total)} TND</td></tr>
-           ${
-             +s.fiscal_stamp > 0
-               ? `<tr><td>Timbre fiscal</td><td class="r">${money(s.fiscal_stamp)} TND</td></tr>`
-               : ""
-           }
-           <tr class="g"><td>Total TTC</td><td class="r">${money(s.total_ttc)} TND</td></tr>
-           <tr><td>Acompte versé</td><td class="r">${money(s.deposit_paid)} TND</td></tr>
-           <tr><td><b>Reste à payer</b></td><td class="r"><b>${money(s.balance_due)} TND</b></td></tr>`;
-
-      $("invModalBody").innerHTML = `
-        <div class="inv-head">
-          <div>
-            <h2>${isCN ? "AVOIR" : "FACTURE"}</h2>
-            <div><b>N° ${esc(inv.number)}</b></div>
-            <div class="small">Émise le ${fmt(inv.issued_at)}</div>
-          </div>
-          <div style="text-align:center">
-            <canvas id="adminInvQr" width="92" height="92"></canvas>
-            <div class="small" style="font-size:10px">QR Vérification</div>
-          </div>
-          <div style="text-align:right">
-            <b>${esc(c.name || "AMINE RENT A CAR")}</b>
-            <div class="small">${esc(c.address || "")}<br>MF : ${esc(
-        c.tax_id || ""
-      )}<br>${esc(c.phone || "")} ${esc(c.email || "")}</div>
-          </div>
-        </div>
-        <div class="inv-two">
-          <div class="inv-box">
-            <div class="small" style="font-weight:700">CLIENT</div>
-            <b>${esc(cu.name || "")}</b>
-            <div class="small">${esc(cu.address || "")}${
-        cu.tax_id ? `<br>MF : ${esc(cu.tax_id)}` : ""
-      }<br>${esc(cu.phone || "")}</div>
-          </div>
-          <div class="inv-box">
-            <div class="small" style="font-weight:700">${isCN ? "MOTIF" : "PAIEMENT"}</div>
-            ${isCN ? esc(s.reason || "") : `Mode : ${esc(s.payment_method || "")}`}
-          </div>
-        </div>
-        <table class="inv-tbl">
-          <thead><tr><th>Désignation</th><th class="r">Montant</th></tr></thead>
-          <tbody>${lines}</tbody>
-        </table>
-        <table class="inv-tot">${totals}</table>
-        <div class="small" style="margin-top:16px">${esc(s.footer || "")}</div>
-      `;
-
-      const verifyUrl =
-        location.origin +
-        location.pathname.replace(/[^/]*$/, "") +
-        "verify.html?t=" +
-        (inv.verify_token || "");
-      if (window.QRCode && typeof window.QRCode.toCanvas === "function") {
-        try {
-          window.QRCode.toCanvas($("adminInvQr"), verifyUrl, { width: 92, margin: 1 }, function () {});
-        } catch (_) {}
-      }
-    }
-
-    $("invCloseBtn").onclick = () => {
-      $("invModal").hidden = true;
-    };
-    $("invModal").onclick = (e) => {
-      if (e.target === $("invModal")) $("invModal").hidden = true;
-    };
-    $("invPrintBtn").onclick = () => window.print();
-
-    async function boot() {
-      const { data: { session } } = await sb.auth.getSession();
-      if (!session) {
-        $("login").hidden = false;
-        $("app").hidden = true;
-        $("out").hidden = true;
-        $("refreshAll").hidden = true;
-        return;
-      }
-
-      const { data: p, error: pe } = await sb
-        .from("profiles")
-        .select("role")
-        .eq("id", session.user.id)
-        .maybeSingle();
-
-      if (!p || !["admin", "staff"].includes(p.role)) {
-        const why = pe
-          ? "Erreur base de données : " + pe.message
-          : !p
-          ? "aucun profil trouvé pour ce compte (relancer la commande SQL d'attribution après la création du compte)"
-          : "rôle actuel : " + p.role;
-        await sb.auth.signOut();
-        boot();
-        $("lm").textContent = "Connexion réussie, mais ce compte n'est pas administrateur : " + why;
-        return;
-      }
-
-      $("login").hidden = true;
-      $("app").hidden = false;
-      $("out").hidden = false;
-      $("refreshAll").hidden = false;
-
-      try {
-        await sb.rpc("expire_holds");
-      } catch (e) {}
-
-      subscribeAlerts();
-      await Promise.all([loadAlerts(), loadB(), loadV(), loadE(), loadP(), loadF(), loadS()]);
-    }
-
-    $("go").onclick = async () => {
-      $("lm").textContent = "";
-      const { error } = await sb.auth.signInWithPassword({
-        email: $("em").value.trim(),
-        password: $("pw").value
-      });
-      if (error) {
-        $("lm").textContent =
-          "Connexion refusée : " + error.message + (error.status ? " (code " + error.status + ")" : "");
-        return;
-      }
-      $("pw").value = "";
-      boot();
-    };
-
-    $("out").onclick = async () => {
-      await sb.auth.signOut();
-      boot();
-    };
-
-    $("refreshAll").onclick = async () => {
-      notify("Mise à jour en direct...");
-      await Promise.all([loadAlerts(), loadB(), loadV(), loadE(), loadP(), loadF(), loadS()]);
-      notify("Données synchronisées ✓");
-    };
-
-    document.querySelectorAll(".tabs button").forEach((b) => {
-      b.onclick = () => {
-        document.querySelectorAll(".tabs button").forEach((x) => x.classList.toggle("on", x === b));
-        $("tb").hidden = b.dataset.t !== "b";
-        $("tv").hidden = b.dataset.t !== "v";
-        $("te").hidden = b.dataset.t !== "e";
-        $("tp").hidden = b.dataset.t !== "p";
-        $("tf").hidden = b.dataset.t !== "f";
-        $("ts").hidden = b.dataset.t !== "s";
-      };
-    });
-
-    /* =========================================================================
-       1. RÉSERVATIONS
-       ========================================================================= */
-    async function loadB() {
-      const { data, error } = await sb
-        .from("bookings")
-        .select("*,vehicles(name)")
-        .order("created_at", { ascending: false })
-        .limit(100);
-
-      if (error) {
-        $("tb").innerHTML = `<div class="msg">${esc(error.message)}</div>`;
-        return;
-      }
-
-      const list = data || [];
-      $("stBookings").textContent = String(list.length);
-      $("stPending").textContent = String(list.filter((x) => x.status === "pending").length);
-
-      $("tb").innerHTML = list.length
-        ? list
-            .map(
-              (b) => `<div class="card">
-                <div class="row">
-                  <b>${esc(b.vehicles?.name)}</b>
-                  <span class="st ${b.status}">${LAB[b.status] || esc(b.status)}</span>
-                </div>
-                <div>${esc(b.guest_name)} · <a href="tel:${esc(b.guest_phone)}">${esc(b.guest_phone)}</a></div>
-                <div class="small">Du ${fmt(b.start_at)} au ${fmt(b.end_at)} · ${esc(b.quote?.days)} jours · ${esc(
-                  b.pickup_text
-                )}${b.quote?.subtotal_htva ? ` · ~${esc(b.quote.subtotal_htva)} TND HTVA` : ""}</div>
-                ${
-                  b.status === "pending" && b.hold_expires_at
-                    ? `<div class="small">Réservation retenue jusqu'à ${new Date(
-                        b.hold_expires_at
-                      ).toLocaleTimeString("fr-FR", {
-                        timeZone: "Africa/Tunis",
-                        hour: "2-digit",
-                        minute: "2-digit"
-                      })}</div>`
-                    : ""
-                }
-                <div class="row" style="margin-top: 8px; justify-content: flex-start">
-                  ${
-                    ["pending", "cancellation_requested"].includes(b.status)
-                      ? `<button class="g" data-a="confirmed" data-id="${b.id}">Confirmer</button>`
-                      : ""
-                  }
-                  ${
-                    ["pending", "confirmed", "cancellation_requested"].includes(b.status)
-                      ? `<button class="r" data-a="cancelled" data-id="${b.id}">Annuler</button>`
-                      : ""
-                  }
-                  ${
-                    b.status === "confirmed"
-                      ? `<button class="g" data-inv="${b.id}">Créer la facture</button>`
-                      : ""
-                  }
-                </div>
-                <details style="margin-top: 8px">
-                  <summary class="small" style="cursor: pointer">Prix HTVA et infos de facturation</summary>
-                  <div style="display: grid; gap: 6px; margin-top: 6px" data-bk="${b.id}">
-                    <input class="bp" type="number" min="0" step="0.5" value="${esc(
-                      b.quote?.subtotal_htva ?? ""
-                    )}" placeholder="Prix total HTVA (TND)" />
-                    <input class="bn" value="${esc(
-                      b.billing_name
-                    )}" placeholder="Nom sur la facture (vide = nom du client)" />
-                    <input class="ba2" value="${esc(
-                      b.billing_address
-                    )}" placeholder="Adresse de facturation" />
-                    <input class="bt" value="${esc(
-                      b.billing_tax_id
-                    )}" placeholder="Matricule fiscal (si entreprise)" />
-                    <button class="bsave">Enregistrer</button>
-                  </div>
-                </details>
-              </div>`
-            )
-            .join("")
-        : `<div class="card">Aucune demande pour le moment.</div>`;
-
-      $("tb").querySelectorAll("[data-a]").forEach((btn) => {
-        btn.onclick = () => act(btn.dataset.id, btn.dataset.a);
-      });
-
-      $("tb").querySelectorAll(".bsave").forEach((btn) => {
-        btn.onclick = async () => {
-          const w = btn.closest("[data-bk]");
-          const id = w.dataset.bk;
-          const pr = w.querySelector(".bp").value;
-          btn.disabled = true;
-          let e1 = null;
-          if (pr !== "") {
-            e1 = (await sb.rpc("set_booking_price", { p_booking: id, p_subtotal: +pr })).error;
-          }
-          const e2 = (
-            await sb.rpc("set_billing", {
-              p_booking: id,
-              p_phone: "",
-              p_name: w.querySelector(".bn").value,
-              p_address: w.querySelector(".ba2").value,
-              p_tax: w.querySelector(".bt").value
-            })
-          ).error;
-          const er = e1 || e2;
-          btn.disabled = false;
-          btn.textContent = er ? "Erreur" : "Enregistré ✓";
-          if (er) alert(er.message);
-          else notify("Facturation enregistrée ✓");
-          setTimeout(() => {
-            btn.textContent = "Enregistrer";
-          }, 1600);
-        };
-      });
-
-      $("tb").querySelectorAll("[data-inv]").forEach((btn) => {
-        btn.onclick = async () => {
-          if (
-            !confirm(
-              "Émettre la facture ? Une fois émise elle ne pourra plus être modifiée (seulement corrigée par un avoir)."
-            )
-          )
-            return;
-          const { data: invData, error: invErr } = await sb.rpc("issue_invoice", {
-            p_booking: btn.dataset.inv
-          });
-          if (invErr) return alert(invErr.message);
-          await loadF();
-          notify("Facture émise ✓");
-          if (invData?.id) await openInvoicePreview(invData.id);
-        };
-      });
-    }
-
-    async function act(id, status) {
-      if (
-        !confirm(
-          status === "confirmed"
-            ? "Confirmer cette réservation (après vérification du paiement) ?"
-            : "Annuler cette réservation ?"
-        )
-      )
-        return;
-      const upd = { status, updated_at: new Date().toISOString() };
-      if (status === "confirmed") upd.hold_expires_at = null;
-      const { error } = await sb.from("bookings").update(upd).eq("id", id);
-      if (error) {
-        alert("Impossible : " + error.message);
-        return;
-      }
-      try {
-        const actor = (await sb.auth.getUser()).data.user.id;
-        await sb.from("audit_log").insert({
-          actor,
-          action: "booking_" + status,
-          entity: "booking",
-          entity_id: id
-        });
-      } catch (e) {}
-      await loadB();
-      notify(status === "confirmed" ? "Réservation confirmée ✓" : "Réservation annulée");
-    }
-
-    /* =========================================================================
-       2. VÉHICULES, PRIX EN DIRECT & PHOTOS
-       ========================================================================= */
-    async function loadV() {
-      const [{ data, error }, { data: imgs }] = await Promise.all([
-        sb.from("vehicles").select("*").order("sort"),
-        sb.from("vehicle_images").select("*").order("sort")
-      ]);
-
-      if (error) {
-        $("tv").innerHTML = `<div class="msg">${esc(error.message)}</div>`;
-        return;
-      }
-
-      const vehicles = data || [];
-      $("stVehicles").textContent = String(vehicles.length);
-
-      $("tv").innerHTML =
-        `<div class="card">
-          <p class="small">
-            Modification immédiate sur le site : changez le prix journalier HTVA (TND), le statut, ou ajoutez/supprimez des photos directement. Pour les VIP, laissez vide = "prix sur demande".
-          </p>` +
-        vehicles
-          .map(
-            (v) => `<div class="vrow" data-id="${v.id}">
-              <div>
-                <b>${esc(v.name)}</b>
-                <span class="small">${esc(String(v.category || "").toUpperCase())}</span>
-              </div>
-              <input class="pr" type="number" min="0" step="0.5" value="${
-                v.daily_price_htva ?? ""
-              }" placeholder="Prix HTVA" />
-              <input class="pl" value="${esc(v.plate)}" placeholder="Plaque" />
-              <div>
-                <select class="sx">
-                  <option value="active"${v.status === "active" ? " selected" : ""}>Actif</option>
-                  <option value="disabled"${v.status === "disabled" ? " selected" : ""}>Désactivé</option>
-                  <option value="archived"${v.status === "archived" ? " selected" : ""}>Archivé</option>
-                </select>
-                <button class="g sv" style="margin-top: 6px; width: 100%">Enregistrer</button>
-              </div>
-              <div style="grid-column: 1 / -1">
-                <div class="row" style="justify-content: flex-start">
-                  <input type="file" class="up" accept="image/jpeg,image/png,image/webp" style="width: auto" />
-                  <button class="up-b" type="button">Ajouter la photo</button>
-                  <span class="small">JPG / PNG / WebP · 3 Mo max · Direct sur le site</span>
-                </div>
-                <div class="ph-list">
-                  ${(imgs || [])
-                    .filter((i) => i.vehicle_id === v.id)
-                    .map(
-                      (i) => `<span class="ph">
-                        <img src="${IMG_PUBLIC_BASE}${esc(i.path)}" alt="${esc(v.name)}" loading="lazy" />
-                        <button type="button" data-del="${i.id}" data-path="${esc(
-                          i.path
-                        )}" title="Supprimer">×</button>
-                      </span>`
-                    )
-                    .join("")}
-                </div>
-              </div>
-            </div>`
-          )
-          .join("") +
-        `</div>`;
-
-      $("tv").querySelectorAll(".sv").forEach((btn) => {
-        btn.onclick = async () => {
-          const r = btn.closest(".vrow");
-          const pr = r.querySelector(".pr").value;
-          btn.disabled = true;
-          const { error: upErr } = await sb
-            .from("vehicles")
-            .update({
-              daily_price_htva: pr === "" ? null : +pr,
-              plate: r.querySelector(".pl").value.trim() || null,
-              status: r.querySelector(".sx").value
-            })
-            .eq("id", r.dataset.id);
-          btn.disabled = false;
-          btn.textContent = upErr ? "Erreur" : "Enregistré ✓";
-          if (upErr) alert(upErr.message);
-          else notify("Prix et véhicule mis à jour en direct ✓");
-          setTimeout(() => {
-            btn.textContent = "Enregistrer";
-          }, 1600);
-        };
-      });
-
-      $("tv").querySelectorAll(".up-b").forEach((btn) => {
-        btn.onclick = async () => {
-          const r = btn.closest(".vrow");
-          const f = r.querySelector(".up").files[0];
-          if (!f) return alert("Choisissez d'abord une photo.");
-          const ext = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp" }[f.type];
-          if (!ext) return alert("Format non accepté (JPG, PNG ou WebP).");
-          if (f.size > 3 * 1024 * 1024) return alert("Photo trop lourde (3 Mo max).");
-
-          btn.disabled = true;
-          btn.textContent = "Envoi...";
-          const path = `${r.dataset.id}/${Date.now()}.${ext}`;
-          const up = await sb.storage.from("vehicle-images").upload(path, f, { contentType: f.type });
-          if (up.error) {
-            alert("Échec : " + up.error.message);
-            btn.disabled = false;
-            btn.textContent = "Ajouter la photo";
-            return;
-          }
-          const ins = await sb.from("vehicle_images").insert({
-            vehicle_id: r.dataset.id,
-            path,
-            alt: r.querySelector("b").textContent
-          });
-          if (ins.error) alert(ins.error.message);
-          await loadV();
-          notify("Photo ajoutée et visible sur le site ✓");
-        };
-      });
-
-      $("tv").querySelectorAll("[data-del]").forEach((b) => {
-        b.onclick = async () => {
-          if (!confirm("Supprimer cette photo ?")) return;
-          await sb.storage.from("vehicle-images").remove([b.dataset.path]);
-          await sb.from("vehicle_images").delete().eq("id", b.dataset.del);
-          await loadV();
-          notify("Photo supprimée ✓");
-        };
-      });
-    }
-
-    /* =========================================================================
-       3. FÊTES, VACANCES & ÉVÉNEMENTS (CALENDAR_EVENTS EN DIRECT)
-       ========================================================================= */
-    async function loadE() {
-      const { data, error } = await sb
-        .from("calendar_events")
-        .select("*")
-        .order("on_date", { ascending: true });
-
-      if (error) {
-        $("te").innerHTML = `<div class="card"><div class="msg">${esc(error.message)}</div></div>`;
-        return;
-      }
-
-      const events = data || [];
-      $("te").innerHTML = `
-        <div class="card">
-          <h3 style="font-size: 24px; margin-bottom: 6px">Fêtes, jours fériés & vacances (affichage direct sur le calendrier)</h3>
-          <p class="small">Ajoutez une date ou fête : elle apparaît immédiatement sur le calendrier du site.</p>
-          <div class="ev-grid">
-            <div>
-              <label class="small">Date (YYYY-MM-DD)</label>
-              <input type="date" id="evDate" />
-            </div>
-            <div>
-              <label class="small">Libellé (FR)</label>
-              <input id="evFr" placeholder="Ex : Fête de l'Indépendance" />
-            </div>
-            <div>
-              <label class="small">التسمية (AR)</label>
-              <input id="evAr" placeholder="مثال: عيد الاستقلال" />
-            </div>
-            <div>
-              <label class="small">Label (EN / IT)</label>
-              <input id="evEn" placeholder="Optional EN / IT" />
-            </div>
-            <button type="button" class="g" id="evAdd">Ajouter</button>
-          </div>
-          <div style="margin-top: 14px">
-            ${
-              events.length
-                ? events
-                    .map(
-                      (ev) => `<div class="row" style="border-top: 1px solid var(--line); padding: 9px 0">
-                        <div>
-                          <b>${esc(ev.on_date)}</b> · ${esc(ev.label_fr || "")}
-                          ${ev.label_ar ? ` · <span>${esc(ev.label_ar)}</span>` : ""}
-                        </div>
-                        <button type="button" class="r" data-evdel="${esc(ev.on_date)}">Supprimer</button>
-                      </div>`
-                    )
-                    .join("")
-                : `<p class="small" style="margin-top: 8px">Aucune fête ou événement enregistré pour le moment.</p>`
-            }
-          </div>
-        </div>
-      `;
-
-      $("evAdd").onclick = async () => {
-        const on_date = $("evDate").value;
-        const label_fr = $("evFr").value.trim();
-        const label_ar = $("evAr").value.trim();
-        const label_en = $("evEn").value.trim();
-        if (!on_date || (!label_fr && !label_ar)) {
-          return alert("Choisissez une date et saisissez au moins un libellé.");
-        }
-        const { error: insErr } = await sb.from("calendar_events").upsert({
-          on_date,
-          label_fr: label_fr || label_ar,
-          label_ar: label_ar || label_fr,
-          label_en: label_en || label_fr || label_ar,
-          label_it: label_en || label_fr || label_ar
-        });
-        if (insErr) return alert(insErr.message);
-        await loadE();
-        notify("Date ajoutée sur le calendrier ✓");
-      };
-
-      $("te").querySelectorAll("[data-evdel]").forEach((btn) => {
-        btn.onclick = async () => {
-          if (!confirm("Supprimer cette date du calendrier ?")) return;
-          const { error: delErr } = await sb
-            .from("calendar_events")
-            .delete()
-            .eq("on_date", btn.dataset.evdel);
-          if (delErr) return alert(delErr.message);
-          await loadE();
-          notify("Date supprimée ✓");
-        };
-      });
-    }
-
-    /* =========================================================================
-       4. PAIEMENTS & BANQUE
-       ========================================================================= */
-    async function loadP() {
-      const [ba, pay] = await Promise.all([
-        sb.from("bank_accounts").select("*").order("sort"),
-        sb
-          .from("payments")
-          .select("*,bookings(guest_name,guest_phone,quote,vehicles(name))")
-          .order("created_at", { ascending: false })
-          .limit(50)
-      ]);
-      const PL = {
-        awaiting: "En attente",
-        proof_uploaded: "Preuve reçue (à vérifier)",
-        verified: "Vérifié",
-        rejected: "Rejeté"
-      };
-
-      $("tp").innerHTML = `<div class="card">
-        <h3 style="margin-bottom: 6px; font-size: 24px">Comptes bancaires affichés aux clients</h3>
-        <p class="small">Saisissez ici le RIB officiel. Il reste dans la base de données (jamais dans le code public).</p>
-        ${(ba.data || [])
-          .map(
-            (a) => `<div class="row" style="border-top: 1px solid var(--line); padding: 8px 0">
-              <div><b>${esc(a.bank)}</b> · ${esc(a.holder)}<br><code>${esc(a.rib)}</code></div>
-              <button class="r" data-bd="${a.id}">Supprimer</button>
-            </div>`
-          )
-          .join("")}
-        <div class="vrow" style="grid-template-columns: 1fr 1fr 1.4fr auto">
-          <input id="bk" placeholder="Banque (UIB...)" />
-          <input id="bh" placeholder="Titulaire" />
-          <input id="br" placeholder="RIB" />
-          <button class="g" id="ba">Ajouter</button>
-        </div>
+/* ---------- Réservations ---------- */
+async function loadB(){
+  const {data,error}=await sb.from("bookings").select("*,vehicles(name)").order("created_at",{ascending:false}).limit(500);
+  if(error){$("tb").innerHTML=`<div class="msg">${esc(error.message)}</div>`;return}
+  BK=data||[];$("stBookings").textContent=BK.length;
+  if(!$("bq")){
+    $("tb").innerHTML=`<div class="bar2"><input id="bq" placeholder="Rechercher : nom, téléphone ou référence (#A8F92C1B)"><select id="bs"><option value="">Tous les statuts</option>${STS.map(s=>`<option value="${s}">${LAB[s]}</option>`).join("")}</select></div><div id="bl"></div>`;
+    $("bq").oninput=renderB;$("bs").onchange=renderB;
+  }
+  renderB();
+}
+function renderB(){
+  const q=($("bq").value||"").trim().toLowerCase().replace(/^#/,""),st=$("bs").value;
+  const list=BK.filter(b=>(!st||b.status===st)&&(!q||[b.guest_name,b.guest_phone,ref(b.id),b.vehicles?.name].some(x=>String(x||"").toLowerCase().includes(q))));
+  $("bl").innerHTML=list.length?list.map(b=>{
+    const c=calc(b),paid=verifiedOf(b.id),hasProof=PAY.some(p=>p.booking_id===b.id&&p.status==="proof_uploaded");
+    const wl=waLink(b.guest_phone,`Bonjour ${b.guest_name||""}, réservation #${ref(b.id)} — Amine Rent A Car`);
+    return `<div class="card" data-id="${esc(b.id)}">
+      <div class="row"><div><b>${esc(b.vehicles?.name)}</b> <span class="tag">#${ref(b.id)}</span></div><span class="st ${esc(b.status)}">${esc(LAB[b.status]||b.status)}</span></div>
+      <div>${esc(b.guest_name)} · <a href="tel:${esc(b.guest_phone)}">${esc(b.guest_phone)}</a></div>
+      <div class="small">Du ${fmt(b.start_at)} au ${fmt(b.end_at)} · ${esc(b.quote?.days)} jour(s) · ${esc(b.pickup_text)}</div>
+      <div class="small">TTC <b class="mono">${money(c.ttc)}</b> · acompte <b class="mono">${money(c.dep)}</b> · vérifié <b class="mono" style="color:${paid>0?"var(--green2)":"var(--red2)"}">${money(paid)}</b> TND${hasProof?" · <b style='color:var(--gold)'>preuve à vérifier</b>":""}</div>
+      <div class="row" style="margin-top:8px;justify-content:flex-start">
+        ${["pending","cancellation_requested"].includes(b.status)?`<button class="g" data-a="confirmed">Confirmer</button>`:""}
+        ${["pending","confirmed","cancellation_requested"].includes(b.status)?`<button class="r" data-a="cancelled">Annuler</button>`:""}
+        ${b.status==="confirmed"?`<button class="g" data-inv>Créer la facture</button>`:""}
+        <button data-dos>Dossier client</button>${wl?`<a class="btn wa" href="${esc(wl)}" target="_blank" rel="noopener noreferrer">WhatsApp</a>`:""}
       </div>
-      <div class="card">
-        <h3 style="margin-bottom: 6px; font-size: 24px">Paiements</h3>
-        <p class="small">Vérifiez le virement sur votre compte, puis saisissez le montant réellement reçu.</p>
-        ${
-          (pay.data || [])
-            .map(
-              (p) => `<div style="border-top: 1px solid var(--line); padding: 10px 0">
-                <div class="row">
-                  <b>${esc(p.bookings?.vehicles?.name)} · ${esc(p.bookings?.guest_name)}</b>
-                  <span class="st ${
-                    p.status === "verified" ? "confirmed" : p.status === "rejected" ? "cancelled" : "pending"
-                  }">${PL[p.status] || esc(p.status)}</span>
-                </div>
-                <div class="small">${esc(p.bookings?.guest_phone)} · reçu : ${esc(p.amount)} TND</div>
-                <div class="row" style="justify-content: flex-start; margin-top: 6px">
-                  ${p.proof_path ? `<button data-pf="${esc(p.proof_path)}">Voir la preuve</button>` : ""}
-                  ${
-                    p.status === "proof_uploaded"
-                      ? `<input type="number" min="0" step="0.5" placeholder="Montant reçu" style="width: 130px" id="am${p.id}" />
-                         <button class="g" data-v="${p.id}" data-s="verified">Vérifié</button>
-                         <button class="r" data-v="${p.id}" data-s="rejected">Rejeter</button>`
-                      : ""
-                  }
-                </div>
-              </div>`
-            )
-            .join("") || "<p class='small'>Aucun paiement pour le moment.</p>"
-        }
-      </div>`;
-
-      $("ba").onclick = async () => {
-        const bank = $("bk").value.trim(),
-          holder = $("bh").value.trim(),
-          rib = $("br").value.trim();
-        if (!bank || !holder || !rib) return alert("Remplissez les 3 champs.");
-        const { error } = await sb.from("bank_accounts").insert({ bank, holder, rib });
-        if (error) return alert(error.message);
-        await loadP();
-        notify("Compte bancaire ajouté ✓");
-      };
-
-      $("tp").querySelectorAll("[data-bd]").forEach((b) => {
-        b.onclick = async () => {
-          if (confirm("Supprimer ce compte ?")) {
-            await sb.from("bank_accounts").delete().eq("id", b.dataset.bd);
-            await loadP();
-            notify("Compte supprimé");
-          }
-        };
-      });
-
-      $("tp").querySelectorAll("[data-pf]").forEach((b) => {
-        b.onclick = async () => {
-          const { data, error } = await sb.storage
-            .from("payment-proofs")
-            .createSignedUrl(b.dataset.pf, 300);
-          if (error) return alert(error.message);
-          window.open(data.signedUrl, "_blank", "noopener");
-        };
-      });
-
-      $("tp").querySelectorAll("[data-v]").forEach((b) => {
-        b.onclick = async () => {
-          const st = b.dataset.s,
-            amt = +($("am" + b.dataset.v).value || 0);
-          if (st === "verified" && !(amt > 0)) return alert("Saisissez le montant réellement reçu.");
-          if (
-            !confirm(
-              st === "verified"
-                ? "Confirmer que " + amt + " TND ont bien été reçus sur le compte ?"
-                : "Rejeter cette preuve ?"
-            )
-          )
-            return;
-          const u = (await sb.auth.getUser()).data.user.id;
-          const { error } = await sb
-            .from("payments")
-            .update({
-              status: st,
-              amount: st === "verified" ? amt : 0,
-              verified_by: u,
-              verified_at: new Date().toISOString()
-            })
-            .eq("id", b.dataset.v);
-          if (error) return alert(error.message);
-          try {
-            await sb.from("audit_log").insert({
-              actor: u,
-              action: "payment_" + st,
-              entity: "payment",
-              entity_id: b.dataset.v
-            });
-          } catch (e) {}
-          await loadP();
-          notify("Paiement mis à jour ✓");
-        };
-      });
-    }
-
-    /* =========================================================================
-       5. FACTURES & AVOIRS
-       ========================================================================= */
-    async function loadF() {
-      const { data, error } = await sb
-        .from("invoices")
-        .select("*")
-        .order("issued_at", { ascending: false })
-        .limit(300);
-
-      if (error) {
-        $("tf").innerHTML = `<div class="msg">${esc(error.message)}</div>`;
-        return;
-      }
-
-      const invoices = data || [];
-      $("stInvoices").textContent = String(invoices.length);
-      const credited = new Set(invoices.filter((i) => i.corrects).map((i) => i.corrects));
-
-      $("tf").innerHTML = `<div class="card">
-        <div class="row">
-          <h3 style="margin: 0; font-size: 24px">Factures et avoirs</h3>
-          <button id="csv">Exporter en CSV (comptable)</button>
-        </div>
-        <p class="small">Une facture émise ne peut plus être modifiée : pour corriger, créez un avoir.</p>
-        ${
-          invoices
-            .map(
-              (i) => `<div class="row" style="border-top: 1px solid var(--line); padding: 9px 0">
-                <div>
-                  <b>${esc(i.number)}</b> · ${i.kind === "credit_note" ? "Avoir" : "Facture"} · ${new Date(
-                    i.issued_at
-                  ).toLocaleDateString("fr-FR")}<br>
-                  <span class="small">${esc(i.snapshot?.customer?.name)} · ${money(
-                    i.snapshot?.total_ttc
-                  )} TND TTC${credited.has(i.id) ? " · ⚠️ annulée par un avoir" : ""}</span>
-                </div>
-                <div>
-                  <button data-o="${i.id}">Ouvrir</button>
-                  ${
-                    i.kind === "invoice" && !credited.has(i.id)
-                      ? `<button class="r" data-cn="${i.id}">Créer un avoir</button>`
-                      : ""
-                  }
-                </div>
-              </div>`
-            )
-            .join("") || "<p class='small'>Aucune facture pour le moment.</p>"
-        }
-      </div>`;
-
-      $("tf").querySelectorAll("[data-o]").forEach((b) => {
-        b.onclick = () => openInvoicePreview(b.dataset.o);
-      });
-
-      $("tf").querySelectorAll("[data-cn]").forEach((b) => {
-        b.onclick = async () => {
-          const why = prompt("Motif de l'avoir (obligatoire) :");
-          if (!why) return;
-          const { data: r, error: e } = await sb.rpc("issue_credit_note", {
-            p_invoice: b.dataset.cn,
-            p_reason: why
-          });
-          if (e) return alert(e.message);
-          await loadF();
-          notify("Avoir créé ✓");
-          if (r?.id) await openInvoicePreview(r.id);
-        };
-      });
-
-      $("csv").onclick = () => {
-        const q = (v) => '"' + String(v ?? "").replace(/"/g, '""') + '"';
-        const rows = [
-          [
-            "Numero",
-            "Type",
-            "Date",
-            "Client",
-            "Vehicule",
-            "Jours",
-            "HTVA",
-            "Taxe location",
-            "TVA",
-            "Timbre",
-            "TTC",
-            "Acompte",
-            "Reste",
-            "Avoir sur"
-          ]
-        ];
-        invoices.forEach((i) => {
-          const s = i.snapshot || {},
-            o = s.original || s;
-          rows.push([
-            i.number,
-            i.kind,
-            i.issued_at.slice(0, 10),
-            s.customer?.name,
-            o.vehicle?.name,
-            o.days,
-            o.subtotal_htva,
-            o.levy_total,
-            o.vat_amount,
-            o.fiscal_stamp,
-            s.total_ttc,
-            o.deposit_paid,
-            o.balance_due,
-            s.original_number || ""
-          ]);
-        });
-        const blob = new Blob(["\ufeff" + rows.map((r) => r.map(q).join(";")).join("\n")], {
-          type: "text/csv"
-        });
-        const a = document.createElement("a");
-        a.href = URL.createObjectURL(blob);
-        a.download = "factures.csv";
-        a.click();
-      };
-    }
-
-    /* =========================================================================
-       6. PARAMÈTRES GÉNÉRAUX
-       ========================================================================= */
-    const SL = {
-      vat_rate: "TVA (%) : à confirmer par le comptable",
-      deposit_enabled: "Acompte activé (true/false)",
-      deposit_pct: "Acompte (%)",
-      hold_minutes: "Durée de retenue d'une demande (minutes)",
-      min_days: "Durée minimale de location (jours)",
-      levy_per_day: "Taxe par jour et par véhicule (TND)",
-      levy_vat_treatment: "Traitement TVA de la taxe : to_confirm / outside_vat / subject_to_vat",
-      fiscal_stamp_enabled: "Timbre fiscal actif (true/false)",
-      fiscal_stamp_amount: "Montant du timbre (TND)",
-      company_name: "Société : nom",
-      company_address: "Société : adresse",
-      company_tax_id: "Société : matricule fiscal",
-      company_phone: "Société : téléphone",
-      company_email: "Société : e-mail",
-      invoice_footer: "Pied de facture (texte libre)",
-      whatsapp: "WhatsApp (chiffres, ex 21621289073)",
-      tiktok: "Lien TikTok",
-      facebook: "Lien Facebook"
+      <details style="margin-top:8px"><summary class="small" style="cursor:pointer">Prix HTVA et facturation</summary>
+        <div style="display:grid;gap:6px;margin-top:6px"><input class="bp" type="number" min="0" step="0.5" value="${esc(b.quote?.subtotal_htva??"")}" placeholder="Prix total HTVA (TND)"><input class="bn" value="${esc(b.billing_name)}" placeholder="Nom sur la facture"><input class="ba2" value="${esc(b.billing_address)}" placeholder="Adresse de facturation"><input class="bt" value="${esc(b.billing_tax_id)}" placeholder="Matricule fiscal"><button class="bsave">Enregistrer</button></div></details>
+    </div>`}).join(""):`<div class="card">Aucune réservation.</div>`;
+  $("bl").querySelectorAll(".card").forEach(card=>{
+    const id=card.dataset.id,b=BK.find(x=>x.id===id);
+    card.querySelectorAll("[data-a]").forEach(btn=>btn.onclick=()=>act(b,btn.dataset.a));
+    card.querySelector("[data-dos]").onclick=()=>openDossier(b);
+    const iv=card.querySelector("[data-inv]");
+    if(iv)iv.onclick=async()=>{
+      if(!confirm("Émettre la facture ? Une fois émise, elle ne pourra être corrigée que par un avoir."))return;
+      iv.disabled=true;const {data:d,error:e}=await sb.rpc("issue_invoice",{p_booking:id});iv.disabled=false;
+      if(e)return fail(e);await loadF();notify("Facture émise ✓");if(d?.id)openInvoice(d.id);
     };
+    card.querySelector(".bsave").onclick=async ev=>{
+      const btn=ev.target,pr=card.querySelector(".bp").value;btn.disabled=true;let e1=null;
+      if(pr!=="")e1=(await sb.rpc("set_booking_price",{p_booking:id,p_subtotal:+pr})).error;
+      const e2=(await sb.rpc("set_billing",{p_booking:id,p_phone:"",p_name:card.querySelector(".bn").value,p_address:card.querySelector(".ba2").value,p_tax:card.querySelector(".bt").value})).error;
+      btn.disabled=false;if(e1||e2)return fail(e1||e2);
+      notify("Facturation enregistrée ✓");await loadB();computeAccounting();
+    };
+  });
+}
+async function act(b,status){
+  let m=status==="confirmed"?"Confirmer cette réservation ?":"Annuler cette réservation ?";
+  if(status==="confirmed"&&verifiedOf(b.id)<=0)m="⚠ Aucun paiement vérifié pour cette réservation.\nConfirmer quand même ?";
+  if(!confirm(m))return;
+  const upd={status,updated_at:new Date().toISOString()};if(status==="confirmed")upd.hold_expires_at=null;
+  const {error}=await sb.from("bookings").update(upd).eq("id",b.id);
+  if(error)return fail(error);await loadB();computeAccounting();notify(status==="confirmed"?"Réservation confirmée ✓":"Réservation annulée");
+}
 
-    async function loadS() {
-      const { data, error } = await sb.from("settings").select("*").order("key");
-      if (error) {
-        $("ts").innerHTML = `<div class="msg">${esc(error.message)}</div>`;
-        return;
-      }
+/* ---------- Véhicules ---------- */
+async function loadV(){
+  const [{data,error},{data:imgs}]=await Promise.all([sb.from("vehicles").select("*").order("sort"),sb.from("vehicle_images").select("*").order("sort")]);
+  if(error){$("tv").innerHTML=`<div class="msg">${esc(error.message)}</div>`;return}
+  const vs=data||[];$("stVehicles").textContent=vs.filter(v=>v.status==="active").length;
+  $("tv").innerHTML=`<div class="card"><p class="small">Prix journalier HTVA (TND), plaque, statut et photos. Les changements sont immédiats sur le site.</p>`+vs.map(v=>`<div class="vrow" data-id="${esc(v.id)}">
+    <div><b>${esc(v.name)}</b> <span class="small">${esc(String(v.category||"").toUpperCase())}</span></div>
+    <input class="pr" type="number" min="0" step="0.5" value="${esc(v.daily_price_htva??"")}" placeholder="Prix HTVA"><input class="pl" value="${esc(v.plate)}" placeholder="Plaque">
+    <div><select class="sx"><option value="active"${v.status==="active"?" selected":""}>Actif</option><option value="disabled"${v.status==="disabled"?" selected":""}>Désactivé</option><option value="archived"${v.status==="archived"?" selected":""}>Archivé</option></select><button class="g sv" style="margin-top:6px;width:100%">Enregistrer</button></div>
+    <div style="grid-column:1/-1"><div class="row" style="justify-content:flex-start"><input type="file" class="up" accept="image/jpeg,image/png,image/webp" style="width:auto"><button class="up-b">Ajouter la photo</button></div>
+    <div class="ph-list">${(imgs||[]).filter(i=>i.vehicle_id===v.id).map(i=>`<span class="ph"><img src="${IMG}${esc(i.path)}" alt="${esc(v.name)}" loading="lazy"><button data-del="${esc(i.id)}" data-path="${esc(i.path)}" title="Supprimer">×</button></span>`).join("")}</div></div></div>`).join("")+`</div>`;
+  $("tv").querySelectorAll(".sv").forEach(btn=>btn.onclick=async()=>{
+    const r=btn.closest(".vrow"),pr=r.querySelector(".pr").value;
+    if(pr!==""&&!(+pr>=0))return fail("Prix invalide");
+    btn.disabled=true;const {error:e}=await sb.from("vehicles").update({daily_price_htva:pr===""?null:+pr,plate:r.querySelector(".pl").value.trim()||null,status:r.querySelector(".sx").value}).eq("id",r.dataset.id);
+    btn.disabled=false;e?fail(e):notify("Véhicule mis à jour ✓");
+  });
+  $("tv").querySelectorAll(".up-b").forEach(btn=>btn.onclick=async()=>{
+    const r=btn.closest(".vrow"),f=r.querySelector(".up").files[0];
+    const ext={"image/jpeg":"jpg","image/png":"png","image/webp":"webp"}[f?.type];
+    if(!f)return fail("Choisissez d'abord une photo.");if(!ext||f.size>5*1048576)return fail("Format non accepté (JPG, PNG, WebP, 5 Mo max).");
+    btn.disabled=true;const path=`${r.dataset.id}/${Date.now()}.${ext}`;
+    const up=await sb.storage.from("vehicle-images").upload(path,f,{contentType:f.type});
+    if(up.error){btn.disabled=false;return fail(up.error)}
+    const ins=await sb.from("vehicle_images").insert({vehicle_id:r.dataset.id,path,alt:r.querySelector("b").textContent});
+    if(ins.error){await sb.storage.from("vehicle-images").remove([path]);btn.disabled=false;return fail(ins.error)}
+    await loadV();notify("Photo ajoutée ✓");
+  });
+  $("tv").querySelectorAll("[data-del]").forEach(b=>b.onclick=async()=>{
+    if(!confirm("Supprimer cette photo ?"))return;
+    const d=await sb.from("vehicle_images").delete().eq("id",b.dataset.del);if(d.error)return fail(d.error);
+    await sb.storage.from("vehicle-images").remove([b.dataset.path]);await loadV();notify("Photo supprimée ✓");
+  });
+}
 
-      $("ts").innerHTML = `<div class="card">
-        <h3 style="margin-bottom: 6px; font-size: 24px">Paramètres</h3>
-        <p class="small">Modifiables sans toucher au code. Taxes et TVA : à valider avec votre comptable.</p>
-        ${(data || [])
-          .map(
-            (r) => `<div style="margin: 10px 0">
-              <label class="small">${esc(SL[r.key] || r.key)}</label>
-              <input data-k="${esc(r.key)}" value="${esc(r.value)}" />
-            </div>`
-          )
-          .join("")}
-        <button class="g" id="ssave">Enregistrer les paramètres</button>
-      </div>`;
+/* ---------- Fêtes ---------- */
+async function loadE(){
+  const {data,error}=await sb.from("calendar_events").select("*").order("on_date");
+  if(error){$("te").innerHTML=`<div class="card"><div class="msg">${esc(error.message)}</div></div>`;return}
+  $("te").innerHTML=`<div class="card"><h3 style="font-size:24px">Fêtes, jours fériés & vacances</h3>
+  <div class="evg"><div><label class="small">Date</label><input type="date" id="evDate"></div><div><label class="small">Libellé (FR)</label><input id="evFr" placeholder="Ex : Fête"></div><div><label class="small">التسمية (AR)</label><input id="evAr" placeholder="مثال: عيد"></div><div><label class="small">Label (EN / IT)</label><input id="evEn"></div><button class="g" id="evAdd">Ajouter</button></div>
+  <div style="margin-top:14px">${(data||[]).map(ev=>`<div class="row" style="border-top:1px solid var(--line);padding:9px 0"><div><b>${esc(ev.on_date)}</b> · ${esc(ev.label_fr||"")} ${ev.label_ar?`· ${esc(ev.label_ar)}`:""}</div><button class="r" data-evdel="${esc(ev.on_date)}">Supprimer</button></div>`).join("")}</div></div>`;
+  $("evAdd").onclick=async()=>{
+    const on_date=$("evDate").value,fr=$("evFr").value.trim(),ar=$("evAr").value.trim(),en=$("evEn").value.trim();
+    if(!on_date||(!fr&&!ar))return fail("Date et libellé requis.");
+    const {error:e}=await sb.from("calendar_events").upsert({on_date,label_fr:fr||ar,label_ar:ar||fr,label_en:en||fr||ar,label_it:en||fr||ar});
+    if(e)return fail(e);await loadE();notify("Date ajoutée ✓");
+  };
+  $("te").querySelectorAll("[data-evdel]").forEach(b=>b.onclick=async()=>{if(!confirm("Supprimer cette date ?"))return;const {error:e}=await sb.from("calendar_events").delete().eq("on_date",b.dataset.evdel);if(e)return fail(e);await loadE();notify("Date supprimée ✓")});
+}
 
-      $("ssave").onclick = async () => {
-        const rows = [...$("ts").querySelectorAll("[data-k]")].map((i) => ({
-          key: i.dataset.k,
-          value: i.value.trim(),
-          updated_at: new Date().toISOString()
-        }));
-        const btn = $("ssave");
-        btn.disabled = true;
-        const { error: e } = await sb.from("settings").upsert(rows);
-        btn.disabled = false;
-        if (e) return alert(e.message);
-        try {
-          const actor = (await sb.auth.getUser()).data.user.id;
-          await sb.from("audit_log").insert({
-            actor,
-            action: "settings_changed",
-            entity: "settings"
-          });
-        } catch (err) {}
-        btn.textContent = "Enregistré ✓";
-        notify("Paramètres enregistrés en direct ✓");
-        setTimeout(() => {
-          btn.textContent = "Enregistrer les paramètres";
-        }, 1600);
-      };
-    }
+/* ---------- Paiements & banque ---------- */
+async function loadP(){
+  const [ba,pay]=await Promise.all([sb.from("bank_accounts").select("*").order("sort"),
+    sb.from("payments").select("*,bookings(guest_name,guest_phone,quote,vehicles(name))").order("created_at",{ascending:false}).limit(1000)]);
+  PAY=pay.data||[];
+  const PL={awaiting:"En attente",proof_uploaded:"Preuve reçue (à vérifier)",verified:"Vérifié",rejected:"Rejeté"};
+  $("tp").innerHTML=`<div class="card"><h3 style="margin-bottom:6px;font-size:24px">Comptes bancaires (RIB)</h3>
+  ${(ba.data||[]).map(a=>`<div class="row" style="border-top:1px solid var(--line);padding:8px 0"><div><b>${esc(a.bank)}</b> · ${esc(a.holder)}<br><code class="mono">${esc(a.rib)}</code></div><button class="r" data-bd="${esc(a.id)}">Supprimer</button></div>`).join("")}
+  <div class="vrow" style="grid-template-columns:1fr 1fr 1.4fr auto"><input id="bk" placeholder="Banque"><input id="bh" placeholder="Titulaire"><input id="br" placeholder="RIB"><button class="g" id="ba">Ajouter</button></div></div>
+  <div class="card"><h3 style="margin-bottom:6px;font-size:24px">Paiements reçus</h3>
+  ${PAY.slice(0,80).map(p=>{
+    const exp=p.bookings?calc({quote:p.bookings.quote}).dep:0,pre=Math.max(0,exp-verifiedOf(p.booking_id));
+    return `<div style="border-top:1px solid var(--line);padding:10px 0"><div class="row"><b>${esc(p.bookings?.vehicles?.name||"")} · ${esc(p.bookings?.guest_name||"")} <span class="tag">#${ref(p.booking_id)}</span></b><span class="st ${p.status==="verified"?"confirmed":p.status==="rejected"?"cancelled":"pending"}">${esc(PL[p.status]||p.status)}</span></div>
+    <div class="small">${esc(p.bookings?.guest_phone||"")} · ${fmt(p.created_at)} · montant : <b class="mono">${money(p.amount)} TND</b></div>
+    <div class="row" style="justify-content:flex-start;margin-top:6px">${p.proof_path?`<button data-pf="${esc(p.proof_path)}">Voir la preuve</button>`:""}
+    ${p.status==="proof_uploaded"?`<input type="number" min="0" step="0.5" value="${pre?pre.toFixed(3):""}" placeholder="Montant reçu" style="width:140px" id="am${esc(p.id)}"><button class="g" data-v="${esc(p.id)}" data-s="verified">Vérifié</button><button class="r" data-v="${esc(p.id)}" data-s="rejected">Rejeter</button>`:""}</div></div>`}).join("")||"<p class='small'>Aucun paiement.</p>"}</div>`;
+  $("ba").onclick=async()=>{
+    const bank=$("bk").value.trim(),holder=$("bh").value.trim(),rib=$("br").value.trim();
+    if(!bank||!holder||!rib)return fail("Remplissez les 3 champs.");
+    const {error}=await sb.from("bank_accounts").insert({bank,holder,rib});if(error)return fail(error);await loadP();notify("Compte ajouté ✓");
+  };
+  $("tp").querySelectorAll("[data-bd]").forEach(b=>b.onclick=async()=>{if(!confirm("Supprimer ce compte ?"))return;const {error}=await sb.from("bank_accounts").delete().eq("id",b.dataset.bd);if(error)return fail(error);await loadP();notify("Compte supprimé")});
+  $("tp").querySelectorAll("[data-pf]").forEach(b=>b.onclick=async()=>{const {data,error}=await sb.storage.from("payment-proofs").createSignedUrl(b.dataset.pf,300);if(error)return fail(error);window.open(data.signedUrl,"_blank","noopener,noreferrer")});
+  $("tp").querySelectorAll("[data-v]").forEach(b=>b.onclick=async()=>{
+    const st=b.dataset.s,amt=+($("am"+b.dataset.v).value||0);
+    if(st==="verified"&&!(amt>0))return fail("Saisissez le montant réellement reçu.");
+    if(st==="rejected"&&!confirm("Rejeter cette preuve ?"))return;
+    b.disabled=true;const u=(await sb.auth.getUser()).data.user.id;
+    const {error}=await sb.from("payments").update({status:st,amount:st==="verified"?amt:0,verified_by:u,verified_at:new Date().toISOString()}).eq("id",b.dataset.v);
+    if(error){b.disabled=false;return fail(error)}
+    await loadP();await loadB();computeAccounting();notify("Paiement mis à jour ✓");
+  });
+}
 
-    boot();
-  </script>
+/* ---------- Factures ---------- */
+async function loadF(){
+  const {data,error}=await sb.from("invoices").select("*").order("issued_at",{ascending:false}).limit(500);
+  if(error){$("tf").innerHTML=`<div class="msg">${esc(error.message)}</div>`;return}
+  INV=data||[];$("stInvoices").textContent=INV.length;
+  const credited=new Set(INV.filter(i=>i.corrects).map(i=>i.corrects));
+  $("tf").innerHTML=`<div class="card"><div class="row"><h3 style="font-size:24px">Factures et avoirs</h3><button id="csv">Exporter CSV (comptable)</button></div>
+  ${INV.map(i=>`<div class="row" style="border-top:1px solid var(--line);padding:9px 0"><div><b>${esc(i.number)}</b> · ${i.kind==="credit_note"?"Avoir":"Facture"} · ${fmt(i.issued_at)}<br><span class="small">${esc(i.snapshot?.customer?.name||"")} · <span class="mono">${money(i.snapshot?.total_ttc)}</span> TND TTC${credited.has(i.id)?" · ⚠ annulée":""}</span></div>
+  <div style="display:flex;gap:6px"><button data-o="${esc(i.id)}">Ouvrir</button>${i.kind==="invoice"&&!credited.has(i.id)?`<button class="r" data-cn="${esc(i.id)}">Créer un avoir</button>`:""}</div></div>`).join("")||"<p class='small'>Aucune facture.</p>"}</div>`;
+  $("tf").querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>openInvoice(b.dataset.o));
+  $("tf").querySelectorAll("[data-cn]").forEach(b=>b.onclick=async()=>{
+    const why=prompt("Motif de l'avoir (obligatoire) :");if(!why)return;
+    const {data:r,error:e}=await sb.rpc("issue_credit_note",{p_invoice:b.dataset.cn,p_reason:why});
+    if(e)return fail(e);await loadF();notify("Avoir créé ✓");if(r?.id)openInvoice(r.id);
+  });
+  $("csv").onclick=()=>{
+    const rows=[["Numero","Type","Date","Client","Vehicule","HTVA","TVA","TTC"]];
+    INV.forEach(i=>{const s=i.snapshot||{},o=s.original||s;rows.push([i.number,i.kind,String(i.issued_at||"").slice(0,10),s.customer?.name,o.vehicle?.name,s.subtotal_htva,s.vat_amount,s.total_ttc])});
+    download("factures.csv",rows);
+  };
+}
+
+/* ---------- Paramètres ---------- */
+const SL={vat_rate:"TVA (%)",deposit_enabled:"Acompte activé",deposit_pct:"Acompte (%)",hold_minutes:"Durée de retenue (minutes)",min_days:"Durée minimale (jours)",levy_per_day:"Taxe par jour (TND)",fiscal_stamp_enabled:"Timbre fiscal actif",fiscal_stamp_amount:"Montant timbre (TND)",company_name:"Société : nom",company_address:"Société : adresse",company_tax_id:"Société : matricule fiscal",company_phone:"Société : téléphone",company_email:"Société : e-mail",invoice_footer:"Pied de facture",whatsapp:"WhatsApp"};
+const NUM=new Set(["vat_rate","deposit_pct","hold_minutes","min_days","levy_per_day","fiscal_stamp_amount"]);
+async function loadS(){
+  const {data,error}=await sb.from("settings").select("*").order("key");
+  if(error){$("ts").innerHTML=`<div class="msg">${esc(error.message)}</div>`;return}
+  const rows=data||[];SET={};rows.forEach(r=>SET[r.key]=r.value);
+  $("ts").innerHTML=`<div class="card"><h3 style="margin-bottom:6px;font-size:24px">Paramètres généraux</h3>${rows.map(r=>{
+    const bool=/_enabled$/.test(r.key),v=String(r.value??"").toLowerCase();
+    return `<div style="margin:10px 0"><label class="small">${esc(SL[r.key]||r.key)}</label>${bool?`<select data-k="${esc(r.key)}"><option value="true"${v==="true"?" selected":""}>Oui</option><option value="false"${v!=="true"?" selected":""}>Non</option></select>`:`<input data-k="${esc(r.key)}" value="${esc(r.value)}"${NUM.has(r.key)?' inputmode="decimal"':""}>`}</div>`}).join("")}
+  <button class="g" id="ssave">Enregistrer les paramètres</button></div>`;
+  $("ssave").onclick=async()=>{
+    const els=[...$("ts").querySelectorAll("[data-k]")];
+    for(const i of els){if(NUM.has(i.dataset.k)&&(i.value.trim()===""||isNaN(+i.value.replace(",","."))))return fail("Valeur numérique invalide : "+(SL[i.dataset.k]||i.dataset.k))}
+    const up=els.map(i=>({key:i.dataset.k,value:NUM.has(i.dataset.k)?i.value.trim().replace(",","."):i.value.trim(),updated_at:new Date().toISOString()}));
+    const {error:e}=await sb.from("settings").upsert(up);if(e)return fail(e);
+    await loadS();computeAccounting();renderB&&$("bl")&&renderB();notify("Paramètres enregistrés ✓");
+  };
+}
+boot();
+</script>
 </body>
 </html>
